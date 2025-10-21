@@ -1,5 +1,5 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/features/Auth/presentation/register_screen.dart';
+import 'package:dbaas_project/features/Auth/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
