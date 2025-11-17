@@ -5,12 +5,16 @@ class AppTheme {
   static const Color black = Color(0xff101828);
   static const Color white = Color(0xffFFFFFF);
   static const Color gray = Color(0xff4A5565);
+  static const Color backgroundColor = Color(0xff51A2FF);
 
   static const Color semiGray = Color(0xffF3F4F6);
 
   static const Color red = Colors.red;
   static ThemeData lightTheme = ThemeData(
-    scaffoldBackgroundColor: white,
+    drawerTheme: DrawerThemeData(
+      backgroundColor: white
+    ),
+    scaffoldBackgroundColor: backgroundColor.withValues( alpha: 0.1),
     textTheme: TextTheme(
       headlineLarge: TextStyle(
         fontSize: 30,
@@ -25,6 +29,11 @@ class AppTheme {
       titleSmall: TextStyle(
         fontSize: 15,
         fontWeight: FontWeight.w500,
+        color: black,
+      ),
+      titleLarge: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w400,
         color: black,
       ),
     ),
@@ -63,6 +72,7 @@ class AppTheme {
         borderSide: BorderSide(width: 1, color: red),
       ),
     ),
+    
   );
   static ThemeData darkTheme = ThemeData();
 }
