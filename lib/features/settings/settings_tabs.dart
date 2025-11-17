@@ -6,27 +6,8 @@ class SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-
-      body: Column(
-        children: [
-          Text('SettingsTab Management',
+    return  Text('SettingsTab Management',
           
-          ),
-          Text('Manage your cloud resources and deployments'),
-          SizedBox(
-            width: 448,
-            height: 36,
-            child: TextField(
-              
-              decoration: InputDecoration(
-                hintText: 'Search projects',
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

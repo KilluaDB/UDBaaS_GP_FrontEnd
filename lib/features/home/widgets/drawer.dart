@@ -36,6 +36,7 @@ class HomeDrawer extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Drawer(
+     
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(
