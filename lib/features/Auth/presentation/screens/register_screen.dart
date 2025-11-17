@@ -20,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      backgroundColor: AppTheme.white,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
