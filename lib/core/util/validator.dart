@@ -29,7 +29,7 @@ class Validator {
 static String? validateProjectName(String? val) {
   final RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$');
   if (val == null || val.trim().isEmpty) {
-    return 'This field is required';
+    return 'This field is required(Only Spaces is allowed no Specail characters)';
   } else if (!nameRegex.hasMatch(val.trim())) {
     return 'Enter a valid Name';
   } else {
