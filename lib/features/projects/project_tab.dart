@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/models/project_model.dart';
+import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/empty_projects.dart';
 import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
@@ -8,6 +9,7 @@ import 'package:dbaas_project/features/projects/widgets/project.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProjectTab extends StatefulWidget {
   static const String routeName = '/projects';
@@ -24,8 +26,10 @@ class _ProjectTabState extends State<ProjectTab> {
     final buttonWidth = screenWidth * 0.12;
     final textTheme = Theme.of(context).textTheme;
     AppLocalizations local = AppLocalizations.of(context)!;
+    final projectProvider = Provider.of<ProjectProvider>(context); 
 
-    return Padding(
+    final projects = projectProvider.projects;
+        return Padding(
       padding: EdgeInsets.all(32.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,13 +81,10 @@ class _ProjectTabState extends State<ProjectTab> {
                           ),
                         ],
                       ),
-                      onTap: () async {
-                        final result = await Navigator.of(
+                        onTap: ()  {
+                  Navigator.of(
                           context,
                         ).pushNamed(CreateProjectPage.routeName);
-                        if (result == true) {
-                          setState(() {});
-                        }
                       },
                     ),
                   ],
@@ -118,13 +119,10 @@ class _ProjectTabState extends State<ProjectTab> {
                           ),
                         ],
                       ),
-                      onTap: () async {
-                        final result = await Navigator.of(
+                      onTap: ()  {
+                  Navigator.of(
                           context,
                         ).pushNamed(CreateProjectPage.routeName);
-                        if (result == true) {
-                          setState(() {});
-                        }
                       },
                     ),
                   ],
@@ -133,7 +131,7 @@ class _ProjectTabState extends State<ProjectTab> {
             },
           ),
 
-          ProjectModel.projects.isEmpty
+projects.isEmpty
               ? EmptyProjects(
                   subTitle: local.noProjectsYet,
                   subDecribtion: local.createOneToGetStarted,
@@ -147,8 +145,8 @@ class _ProjectTabState extends State<ProjectTab> {
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (_, __) => SizedBox(width: 16),
                     itemBuilder: (_, index) =>
-                        Project(project: ProjectModel.projects[index]),
-                    itemCount: ProjectModel.projects.length,
+                        Project(project: projects[index],index: index,),
+                    itemCount:projects.length,
                   ),
                 ),
         ],

@@ -1,5 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/models/project_model.dart';
+import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,14 +9,16 @@ import 'package:provider/provider.dart';
 
 class Project extends StatelessWidget {
   ProjectModel project;
-  Project({required this.project});
+  int index;
+  Project({required this.project, required this.index});
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    SettingsProvider provider = Provider.of<SettingsProvider>(context);
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+    ProjectProvider projectProvider = Provider.of<ProjectProvider>(context);
 
     final horizontalPadding = screenWidth * 0.02;
     final verticalPadding = screenHeight * 0.02;
@@ -30,11 +33,11 @@ class Project extends StatelessWidget {
       margin: EdgeInsets.only(top: verticalPadding),
 
       decoration: BoxDecoration(
-        color: provider.isDark ? AppTheme.black : AppTheme.white,
+        color: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(
           width: 1,
-          color: provider.isDark
+          color: settingsProvider.isDark
               ? AppTheme.white
               : AppTheme.black.withValues(alpha: 0.1),
         ),
@@ -48,25 +51,40 @@ class Project extends StatelessWidget {
           Text(
             project.name,
             style: textTheme.titleMedium!.copyWith(
-              color: provider.isDark ? AppTheme.white : AppTheme.black,
+              color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
             ),
           ),
           SizedBox(height: 4.h),
-          Container(
-            width: 56,
-            height: 30,
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.backgroundColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              project.DBType,
-              style: textTheme.titleMedium!.copyWith(
-                fontSize: 12,
-                color: AppTheme.backgroundColor,
+          Row(
+            children: [
+              Container(
+                width: 56,
+                height: 30,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.backgroundColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  project.DBType,
+                  style: textTheme.titleMedium!.copyWith(
+                    fontSize: 12,
+                    color: AppTheme.backgroundColor,
+                  ),
+                ),
               ),
-            ),
+              Spacer(),
+              IconButton(
+                onPressed: () {
+                  projectProvider.deleteProject(index);
+                },
+                icon: Icon(
+                  Icons.delete_forever_rounded,
+                  color: AppTheme.red,
+                  size: 25,
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 4.h),
           Text(project.providerType, style: textTheme.titleMedium),

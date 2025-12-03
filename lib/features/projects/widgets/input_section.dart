@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/models/project_model.dart';
+import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/util/validator.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
@@ -52,7 +53,8 @@ class _InputSectionState extends State<InputSection> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final AppLocalizations local = AppLocalizations.of(context)!;
-    SettingsProvider provider = Provider.of<SettingsProvider>(context);
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+    ProjectProvider projectProvider = Provider.of<ProjectProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -84,12 +86,12 @@ class _InputSectionState extends State<InputSection> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           decoration: BoxDecoration(
-            color: provider.isDark
+            color: settingsProvider.isDark
                 ? AppTheme.black
                 : AppTheme.white.withOpacity(0.9),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
-              color: provider.isDark
+              color: settingsProvider.isDark
                   ? AppTheme.white.withOpacity(0.2)
                   : AppTheme.black.withOpacity(0.2),
             ),
@@ -97,18 +99,18 @@ class _InputSectionState extends State<InputSection> {
           child: DropdownButton<String>(
             isExpanded: true,
             underline: SizedBox(),
-            iconEnabledColor: provider.isDark ? AppTheme.white : AppTheme.black,
+            iconEnabledColor: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
 
             value: selectedDatabase,
 
             hint: Text(
               "Select database type",
               style: textTheme.titleMedium!.copyWith(
-                color: provider.isDark ? AppTheme.white : AppTheme.black,
+                color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
               ),
             ),
 
-            dropdownColor: provider.isDark ? AppTheme.black : AppTheme.white,
+            dropdownColor: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
 
             items: dataBase
                 .map(
@@ -117,7 +119,7 @@ class _InputSectionState extends State<InputSection> {
                     child: Text(
                       db,
                       style: textTheme.titleMedium!.copyWith(
-                        color: provider.isDark
+                        color: settingsProvider.isDark
                             ? AppTheme.white
                             : AppTheme.black,
                       ),
@@ -145,12 +147,12 @@ class _InputSectionState extends State<InputSection> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           decoration: BoxDecoration(
-            color: provider.isDark
+            color: settingsProvider.isDark
                 ? AppTheme.black
                 : AppTheme.white.withOpacity(0.9),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
-              color: provider.isDark
+              color: settingsProvider.isDark
                   ? AppTheme.white.withOpacity(0.2)
                   : AppTheme.black.withOpacity(0.2),
             ),
@@ -158,18 +160,18 @@ class _InputSectionState extends State<InputSection> {
           child: DropdownButton<String>(
             isExpanded: true,
             underline: SizedBox(),
-            iconEnabledColor: provider.isDark ? AppTheme.white : AppTheme.black,
+            iconEnabledColor: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
 
             value: selectedCloudProvider,
 
             hint: Text(
               "Select Cloud Provider",
               style: textTheme.titleMedium!.copyWith(
-                color: provider.isDark ? AppTheme.white : AppTheme.black,
+                color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
               ),
             ),
 
-            dropdownColor: provider.isDark ? AppTheme.black : AppTheme.white,
+            dropdownColor: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
 
             items: cloudProviders
                 .map(
@@ -178,7 +180,7 @@ class _InputSectionState extends State<InputSection> {
                     child: Text(
                       cp,
                       style: textTheme.titleMedium!.copyWith(
-                        color: provider.isDark
+                        color: settingsProvider.isDark
                             ? AppTheme.white
                             : AppTheme.black,
                       ),
@@ -203,12 +205,12 @@ class _InputSectionState extends State<InputSection> {
               child: CustomElevatedButton(
                 child: Text(local.cancel),
                 onTap: () {
-               Navigator.pop(context, true);
+               Navigator.pop(context);
                 },
-                backgroundColor: provider.isDark
+                backgroundColor: settingsProvider.isDark
                     ? AppTheme.black
                     : AppTheme.white,
-                foregroundColor: provider.isDark
+                foregroundColor: settingsProvider.isDark
                     ? AppTheme.white
                     : AppTheme.black,
               ),
@@ -220,14 +222,14 @@ class _InputSectionState extends State<InputSection> {
                 child: Text(local.createNewProject),
                 onTap: () {
                   if (isFormValid) {
-                    ProjectModel.addProjects(
+                    projectProvider.addProject(
                       ProjectModel(
                         DBType: selectedDatabase!,
                         name: projectNameController.text,
                         providerType: selectedCloudProvider!,
                       ),
                     );
-                    Navigator.pop(context, true);
+                    Navigator.pop(context);
                   }
                 },
               ),
