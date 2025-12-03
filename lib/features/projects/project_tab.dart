@@ -1,7 +1,9 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/features/projects/widgets/create_project.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/empty_projects.dart';
+import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +16,7 @@ class ProjectTab extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final buttonWidth = screenWidth * 0.12;
     final textTheme = Theme.of(context).textTheme;
-               AppLocalizations local = AppLocalizations.of(context)!;
+    AppLocalizations local = AppLocalizations.of(context)!;
 
     return Padding(
       padding: EdgeInsets.all(32.w),
@@ -22,20 +24,22 @@ class ProjectTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-           local.projects,
-            style: textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.w500),
+            local.projects,
+            style: textTheme.headlineLarge!.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
-           local.manageProjects,
+            local.manageProjects,
             style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 32.h),
-          
+
           LayoutBuilder(
             builder: (context, constraints) {
               bool isWide = constraints.maxWidth > 600; // يعتبر Desktop/Tablet
-              
+
               if (isWide) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,12 +63,18 @@ class ProjectTab extends StatelessWidget {
                           Icon(Icons.add, size: 16, color: AppTheme.white),
                           SizedBox(width: 8.w),
                           Text(
-                           local.newProject,
-                            style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
+                            local.newProject,
+                            style: textTheme.titleSmall!.copyWith(
+                              color: AppTheme.white,
+                            ),
                           ),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                                       Navigator.of(
+                          context,
+                        ).pushNamed(CreateProjectPage.routeName);
+                      },
                     ),
                   ],
                 );
@@ -77,7 +87,7 @@ class ProjectTab extends StatelessWidget {
                       height: 36,
                       child: TextField(
                         decoration: InputDecoration(
-                              hintText: local.searchForProject,
+                          hintText: local.searchForProject,
                           prefixIcon: Icon(Icons.search),
                         ),
                       ),
@@ -91,20 +101,25 @@ class ProjectTab extends StatelessWidget {
                           Icon(Icons.add, size: 16, color: AppTheme.white),
                           SizedBox(width: 8.w),
                           Text(
-                                  local.newProject,
-                            style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
+                            local.newProject,
+                            style: textTheme.titleSmall!.copyWith(
+                              color: AppTheme.white,
+                            ),
                           ),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                    
+                        Navigator.of(
+                          context,
+                        ).pushNamed(CreateProjectPage.routeName);
+                      },
                     ),
                   ],
                 );
               }
             },
           ),
-
- 
 
           EmptyProjects(
             subTitle: local.noProjectsYet,

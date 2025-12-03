@@ -1,6 +1,8 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
+import 'package:dbaas_project/features/projects/widgets/create_project.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
+import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +20,7 @@ class EmptyProjects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      AppLocalizations local = AppLocalizations.of(context)!;
+    AppLocalizations local = AppLocalizations.of(context)!;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -50,9 +52,9 @@ class EmptyProjects extends StatelessWidget {
             SizedBox(height: 16.h),
             Text(
               subTitle,
-              style: textTheme.titleLarge!.copyWith( color:provider.isDark
-                ? AppTheme.white
-                : null),
+              style: textTheme.titleLarge!.copyWith(
+                color: provider.isDark ? AppTheme.white : null,
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 8.h),
@@ -71,14 +73,16 @@ class EmptyProjects extends StatelessWidget {
                   Icon(Icons.add, size: 16, color: AppTheme.white),
                   SizedBox(width: 8.w),
                   Text(
-                      local.newProject,
+                    local.newProject,
                     style: textTheme.titleSmall!.copyWith(
                       color: AppTheme.white,
                     ),
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(CreateProjectPage.routeName);
+              },
             ),
           ],
         ),
