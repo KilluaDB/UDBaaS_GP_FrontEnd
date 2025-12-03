@@ -24,5 +24,22 @@
   "project": "Project",
   "firebase": "Firebase",
   "supabase": "Supabase",
-  "mongoDbAtlas": "MongoDB Atlas"
+  "mongoDbAtlas": "MongoDB Atlas",
+  "manageAccountPreferences": "Manage your account preferences and application settings",
+  "appearance": "Appearance",
+  "customizeLookAndFeel": "Customize the look and feel of your application",
+  "darkMode": "Dark Mode",
+  "switchBetweenThemes": "Switch between light and dark themes",
+  "themePreview": "Theme Preview",
+  "light": "Light",
+  "dark": "Dark",
+  "languageMode": "Language Mode",
+  "english": "English",
+  "arabic": "Arabic",
+  "forgetPassword": "Forgot Password",
+  "yourLanguage": "Your Language"
+
+
+
+
 }

@@ -253,6 +253,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MongoDB Atlas'**
   String get mongoDbAtlas;
+
+  /// No description provided for @manageAccountPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your account preferences and application settings'**
+  String get manageAccountPreferences;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @customizeLookAndFeel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize the look and feel of your application'**
+  String get customizeLookAndFeel;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @switchBetweenThemes.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between light and dark themes'**
+  String get switchBetweenThemes;
+
+  /// No description provided for @themePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Preview'**
+  String get themePreview;
+
+  /// No description provided for @light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get light;
+
+  /// No description provided for @dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get dark;
+
+  /// No description provided for @languageMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Mode'**
+  String get languageMode;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get arabic;
+
+  /// No description provided for @forgetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgetPassword;
+
+  /// No description provided for @yourLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Language'**
+  String get yourLanguage;
 }
 
 class _AppLocalizationsDelegate

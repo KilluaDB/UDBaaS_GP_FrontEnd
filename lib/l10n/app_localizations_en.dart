@@ -87,4 +87,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mongoDbAtlas => 'MongoDB Atlas';
+
+  @override
+  String get manageAccountPreferences =>
+      'Manage your account preferences and application settings';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get customizeLookAndFeel =>
+      'Customize the look and feel of your application';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get switchBetweenThemes => 'Switch between light and dark themes';
+
+  @override
+  String get themePreview => 'Theme Preview';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get dark => 'Dark';
+
+  @override
+  String get languageMode => 'Language Mode';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get arabic => 'Arabic';
+
+  @override
+  String get forgetPassword => 'Forgot Password';
+
+  @override
+  String get yourLanguage => 'Your Language';
 }

@@ -86,4 +86,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mongoDbAtlas => 'MongoDB Atlas';
+
+  @override
+  String get manageAccountPreferences => 'إدارة تفضيلات حسابك وإعدادات التطبيق';
+
+  @override
+  String get appearance => 'المظهر';
+
+  @override
+  String get customizeLookAndFeel => 'خصص مظهر وتنسيق تطبيقك';
+
+  @override
+  String get darkMode => 'الوضع الداكن';
+
+  @override
+  String get switchBetweenThemes => 'التبديل بين الوضع الفاتح والداكن';
+
+  @override
+  String get themePreview => 'معاينة المظهر';
+
+  @override
+  String get light => 'فاتح';
+
+  @override
+  String get dark => 'داكن';
+
+  @override
+  String get languageMode => 'اللغة';
+
+  @override
+  String get english => 'الإنجليزية';
+
+  @override
+  String get arabic => 'العربية';
+
+  @override
+  String get forgetPassword => 'نسيت كلمة المرور';
+
+  @override
+  String get yourLanguage => 'لغتك';
 }

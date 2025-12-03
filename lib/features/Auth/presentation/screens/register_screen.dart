@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/features/Auth/presentation/screens/widgets/auth_section.dart';
+import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+          AppLocalizations local = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppTheme.white,
@@ -28,9 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             children: [
               SvgPicture.asset(AppImages.appIcon, fit: BoxFit.fill),
-              Text('AI-DB Hub', style: textTheme.headlineLarge),
+              Text(local.aiDbHub, style: textTheme.headlineLarge),
               Text(
-                'Your intelligent database management solution',
+                local.yourIntelligentDatabaseManagementSolution,
                 style: textTheme.titleMedium,
               ),
               SizedBox(height: 32.h),
@@ -82,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
 
                                 child: Text(
-                                  "Sign In",
+                                local.signIn,
                                   style: isSignIn
                                       ? textTheme.titleMedium!.copyWith(
                                           color: AppTheme.primary,
@@ -116,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
-                                  "Sign Up",
+                                 local.signUp,
                                   style: isSignUp
                                       ? textTheme.titleMedium!.copyWith(
                                           color: AppTheme.primary,

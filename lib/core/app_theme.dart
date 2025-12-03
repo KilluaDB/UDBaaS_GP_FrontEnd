@@ -37,6 +37,11 @@ class AppTheme {
         fontWeight: FontWeight.w400,
         color: black,
       ),
+            headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: black
+      )
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -79,7 +84,7 @@ class AppTheme {
  
   static ThemeData darkTheme = ThemeData(
     drawerTheme: DrawerThemeData(
-      backgroundColor: boldGray
+      backgroundColor: semiGray
     ),
     scaffoldBackgroundColor: black,
     textTheme: TextTheme(
@@ -91,7 +96,7 @@ class AppTheme {
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-       color: white,
+       color: boldGray,
       ),
       titleSmall: TextStyle(
         fontSize: 15,
@@ -101,8 +106,13 @@ class AppTheme {
       titleLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w400,
-        color: white,
+        color: black,
       ),
+      headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: white
+      )
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
