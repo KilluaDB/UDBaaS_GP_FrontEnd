@@ -27,11 +27,11 @@ class Validator {
     }
   }
 static String? validateProjectName(String? val) {
-  final RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$');
+  final RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$'); 
   if (val == null || val.trim().isEmpty) {
-    return 'This field is required(Only Spaces is allowed no Specail characters)';
+    return 'This field is required';
   } else if (!nameRegex.hasMatch(val.trim())) {
-    return 'Enter a valid Name';
+    return 'This field is required(Only Spaces is allowed no Specail characters)';
   } else {
     return null;
   }
