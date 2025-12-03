@@ -27,7 +27,9 @@ class CustomElevatedButton extends StatelessWidget {
     double _screenWidth = MediaQuery.sizeOf(context).width;
 
     return ElevatedButton(
+      
       style: ElevatedButton.styleFrom(
+        
         fixedSize:
             width == null
                 ? Size(_screenWidth,44.8.h)
