@@ -1,7 +1,9 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/models/project_model.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/util/validator.dart';
+import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class InputSection extends StatefulWidget {
-    final ValueChanged<bool>? onFormChanged;
-     const InputSection({Key? key, this.onFormChanged}) : super(key: key);
+  final ValueChanged<bool>? onFormChanged;
+  const InputSection({Key? key, this.onFormChanged}) : super(key: key);
   @override
   State<InputSection> createState() => _InputSectionState();
 }
@@ -22,7 +24,7 @@ class _InputSectionState extends State<InputSection> {
   String? selectedDatabase;
   String? selectedCloudProvider;
   late TextEditingController projectNameController;
-    @override
+  @override
   void initState() {
     super.initState();
     projectNameController = TextEditingController();
@@ -33,11 +35,12 @@ class _InputSectionState extends State<InputSection> {
     projectNameController.dispose();
     super.dispose();
   }
-void notifyParent() {
-  if (widget.onFormChanged != null) {
-    widget.onFormChanged!(isFormValid);
+
+  void notifyParent() {
+    if (widget.onFormChanged != null) {
+      widget.onFormChanged!(isFormValid);
+    }
   }
-}
 
   bool get isFormValid {
     return projectNameController.text.isNotEmpty &&
@@ -53,7 +56,6 @@ void notifyParent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-   
         SizedBox(height: 24.h),
         Text(
           local.projectName,
@@ -62,16 +64,15 @@ void notifyParent() {
         SizedBox(height: 8.h),
 
         CustomTextFormField(
-     controller: projectNameController,
- validator: (value) => Validator.validateProjectName(value),
- onChanged: (v) {
-  setState(() {});
-  notifyParent();
-},
+          controller: projectNameController,
+          validator: (value) => Validator.validateProjectName(value),
+          onChanged: (v) {
+            setState(() {});
+            notifyParent();
+          },
           hintText: 'E-commerce Platform',
           prefixIconName: AppImages.projectSelected,
         ),
-
 
         SizedBox(height: 24.h),
         Text(
@@ -129,12 +130,11 @@ void notifyParent() {
               setState(() {
                 selectedDatabase = value;
               });
-                notifyParent();
+              notifyParent();
             },
           ),
         ),
 
- 
         SizedBox(height: 24.h),
         Text(
           local.cloudProvider,
@@ -191,9 +191,48 @@ void notifyParent() {
               setState(() {
                 selectedCloudProvider = value;
               });
-                notifyParent();
+              notifyParent();
             },
           ),
+        ),
+        SizedBox(height: 24.h),
+        Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: CustomElevatedButton(
+                child: Text(local.cancel),
+                onTap: () {
+               Navigator.pop(context, true);
+                },
+                backgroundColor: provider.isDark
+                    ? AppTheme.black
+                    : AppTheme.white,
+                foregroundColor: provider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              flex: 1,
+              child: CustomElevatedButton(
+                child: Text(local.createNewProject),
+                onTap: () {
+                  if (isFormValid) {
+                    ProjectModel.addProjects(
+                      ProjectModel(
+                        DBType: selectedDatabase!,
+                        name: projectNameController.text,
+                        providerType: selectedCloudProvider!,
+                      ),
+                    );
+                    Navigator.pop(context, true);
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );

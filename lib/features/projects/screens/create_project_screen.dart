@@ -40,7 +40,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                      Navigator.pop(context, true);
                       },
                       icon: Icon(
                         Icons.arrow_back,
