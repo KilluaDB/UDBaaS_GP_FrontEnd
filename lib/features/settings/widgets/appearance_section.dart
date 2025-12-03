@@ -1,4 +1,5 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/models/language_model.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
@@ -57,7 +58,7 @@ class _AppearanceSectionState extends State<AppearanceSection> {
             Row(
               children: [
                 SvgPicture.asset(
-                  'assets/images/icons/apperance.svg',
+                 AppImages.apperance,
                   width: 32.w,
                   height: 32.h,
                 ),
@@ -80,7 +81,7 @@ class _AppearanceSectionState extends State<AppearanceSection> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  'assets/images/icons/mode.svg',
+               AppImages.mode,
                   width: 40.w,
                   height: 40.h,
                   fit: BoxFit.cover,
@@ -142,14 +143,14 @@ class _AppearanceSectionState extends State<AppearanceSection> {
               children: [
                 Expanded(
                   child: Image.asset(
-                    'assets/images/lightMode.png',
+                   AppImages.lightMode,
                     fit: BoxFit.contain,
                   ),
                 ),
                 SizedBox(width: 24.w),
                 Expanded(
                   child: Image.asset(
-                    'assets/images/darkMode.png',
+                      AppImages.darkMode  ,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -179,9 +180,16 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppTheme.white),
+                              border: Border.all(
+            width: 1,
+            color: provider.isDark
+                ? AppTheme.white
+                : AppTheme.black.withValues(alpha: 0.1),
+          ),
                     ),
                     child: DropdownButton(
+                     dropdownColor: provider.isDark ? AppTheme.black : AppTheme.white.withValues(alpha: .7),
+       
                       isExpanded: true,
                       underline: SizedBox(),
                       iconEnabledColor: AppTheme.backgroundColor,
@@ -194,7 +202,7 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                               child: Text(
                                 language.name,
                                 style: textTheme.titleLarge!.copyWith(
-                                  color: AppTheme.black,
+                                color: provider.isDark ? AppTheme.white : AppTheme.black, 
                                 ),
                               ),
                             ),
@@ -205,6 +213,8 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                         provider.changeLanguageMode(value.toString());
                       },
                     ),
+                  
+                  
                   ),
                 ),
               ],
