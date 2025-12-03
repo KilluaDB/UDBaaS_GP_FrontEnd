@@ -2,6 +2,7 @@ import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
+import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,18 +14,19 @@ class AuthSection extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+      AppLocalizations local = AppLocalizations.of(context)!;
     TextTheme textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Email Address', style: textTheme.titleSmall),
+        Text(local.emailAddress, style: textTheme.titleSmall),
         SizedBox(height: 8.h),
         CustomTextFormField(
           hintText: 'Enter your email',
           prefixIconName: AppImages.emailIcon,
         ),
         SizedBox(height: 20.h),
-        Text('Password', style: textTheme.titleSmall),
+        Text(local.password, style: textTheme.titleSmall),
         SizedBox(height: 8.h),
         CustomTextFormField(
           hintText: 'Enter your password',
@@ -34,7 +36,7 @@ class AuthSection extends StatelessWidget {
    SizedBox(height: 20.h),
         isSignUp == false
             ? Text(
-                'Forgot password?',
+                local.forgetPassword,
                 style: textTheme.titleSmall!.copyWith(color: AppTheme.primary),
               )
             : SizedBox(),
@@ -42,7 +44,7 @@ class AuthSection extends StatelessWidget {
         CustomElevatedButton(
           onTap: (){},
           child: Text(
-            isSignUp ? 'Create Account' : 'Sign In',
+            isSignUp ? local.createAccount : local.signIn ,
             style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
           ),
         ),
@@ -53,13 +55,13 @@ class AuthSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              isSignUp ? 'Already have an account? ' : "Don't have an account ",
+              isSignUp ? local.alreadyHaveAccount : local.dontHaveAccount,
               style: textTheme.titleSmall,
             ),
             InkWell(
               onTap: onTap,
               child: Text(
-                isSignUp ? 'Sign In' : 'Sign Up',
+                isSignUp ?local.signIn:local.signUp,
                 style: textTheme.titleSmall!.copyWith(
                   color: AppTheme.primary,
                   fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/features/home/widgets/drawer_item.dart';
+import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,7 +35,7 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
+           AppLocalizations local = AppLocalizations.of(context)!;
     return Drawer(
      
       child: Padding(
@@ -49,7 +50,7 @@ class HomeDrawer extends StatelessWidget {
                   height: 32,
                 ),
                 SizedBox(width: 8),
-                Text('AI-DB Hub', style: textTheme.titleLarge),
+                Text(local.aiDbHub, style: textTheme.titleLarge),
               ],
             ),
             SizedBox(height: 32),

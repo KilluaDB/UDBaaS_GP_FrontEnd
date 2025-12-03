@@ -2,6 +2,7 @@ import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/empty_projects.dart';
+import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,6 +14,7 @@ class ProjectTab extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final buttonWidth = screenWidth * 0.12;
     final textTheme = Theme.of(context).textTheme;
+               AppLocalizations local = AppLocalizations.of(context)!;
 
     return Padding(
       padding: EdgeInsets.all(32.w),
@@ -20,12 +22,12 @@ class ProjectTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Projects',
+           local.projects,
             style: textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 8.h),
           Text(
-            'Manage your database projects',
+           local.manageProjects,
             style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 32.h),
@@ -43,7 +45,7 @@ class ProjectTab extends StatelessWidget {
                       height: 36,
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Search projects',
+                          hintText: local.searchForProject,
                           prefixIcon: Icon(Icons.search),
                         ),
                       ),
@@ -57,7 +59,7 @@ class ProjectTab extends StatelessWidget {
                           Icon(Icons.add, size: 16, color: AppTheme.white),
                           SizedBox(width: 8.w),
                           Text(
-                            "New Project",
+                           local.newProject,
                             style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
                           ),
                         ],
@@ -75,7 +77,7 @@ class ProjectTab extends StatelessWidget {
                       height: 36,
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Search projects',
+                              hintText: local.searchForProject,
                           prefixIcon: Icon(Icons.search),
                         ),
                       ),
@@ -89,7 +91,7 @@ class ProjectTab extends StatelessWidget {
                           Icon(Icons.add, size: 16, color: AppTheme.white),
                           SizedBox(width: 8.w),
                           Text(
-                            "New Project",
+                                  local.newProject,
                             style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
                           ),
                         ],
@@ -105,8 +107,8 @@ class ProjectTab extends StatelessWidget {
  
 
           EmptyProjects(
-            subTitle: "No projects yet",
-            subDecribtion: "Create a project to get started",
+            subTitle: local.noProjectsYet,
+            subDecribtion: local.createOneToGetStarted,
             logoName: AppImages.emptyProjectsLogo,
           ),
         ],
