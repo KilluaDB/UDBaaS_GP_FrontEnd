@@ -37,7 +37,15 @@
   "english": "الإنجليزية",
   "arabic": "العربية",
   "forgetPassword": "نسيت كلمة المرور",
-  "yourLanguage": "لغتك"
+  "yourLanguage": "لغتك",
+  "backToProjects": "العودة إلى المشاريع",
+   "createNewProject": "إنشاء مشروع جديد",
+  "setUpDatabaseProject": "قم بإعداد مشروع قاعدة البيانات في دقائق",
+  "projectName": "اسم المشروع",
+  "databaseType": "نوع قاعدة البيانات",
+  "cloudProvider": "مزود السحابة",
+  "cancel": "إلغاء"
+
 
 
 

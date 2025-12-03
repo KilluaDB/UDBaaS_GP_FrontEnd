@@ -331,6 +331,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Language'**
   String get yourLanguage;
+
+  /// No description provided for @backToProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Projects'**
+  String get backToProjects;
+
+  /// No description provided for @createNewProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a New Project'**
+  String get createNewProject;
+
+  /// No description provided for @setUpDatabaseProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your database project in minutes'**
+  String get setUpDatabaseProject;
+
+  /// No description provided for @projectName.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Name'**
+  String get projectName;
+
+  /// No description provided for @databaseType.
+  ///
+  /// In en, this message translates to:
+  /// **'Database Type'**
+  String get databaseType;
+
+  /// No description provided for @cloudProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud Provider'**
+  String get cloudProvider;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

@@ -37,7 +37,15 @@
   "english": "English",
   "arabic": "Arabic",
   "forgetPassword": "Forgot Password",
-  "yourLanguage": "Your Language"
+  "yourLanguage": "Your Language",
+  "backToProjects": "Back to Projects",
+    "createNewProject": "Create a New Project",
+  "setUpDatabaseProject": "Set up your database project in minutes",
+  "projectName": "Project Name",
+  "databaseType": "Database Type",
+  "cloudProvider": "Cloud Provider",
+  "cancel": "Cancel"
+
 
 
 

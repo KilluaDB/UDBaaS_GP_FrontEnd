@@ -125,4 +125,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yourLanguage => 'لغتك';
+
+  @override
+  String get backToProjects => 'العودة إلى المشاريع';
+
+  @override
+  String get createNewProject => 'إنشاء مشروع جديد';
+
+  @override
+  String get setUpDatabaseProject => 'قم بإعداد مشروع قاعدة البيانات في دقائق';
+
+  @override
+  String get projectName => 'اسم المشروع';
+
+  @override
+  String get databaseType => 'نوع قاعدة البيانات';
+
+  @override
+  String get cloudProvider => 'مزود السحابة';
+
+  @override
+  String get cancel => 'إلغاء';
 }
