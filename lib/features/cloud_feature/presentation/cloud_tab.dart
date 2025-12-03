@@ -1,14 +1,20 @@
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/widgets/empty_projects.dart';
+import 'package:dbaas_project/features/cloud_feature/presentation/widgets/cloud_projects.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CloudTab extends StatelessWidget {
   static const String routeName = '/cloudProjects';
 
   @override
   Widget build(BuildContext context) {
+        final projectProvider = Provider.of<ProjectProvider>(context); 
+
+    final projects = projectProvider.projects;
     TextTheme textTheme = Theme.of(context).textTheme;
            AppLocalizations local = AppLocalizations.of(context)!;
     return Padding(
@@ -41,8 +47,13 @@ class CloudTab extends StatelessWidget {
               ),
             ),
           ),
-          EmptyProjects(subTitle:local.noProjectsYet,subDecribtion: local.createOneToGetStarted,logoName: AppImages.cloudEmptyProjectsLogo,),
-        ],
+    projects.isEmpty
+    ? EmptyProjects(
+        subTitle: local.noProjectsYet,
+        subDecribtion: local.createOneToGetStarted,
+        logoName: AppImages.cloudEmptyProjectsLogo,
+      )
+    : Expanded(child: CloudProjects())  ],
       ),
     );
   }
