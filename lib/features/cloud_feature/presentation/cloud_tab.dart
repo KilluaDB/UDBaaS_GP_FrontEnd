@@ -53,7 +53,7 @@ class CloudTab extends StatelessWidget {
         subDecribtion: local.createOneToGetStarted,
         logoName: AppImages.cloudEmptyProjectsLogo,
       )
-    : Expanded(child: CloudProjects())  ],
+    : CloudProjects()  ],
       ),
     );
   }
