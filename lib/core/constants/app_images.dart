@@ -8,5 +8,7 @@ class AppImages {
   static const String cloudUnSelected = 'assets/images/icons/cloud_icon_unselected.svg';
   static const String projectSelected = 'assets/images/icons/project_icon_selected.svg';
   static const String projectUnSelected = 'assets/images/icons/project_icon_unselected.svg';
+  static const String cloudEmptyProjectsLogo = 'assets/images/cloud_tab.png';
+  static const String emptyProjectsLogo = 'assets/images/icon_projects.png';
 
 }

@@ -1,0 +1,73 @@
+import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class EmptyProjects extends StatelessWidget {
+
+  String logoName;
+  String subTitle;
+  String subDecribtion;
+   EmptyProjects({ required this.logoName, required this.subDecribtion, required this.subTitle,});
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final buttonWidth = screenWidth * 0.2;
+
+    return Center(
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.05),
+        margin: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.04,
+          vertical: screenHeight * 0.03,
+        ),
+        decoration: BoxDecoration(
+          color: AppTheme.white,
+          borderRadius: BorderRadius.circular(14.r),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(logoName, fit: BoxFit.contain),
+            SizedBox(height: 16.h),
+            Text(
+              subTitle,
+              style: textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Text(
+             subDecribtion,
+              style: textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            CustomElevatedButton(
+              width: buttonWidth.clamp(150, 250),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add, size: 16, color: AppTheme.white),
+                  SizedBox(width: 8.w),
+                  Text(
+                    "New Project",
+                    style: textTheme.titleSmall!.copyWith(
+                      color: AppTheme.white,
+                    ),
+                  ),
+                ],
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

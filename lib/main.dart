@@ -21,7 +21,7 @@ class DBaasApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          routes: {CloudTab.routeName: (_) => CloudTab(),
+          routes: {
           HomeScreen.routeName:(_)=>HomeScreen(),
           RegisterScreen.routeName:(_)=>RegisterScreen()
           },
