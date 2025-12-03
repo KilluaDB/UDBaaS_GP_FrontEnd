@@ -10,5 +10,9 @@ class AppImages {
   static const String projectUnSelected = 'assets/images/icons/project_icon_unselected.svg';
   static const String cloudEmptyProjectsLogo = 'assets/images/cloud_tab.png';
   static const String emptyProjectsLogo = 'assets/images/icon_projects.png';
+  static const String lightMode = 'assets/images/lightMode.png';
+  static const String darkMode =  'assets/images/darkMode.png';
+  static const String mode =     'assets/images/icons/mode.svg';
+  static const String apperance =  'assets/images/icons/apperance.svg';
 
 }
