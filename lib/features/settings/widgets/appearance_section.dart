@@ -16,7 +16,7 @@ class AppearanceSection extends StatefulWidget {
 class _AppearanceSectionState extends State<AppearanceSection> {
   @override
   List<LanguageModel> languages = [
-    LanguageModel(code: 'ar', name: 'Arabic'),
+
     LanguageModel(code: 'en', name: 'English'),
   ];
   String? selectedLanguage;

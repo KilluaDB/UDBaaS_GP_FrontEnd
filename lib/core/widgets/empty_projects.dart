@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class EmptyProjects extends StatelessWidget {
+class EmptyProjects extends StatefulWidget {
   String logoName;
   String subTitle;
   String subDecribtion;
@@ -18,6 +18,11 @@ class EmptyProjects extends StatelessWidget {
     required this.subTitle,
   });
 
+  @override
+  State<EmptyProjects> createState() => _EmptyProjectsState();
+}
+
+class _EmptyProjectsState extends State<EmptyProjects> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations local = AppLocalizations.of(context)!;
@@ -48,10 +53,10 @@ class EmptyProjects extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(logoName, fit: BoxFit.contain),
+            Image.asset(widget.logoName, fit: BoxFit.contain),
             SizedBox(height: 16.h),
             Text(
-              subTitle,
+              widget.subTitle,
               style: textTheme.titleLarge!.copyWith(
                 color: provider.isDark ? AppTheme.white : null,
               ),
@@ -59,7 +64,7 @@ class EmptyProjects extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              subDecribtion,
+              widget.subDecribtion,
               style: textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
@@ -80,9 +85,13 @@ class EmptyProjects extends StatelessWidget {
                   ),
                 ],
               ),
-              onTap: () {
-                Navigator.of(context).pushNamed(CreateProjectPage.routeName);
-              },
+                            onTap: () async {
+                    
+                      final result = await Navigator.of(context).pushNamed(CreateProjectPage.routeName);
+  if (result == true) {
+      setState(() {}); 
+  }
+                      },
             ),
           ],
         ),

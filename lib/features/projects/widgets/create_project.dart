@@ -1,5 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/models/project_model.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/features/projects/widgets/input_section.dart';
@@ -74,40 +75,7 @@ class _CreateProjectSectionState extends State<CreateProjectSection> {
             },
           ),
 
-          SizedBox(height: 24.h),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: CustomElevatedButton(
-                  child: Text(local.cancel),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  backgroundColor: provider.isDark
-                      ? AppTheme.black
-                      : AppTheme.white,
-                  foregroundColor: provider.isDark
-                      ? AppTheme.white
-                      : AppTheme.black,
-                ),
-              ),
-              SizedBox(width: 16.w),
-              Expanded(
-                flex: 1,
-                child: CustomElevatedButton(
-                  child: Text(local.createNewProject),
-                  onTap: () {
-                        if (isFormValid) {
-        print("Project Created");
-           Navigator.pop(context);
-  
-      }
-                  },
-                ),
-              ),
-            ],
-          ),
+
         ],
       ),
     );

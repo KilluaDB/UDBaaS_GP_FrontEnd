@@ -1,9 +1,8 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/provider/user_provider.dart';
-import 'package:dbaas_project/features/projects/widgets/create_project.dart';
 import 'package:dbaas_project/features/Auth/presentation/screens/register_screen.dart';
-import 'package:dbaas_project/features/cloud_feature/presentation/cloud_tab.dart';
 import 'package:dbaas_project/features/home/home_screen.dart';
 import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
@@ -18,6 +17,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
+        ChangeNotifierProvider(create: (_) => ProjectProvider()),
       ],
 
       child: DBaasApp(),

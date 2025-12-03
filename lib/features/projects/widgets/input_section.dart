@@ -1,7 +1,10 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/models/project_model.dart';
+import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/util/validator.dart';
+import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class InputSection extends StatefulWidget {
-    final ValueChanged<bool>? onFormChanged;
-     const InputSection({Key? key, this.onFormChanged}) : super(key: key);
+  final ValueChanged<bool>? onFormChanged;
+  const InputSection({Key? key, this.onFormChanged}) : super(key: key);
   @override
   State<InputSection> createState() => _InputSectionState();
 }
@@ -22,7 +25,7 @@ class _InputSectionState extends State<InputSection> {
   String? selectedDatabase;
   String? selectedCloudProvider;
   late TextEditingController projectNameController;
-    @override
+  @override
   void initState() {
     super.initState();
     projectNameController = TextEditingController();
@@ -33,11 +36,12 @@ class _InputSectionState extends State<InputSection> {
     projectNameController.dispose();
     super.dispose();
   }
-void notifyParent() {
-  if (widget.onFormChanged != null) {
-    widget.onFormChanged!(isFormValid);
+
+  void notifyParent() {
+    if (widget.onFormChanged != null) {
+      widget.onFormChanged!(isFormValid);
+    }
   }
-}
 
   bool get isFormValid {
     return projectNameController.text.isNotEmpty &&
@@ -49,11 +53,11 @@ void notifyParent() {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final AppLocalizations local = AppLocalizations.of(context)!;
-    SettingsProvider provider = Provider.of<SettingsProvider>(context);
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+    ProjectProvider projectProvider = Provider.of<ProjectProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-   
         SizedBox(height: 24.h),
         Text(
           local.projectName,
@@ -62,16 +66,15 @@ void notifyParent() {
         SizedBox(height: 8.h),
 
         CustomTextFormField(
-     controller: projectNameController,
- validator: (value) => Validator.validateProjectName(value),
- onChanged: (v) {
-  setState(() {});
-  notifyParent();
-},
+          controller: projectNameController,
+          validator: (value) => Validator.validateProjectName(value),
+          onChanged: (v) {
+            setState(() {});
+            notifyParent();
+          },
           hintText: 'E-commerce Platform',
           prefixIconName: AppImages.projectSelected,
         ),
-
 
         SizedBox(height: 24.h),
         Text(
@@ -83,12 +86,12 @@ void notifyParent() {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           decoration: BoxDecoration(
-            color: provider.isDark
+            color: settingsProvider.isDark
                 ? AppTheme.black
                 : AppTheme.white.withOpacity(0.9),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
-              color: provider.isDark
+              color: settingsProvider.isDark
                   ? AppTheme.white.withOpacity(0.2)
                   : AppTheme.black.withOpacity(0.2),
             ),
@@ -96,18 +99,18 @@ void notifyParent() {
           child: DropdownButton<String>(
             isExpanded: true,
             underline: SizedBox(),
-            iconEnabledColor: provider.isDark ? AppTheme.white : AppTheme.black,
+            iconEnabledColor: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
 
             value: selectedDatabase,
 
             hint: Text(
               "Select database type",
               style: textTheme.titleMedium!.copyWith(
-                color: provider.isDark ? AppTheme.white : AppTheme.black,
+                color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
               ),
             ),
 
-            dropdownColor: provider.isDark ? AppTheme.black : AppTheme.white,
+            dropdownColor: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
 
             items: dataBase
                 .map(
@@ -116,7 +119,7 @@ void notifyParent() {
                     child: Text(
                       db,
                       style: textTheme.titleMedium!.copyWith(
-                        color: provider.isDark
+                        color: settingsProvider.isDark
                             ? AppTheme.white
                             : AppTheme.black,
                       ),
@@ -129,12 +132,11 @@ void notifyParent() {
               setState(() {
                 selectedDatabase = value;
               });
-                notifyParent();
+              notifyParent();
             },
           ),
         ),
 
- 
         SizedBox(height: 24.h),
         Text(
           local.cloudProvider,
@@ -145,12 +147,12 @@ void notifyParent() {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           decoration: BoxDecoration(
-            color: provider.isDark
+            color: settingsProvider.isDark
                 ? AppTheme.black
                 : AppTheme.white.withOpacity(0.9),
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
-              color: provider.isDark
+              color: settingsProvider.isDark
                   ? AppTheme.white.withOpacity(0.2)
                   : AppTheme.black.withOpacity(0.2),
             ),
@@ -158,18 +160,18 @@ void notifyParent() {
           child: DropdownButton<String>(
             isExpanded: true,
             underline: SizedBox(),
-            iconEnabledColor: provider.isDark ? AppTheme.white : AppTheme.black,
+            iconEnabledColor: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
 
             value: selectedCloudProvider,
 
             hint: Text(
               "Select Cloud Provider",
               style: textTheme.titleMedium!.copyWith(
-                color: provider.isDark ? AppTheme.white : AppTheme.black,
+                color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
               ),
             ),
 
-            dropdownColor: provider.isDark ? AppTheme.black : AppTheme.white,
+            dropdownColor: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
 
             items: cloudProviders
                 .map(
@@ -178,7 +180,7 @@ void notifyParent() {
                     child: Text(
                       cp,
                       style: textTheme.titleMedium!.copyWith(
-                        color: provider.isDark
+                        color: settingsProvider.isDark
                             ? AppTheme.white
                             : AppTheme.black,
                       ),
@@ -191,9 +193,48 @@ void notifyParent() {
               setState(() {
                 selectedCloudProvider = value;
               });
-                notifyParent();
+              notifyParent();
             },
           ),
+        ),
+        SizedBox(height: 24.h),
+        Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: CustomElevatedButton(
+                child: Text(local.cancel),
+                onTap: () {
+               Navigator.pop(context);
+                },
+                backgroundColor: settingsProvider.isDark
+                    ? AppTheme.black
+                    : AppTheme.white,
+                foregroundColor: settingsProvider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              flex: 1,
+              child: CustomElevatedButton(
+                child: Text(local.createNewProject),
+                onTap: () {
+                  if (isFormValid) {
+                    projectProvider.addProject(
+                      ProjectModel(
+                        DBType: selectedDatabase!,
+                        name: projectNameController.text,
+                        providerType: selectedCloudProvider!,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
