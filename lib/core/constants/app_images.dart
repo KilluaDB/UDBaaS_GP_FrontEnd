@@ -14,5 +14,6 @@ class AppImages {
   static const String darkMode =  'assets/images/darkMode.png';
   static const String mode =     'assets/images/icons/mode.svg';
   static const String apperance =  'assets/images/icons/apperance.svg';
+  static const String cloudLogo =  'assets/images/icons/cloud_logo.svg';
 
 }
