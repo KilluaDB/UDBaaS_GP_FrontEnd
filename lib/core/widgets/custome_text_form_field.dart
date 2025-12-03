@@ -39,7 +39,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       style: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16.sp,
-        color: AppTheme.black,
+        color: AppTheme.gray,
       ),
       decoration: InputDecoration(
         prefixIcon: Padding(

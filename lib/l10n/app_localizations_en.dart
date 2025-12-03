@@ -128,4 +128,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourLanguage => 'Your Language';
+
+  @override
+  String get backToProjects => 'Back to Projects';
+
+  @override
+  String get createNewProject => 'Create a New Project';
+
+  @override
+  String get setUpDatabaseProject => 'Set up your database project in minutes';
+
+  @override
+  String get projectName => 'Project Name';
+
+  @override
+  String get databaseType => 'Database Type';
+
+  @override
+  String get cloudProvider => 'Cloud Provider';
+
+  @override
+  String get cancel => 'Cancel';
 }
