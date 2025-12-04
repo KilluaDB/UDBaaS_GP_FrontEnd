@@ -84,7 +84,7 @@ class AppTheme {
  
   static ThemeData darkTheme = ThemeData(
     drawerTheme: DrawerThemeData(
-      backgroundColor: Color(0xff1E1E1E)
+      backgroundColor: semiGray
     ),
     scaffoldBackgroundColor: black,
     textTheme: TextTheme(

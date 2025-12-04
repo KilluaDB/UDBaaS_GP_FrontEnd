@@ -16,4 +16,29 @@ class AppImages {
   static const String apperance =  'assets/images/icons/apperance.svg';
   static const String cloudLogo =  'assets/images/icons/cloud_logo.svg';
 
+  static const String collectionIconSelected =  'assets/images/icons/collections-icon-blue.svg';
+  static const String collectionIcon =  'assets/images/icons/collections-icon.svg';
+
+  static const String dashBoardIconSelected =  'assets/images/icons/dashboard-icon-blue.svg';
+  static const String dashBoardIcon =  'assets/images/icons/dashboard-icon.svg';
+
+  static const String deleteIconSelected =  'assets/images/icons/delete-icon-blue.svg';
+  static const String deleteIcon =  'assets/images/icons/delete-icon.svg';
+
+  static const String editorIconSelected =  'assets/images/icons/editor-icon-blue.svg';
+  static const String editorIcon =  'assets/images/icons/editor-icon.svg';
+
+  static const String queryIcon =  'assets/images/icons/query-icon.svg';
+  static const String queryIconSelected =  'assets/images/icons/query-icon-blue.svg';
+
+  static const String schemaGeneratorIcon =  'assets/images/icons/schema-generator-icon.svg';
+  static const String schemaGeneratorIconSelected =  'assets/images/icons/schema-generator-icon-blue.svg';
+  static const String schemaVisualizerIcon =  'assets/images/icons/schema-visualizer-icon.svg';
+  static const String schemaVisualizerIconSelected =  'assets/images/icons/schema-visualizer-icon-blue.svg';
+  static const String settingIcon =  'assets/images/icons/settings-icon.svg';
+  static const String settingIconSelected =  'assets/images/icons/settings-icon-blue.svg';
+  static const String tablesIcon =  'assets/images/icons/tables-icon.svg';
+  static const String tablesIconSelected =  'assets/images/icons/tables-icon-blue.svg';
+
+
 }
