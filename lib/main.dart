@@ -4,7 +4,9 @@ import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/provider/user_provider.dart';
 import 'package:dbaas_project/features/Auth/presentation/screens/register_screen.dart';
 import 'package:dbaas_project/features/home/home_screen.dart';
+import 'package:dbaas_project/features/projects/noSql_projects/screens/main_screen_noSql.dart';
 import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
+import 'package:dbaas_project/features/projects/sql_projects/screens/main_screen_sql.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,6 +46,8 @@ class DBaasApp extends StatelessWidget {
             HomeScreen.routeName: (_) => HomeScreen(),
             RegisterScreen.routeName: (_) => RegisterScreen(),
             CreateProjectPage.routeName: (_) => CreateProjectPage(),
+            MainScreenNOSQL.routeName:(_)=>MainScreenNOSQL(),
+            MainScreenSQL.routeName:(_)=>MainScreenSQL(),
           },
           initialRoute: HomeScreen.routeName,
           theme: AppTheme.lightTheme,
