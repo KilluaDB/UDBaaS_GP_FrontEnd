@@ -26,35 +26,29 @@ class _ProjectTabState extends State<ProjectTab> {
     final textTheme = Theme.of(context).textTheme;
     AppLocalizations local = AppLocalizations.of(context)!;
     final projectProvider = Provider.of<ProjectProvider>(context);
-    final projectProvider = Provider.of<ProjectProvider>(context);
 
     final projects = projectProvider.projects;
     return Padding(
-    return Padding(
       padding: EdgeInsets.all(32.w),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              local.projects,
-              style: textTheme.headlineLarge!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            local.projects,
+            style: textTheme.headlineLarge!.copyWith(
+              fontWeight: FontWeight.w500,
             ),
-            SizedBox(height: 8.h),
-            Text(
-              local.manageProjects,
-              style: textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: 32.h),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            local.manageProjects,
+            style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 32.h),
 
-            LayoutBuilder(
-              builder: (context, constraints) {
-                bool isWide =
-                    constraints.maxWidth > 600; // يعتبر Desktop/Tablet
+          LayoutBuilder(
+            builder: (context, constraints) {
+              bool isWide = constraints.maxWidth > 600; // يعتبر Desktop/Tablet
 
               if (isWide) {
                 return Row(
