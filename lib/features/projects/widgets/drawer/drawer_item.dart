@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 class DrawerItem extends StatelessWidget {
   final String name;
   bool isSelected;
-  bool isDelete ;
   final String selectedImage;
   final String unselectedImage;
 
@@ -15,7 +14,6 @@ class DrawerItem extends StatelessWidget {
     required this.isSelected,
     required this.selectedImage,
     required this.unselectedImage,
-    this.isDelete  = false,
   });
 
   @override
@@ -36,7 +34,7 @@ class DrawerItem extends StatelessWidget {
           Text(
             name,
             style: textTheme.titleMedium!.copyWith(
-              color: isDelete ?AppTheme.red:isSelected?  AppTheme.primary : AppTheme.black,
+              color: isSelected ? AppTheme.primary : AppTheme.boldGray,
             ),
           ),
         ],
