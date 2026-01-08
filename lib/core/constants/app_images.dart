@@ -39,6 +39,8 @@ class AppImages {
   static const String settingIconSelected =  'assets/images/icons/settings-icon-blue.svg';
   static const String tablesIcon =  'assets/images/icons/tables-icon.svg';
   static const String tablesIconSelected =  'assets/images/icons/tables-icon-blue.svg';
+  static const String profileLogo =  'assets/images/icons/profile_logo.svg';
+  static const String notificationLogo =  'assets/images/icons/notification.svg';
 
 
 }
