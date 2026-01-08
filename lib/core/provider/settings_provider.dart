@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
   String languageMode = 'en';
   ThemeMode currentMode = ThemeMode.light;
-  bool emailNotifications = true;
-  bool pushNotifications = true;
+
+  bool pushNotifications = false;
   bool queryAlerts = true;
-  bool schemaChanges = true;
+  bool schemaChanges = false;
   Future<void> changeLanguageMode(String lang) async {
     if (languageMode == lang) return;
 
@@ -29,15 +31,6 @@ class SettingsProvider with ChangeNotifier {
   }
 
 
-  Future<void> setEmailNotifications(bool value) async {
-        if (emailNotifications == value) return;
-
-    emailNotifications == value;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('Email Notification', emailNotifications);
-    emailNotifications = value;
-    notifyListeners();
-  }
 
   Future<void> setPushNotifications(bool value) async {
             if (pushNotifications == value) return;
@@ -68,5 +61,13 @@ class SettingsProvider with ChangeNotifier {
     schemaChanges = value;
     notifyListeners();
   }
+    File? _avatarFile;
+  File? get avatarFile => _avatarFile;
+
+  void setAvatar(File file) {
+    _avatarFile = file;
+    notifyListeners();
+  }
+
   bool get isDark => currentMode == ThemeMode.dark;
 }
