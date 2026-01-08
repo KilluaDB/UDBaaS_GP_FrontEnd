@@ -7,8 +7,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
  late TextTheme textTheme;
    late SettingsProvider provider;
-class FullQueryTab extends StatelessWidget {
+class FullQueryTab extends StatefulWidget {
  
+  @override
+  State<FullQueryTab> createState() => _FullQueryTabState();
+}
+
+class _FullQueryTabState extends State<FullQueryTab> {
   @override
   Widget build(BuildContext context) {
       provider = Provider.of<SettingsProvider>(context);
@@ -36,7 +41,7 @@ class _QueryPart extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+      color: provider.isDark?AppTheme.black:AppTheme.white,
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(
           width: 1.w,
@@ -57,7 +62,7 @@ class _QueryPart extends StatelessWidget {
                 'SQL Query Editor',
                 style: textTheme.titleMedium!.copyWith(
                   fontWeight: FontWeight.bold,
-                color: AppTheme.black
+                color: provider.isDark?AppTheme.white:AppTheme.black,
                 ),
               ),
             ],
@@ -66,7 +71,7 @@ class _QueryPart extends StatelessWidget {
           SizedBox(height: 6.h),
           Text(
             'Execute queries against your database tables',
-            style: textTheme.bodySmall!.copyWith(fontSize: 12.sp),
+            style: textTheme.bodySmall!.copyWith(fontSize: 12.sp,color: provider.isDark?AppTheme.white:AppTheme.black,),
           ),
 
           SizedBox(height: 16.h),
@@ -88,6 +93,7 @@ class _QueryPart extends StatelessWidget {
               style: textTheme.bodySmall!.copyWith(
                 fontSize: 13.sp,
                 height: 1.5,
+                color: provider.isDark?AppTheme.white:AppTheme.black,
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -135,7 +141,7 @@ class ResultPart extends StatelessWidget {
           ),
     
           decoration: BoxDecoration(
-            color: AppTheme.white,
+                 color: provider.isDark?AppTheme.black:AppTheme.white,
             borderRadius: BorderRadius.circular(14.r),
             border: Border.all(
               width: 1.w,
@@ -153,6 +159,7 @@ class ResultPart extends StatelessWidget {
                 style: textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
+                         color: provider.isDark?AppTheme.white:AppTheme.black,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -161,6 +168,7 @@ class ResultPart extends StatelessWidget {
                 'Execute a query to see results here',
                 style: textTheme.titleSmall!.copyWith(fontSize: 12.sp),
                 textAlign: TextAlign.center,
+                
               ),
               SizedBox(height: 24.h),
        
