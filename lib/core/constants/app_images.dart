@@ -41,6 +41,8 @@ class AppImages {
   static const String tablesIconSelected =  'assets/images/icons/tables-icon-blue.svg';
   static const String profileLogo =  'assets/images/icons/profile_logo.svg';
   static const String notificationLogo =  'assets/images/icons/notification.svg';
+  static const String codeLogo =  'assets/images/icons/codeLogo.svg';
+  static const String infoLogo =  'assets/images/icons/info_logo.svg';
 
 
 }

@@ -1,6 +1,6 @@
 import 'package:dbaas_project/core/models/project_model.dart';
 import 'package:dbaas_project/core/screens/dash_board.dart';
-import 'package:dbaas_project/features/projects/sql_projects/screens/query_editor.dart';
+import 'package:dbaas_project/features/projects/sql_projects/query_tab/query_editor.dart';
 import 'package:dbaas_project/features/projects/sql_projects/screens/schema_visualizer.dart';
 import 'package:dbaas_project/features/projects/sql_projects/screens/scheme_generator.dart';
 import 'package:dbaas_project/features/projects/sql_projects/screens/table_editor.dart';
