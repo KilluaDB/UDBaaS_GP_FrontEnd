@@ -1,5 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/helper/notification_plugin.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,13 +58,7 @@ class NotificationSection extends StatelessWidget {
           ),
           SizedBox(height: 24.h),
 
-          _buildNotificationRow(
-            context,
-            'Email Notifications',
-            'Receive notifications via email',
-            provider.emailNotifications,
-            (val) => provider.setEmailNotifications(val),
-          ),
+     
           _buildNotificationRow(
             context,
             'Push Notifications',
@@ -130,7 +125,12 @@ class NotificationSection extends StatelessWidget {
           SizedBox(width: 8.w),
           Switch(
             value: value,
-            onChanged: (newValue) => onChanged(newValue),
+        onChanged: (newValue) {
+    onChanged(newValue); 
+    if(newValue) {
+      showWebNotification(title, "$title are enabled"); 
+    }
+  },
             thumbColor: MaterialStateProperty.all(AppTheme.white),
 
             activeTrackColor: AppTheme.primary,

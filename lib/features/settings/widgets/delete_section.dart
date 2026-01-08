@@ -48,7 +48,7 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Column النصوص
+             
                 Expanded(
                   flex: 3,
                   child: Column(
@@ -72,7 +72,7 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
 
                 SizedBox(width: 16.w),
 
-                // زر الحذف
+             
                 Expanded(
                   flex: 1,
                   child: ElevatedButton(
@@ -81,6 +81,7 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                     ),
                     onPressed: () {
+                      //API Delete User
                       Navigator.pushReplacementNamed(
                           context, RegisterScreen.routeName);
                     },
