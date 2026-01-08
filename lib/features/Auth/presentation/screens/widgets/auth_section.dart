@@ -2,6 +2,7 @@ import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
+import 'package:dbaas_project/features/home/home_screen.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +43,9 @@ class AuthSection extends StatelessWidget {
             : SizedBox(),
     SizedBox(height: 20.h),
         CustomElevatedButton(
-          onTap: (){},
+          onTap: (){
+                                Navigator.pushReplacementNamed(context,HomeScreen.routeName);
+          },
           child: Text(
             isSignUp ? local.createAccount : local.signIn ,
             style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
