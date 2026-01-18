@@ -41,6 +41,7 @@ class EmptyTabQuery extends StatelessWidget {
             style: textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20.sp,
+                     color: provider.isDark?AppTheme.white:AppTheme.black,
             ),
             textAlign: TextAlign.center,
           ),

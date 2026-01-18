@@ -152,60 +152,8 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                 thickness: 1,
               ),
               SizedBox(height: 24.h),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      local.yourLanguage,
-                      style: textTheme.titleMedium!.copyWith(
-                        color: provider.isDark ? AppTheme.white : AppTheme.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        border: Border.all(
-                          width: 1,
-                          color: provider.isDark
-                              ? AppTheme.white
-                              : AppTheme.black.withOpacity(0.1),
-                        ),
-                      ),
-                      child: DropdownButton(
-                        dropdownColor:
-                            provider.isDark ? AppTheme.black : AppTheme.white.withOpacity(0.7),
-                        isExpanded: true,
-                        underline: SizedBox(),
-                        iconEnabledColor: AppTheme.backgroundColor,
-                        value: provider.languageMode,
-                        items: languages
-                            .map(
-                              (language) => DropdownMenuItem(
-                                value: language.code,
-                                child: Text(
-                                  language.name,
-                                  style: textTheme.titleLarge!.copyWith(
-                                    color: provider.isDark ? AppTheme.white : AppTheme.black,
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          if (value == null) return;
-                          provider.changeLanguageMode(value.toString());
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    
+           
             ],
           ),
         ),

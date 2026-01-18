@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class QueryEditor extends StatelessWidget {
+class QueryEditor extends StatefulWidget {
+  @override
+  State<QueryEditor> createState() => _QueryEditorState();
+}
+
+class _QueryEditorState extends State<QueryEditor> {
   bool isEmpty = false;
 
   @override
@@ -22,7 +27,7 @@ class QueryEditor extends StatelessWidget {
           Text(
             'SQL Editor',
             style: textTheme.headlineSmall!.copyWith(
-              color: AppTheme.black,
+              color: provider.isDark?AppTheme.white:AppTheme.black,
               fontWeight: FontWeight.bold,
               fontSize: 22.sp,
             ),
