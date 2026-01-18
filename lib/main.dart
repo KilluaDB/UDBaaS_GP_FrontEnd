@@ -11,14 +11,14 @@ import 'package:dbaas_project/features/projects/sql_projects/screens/main_screen
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => SettingsProvider()),
+      ChangeNotifierProvider(create: (_) => SettingsProvider()),
         ChangeNotifierProvider(create: (_) => ProjectProvider()),
       ],
 
@@ -33,7 +33,7 @@ class DBaasApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    SettingsProvider provider = Provider.of<SettingsProvider>(context);
-    InitializeSharedPrefrence.initSharedPrefrence(provider);
+   
     return ScreenUtilInit(
       designSize: const Size(1440, 1024),
       minTextAdapt: true,
