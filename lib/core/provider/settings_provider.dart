@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dbaas_project/core/helper/initialize_shared_prefrence.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,22 +11,19 @@ class SettingsProvider with ChangeNotifier {
   bool pushNotifications = false;
   bool queryAlerts = true;
   bool schemaChanges = false;
-  //   SettingsProvider() {
-  //   _loadTheme();
-  // }
+ SettingsProvider();
+  static Future<SettingsProvider> init() async {
+    final provider = SettingsProvider();
+    final prefs = await SharedPreferences.getInstance();
 
-  // Future<void> _loadTheme() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final theme = prefs.getString('currentMode');
+    final theme = prefs.getString('currentMode');
+    if (theme == 'dark') provider.currentMode = ThemeMode.dark;
+    else provider.currentMode = ThemeMode.light;
 
-  //   if (theme == 'dark') {
-  //     currentMode = ThemeMode.dark;
-   
-  //   } else if (theme == 'light') {currentMode = ThemeMode.light;}
 
-  //   notifyListeners();
-  // }
 
+    return provider;
+  }
 
   Future<void> changeThemeMode(ThemeMode mode) async {
     if (currentMode == mode) return;
