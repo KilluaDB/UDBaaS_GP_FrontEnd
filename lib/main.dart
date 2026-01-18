@@ -42,7 +42,8 @@ class DBaasApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-  
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
           routes: {
             HomeScreen.routeName: (_) =>  HomeScreen(),
