@@ -5,11 +5,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
 
+
   ThemeMode currentMode = ThemeMode.light;
 
   bool pushNotifications = false;
   bool queryAlerts = true;
   bool schemaChanges = false;
+ SettingsProvider();
+  static Future<SettingsProvider> init() async {
+    final provider = SettingsProvider();
+    final prefs = await SharedPreferences.getInstance();
+
+    final theme = prefs.getString('currentMode');
+    if (theme == 'dark') provider.currentMode = ThemeMode.dark;
+    else provider.currentMode = ThemeMode.light;
+
+
+
+    return provider;
+  }
 
   Future<void> changeThemeMode(ThemeMode mode) async {
     if (currentMode == mode) return;

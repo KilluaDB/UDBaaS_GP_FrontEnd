@@ -1,7 +1,7 @@
 import 'package:dbaas_project/features/cloud_feature/presentation/cloud_tab.dart';
 import 'package:dbaas_project/features/home/widgets/drawer.dart';
 import 'package:dbaas_project/features/projects/project_tab.dart';
-import 'package:dbaas_project/features/settings/settings_tabs.dart';
+import 'package:dbaas_project/features/settings/view/presentation/settings_screen.dart';
 import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> tabs = [
     ProjectTab(),
     CloudTab(),
-    SettingsTab(),
+    SettingsScreen(),
   ];
 
   @override

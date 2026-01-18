@@ -1,12 +1,12 @@
-import 'package:dbaas_project/features/settings/widgets/appearance_section.dart';
-import 'package:dbaas_project/features/settings/widgets/delete_section.dart';
-import 'package:dbaas_project/features/settings/widgets/notification.dart';
-import 'package:dbaas_project/features/settings/widgets/profile_section.dart';
+import 'package:dbaas_project/features/settings/view/widgets/appearance_section.dart';
+import 'package:dbaas_project/features/settings/view/widgets/delete_section.dart';
+import 'package:dbaas_project/features/settings/view/widgets/notification.dart';
+import 'package:dbaas_project/features/settings/view/widgets/profile_section.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SettingsTab extends StatelessWidget {
+class SettingsScreen extends StatelessWidget {
   static const String routeName = '/settings';
 
   @override
