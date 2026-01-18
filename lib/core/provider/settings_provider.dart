@@ -4,20 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
-  String languageMode = 'en';
+
   ThemeMode currentMode = ThemeMode.light;
 
   bool pushNotifications = false;
   bool queryAlerts = true;
   bool schemaChanges = false;
-  Future<void> changeLanguageMode(String lang) async {
-    if (languageMode == lang) return;
-
-    languageMode = lang;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('lang', languageMode);
-    notifyListeners();
-  }
 
   Future<void> changeThemeMode(ThemeMode mode) async {
     if (currentMode == mode) return;
@@ -30,6 +22,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool get isDark => currentMode == ThemeMode.dark;
 
 
   Future<void> setPushNotifications(bool value) async {
@@ -69,5 +62,4 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isDark => currentMode == ThemeMode.dark;
 }
