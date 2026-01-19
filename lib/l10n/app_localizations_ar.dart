@@ -146,4 +146,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancel => 'إلغاء';
+
+  @override
+  String get profileSettings => 'Profile Settings';
+
+  @override
+  String get updateInforamtions =>
+      'Update your personal information and profile details';
+
+  @override
+  String get saveProfile => 'Save Profile';
 }

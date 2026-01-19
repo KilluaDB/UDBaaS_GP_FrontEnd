@@ -44,7 +44,15 @@
   "projectName": "Project Name",
   "databaseType": "Database Type",
   "cloudProvider": "Cloud Provider",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "profileSettings":"Profile Settings",
+  "updateInforamtions":"Update your personal information and profile details",
+  "saveProfile":"Save Profile"
+
+  
+
+
+
 
 
 

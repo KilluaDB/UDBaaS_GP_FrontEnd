@@ -149,4 +149,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get profileSettings => 'Profile Settings';
+
+  @override
+  String get updateInforamtions =>
+      'Update your personal information and profile details';
+
+  @override
+  String get saveProfile => 'Save Profile';
 }
