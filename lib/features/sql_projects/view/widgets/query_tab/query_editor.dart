@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/projects/sql_projects/query_tab/widgets/empty_tab_query.dart';
-import 'package:dbaas_project/features/projects/sql_projects/query_tab/widgets/full_query_tab.dart';
+import 'package:dbaas_project/features/sql_projects/view/widgets/query_tab/widgets/empty_tab_query.dart';
+import 'package:dbaas_project/features/sql_projects/view/widgets/query_tab/widgets/full_query_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

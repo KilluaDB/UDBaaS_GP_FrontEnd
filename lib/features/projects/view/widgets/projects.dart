@@ -1,5 +1,5 @@
-import 'package:dbaas_project/core/models/project_model.dart';
-import 'package:dbaas_project/features/projects/widgets/project_view.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/projects/view/widgets/project_view.dart';
 import 'package:flutter/material.dart';
 
 class Projects extends StatelessWidget {

@@ -1,8 +1,8 @@
-import 'package:dbaas_project/core/models/project_model.dart';
-import 'package:dbaas_project/core/screens/dash_board.dart';
-import 'package:dbaas_project/features/projects/noSql_projects/screens/collection_editor.dart';
-import 'package:dbaas_project/features/projects/noSql_projects/screens/collections.dart';
-import 'package:dbaas_project/features/projects/widgets/drawer/drawer.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/projects/view/widgets/dash_board.dart';
+import 'package:dbaas_project/features/no_sql_projects/view/screens/tabs/collection_editor.dart';
+import 'package:dbaas_project/features/no_sql_projects/view/screens/tabs/collections.dart';
+import 'package:dbaas_project/features/projects/view/widgets/drawer/drawer.dart';
 import 'package:flutter/material.dart';
 
 class MainScreenNOSQL extends StatefulWidget {

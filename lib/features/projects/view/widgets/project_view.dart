@@ -1,9 +1,9 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/core/models/project_model.dart';
-import 'package:dbaas_project/core/provider/project_provider.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/projects/view_model/project_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/projects/noSql_projects/screens/main_screen_noSql.dart';
-import 'package:dbaas_project/features/projects/sql_projects/screens/main_screen_sql.dart';
+import 'package:dbaas_project/features/no_sql_projects/view/screens/main_screen_noSql.dart';
+import 'package:dbaas_project/features/sql_projects/view/screens/main_screen_sql.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

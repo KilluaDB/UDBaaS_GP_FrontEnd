@@ -1,8 +1,8 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/projects/widgets/create_project.dart';
+import 'package:dbaas_project/features/projects/view/widgets/create_project.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
-import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
+import 'package:dbaas_project/features/projects/view/screens/create_project_screen.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

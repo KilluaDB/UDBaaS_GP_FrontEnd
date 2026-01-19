@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:dbaas_project/core/provider/project_provider.dart';
-import 'package:dbaas_project/core/widgets/empty_projects.dart';
-import 'package:dbaas_project/features/cloud_feature/presentation/widgets/cloud_projects.dart';
+import 'package:dbaas_project/features/projects/view_model/project_provider.dart';
+import 'package:dbaas_project/features/projects/view/widgets/empty_projects.dart';
+import 'package:dbaas_project/features/cloud/presentation/widgets/cloud_projects.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,8 +1,8 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:dbaas_project/core/models/project_model.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/home/presentation/widgets/drawer_item.dart';
-import 'package:dbaas_project/features/projects/widgets/drawer/tabs.dart';
+import 'package:dbaas_project/features/projects/view/widgets/drawer/tabs.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

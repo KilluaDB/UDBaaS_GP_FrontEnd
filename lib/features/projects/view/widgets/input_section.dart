@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:dbaas_project/core/models/project_model.dart';
-import 'package:dbaas_project/core/provider/project_provider.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/projects/view_model/project_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/core/util/validator.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';

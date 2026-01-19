@@ -1,4 +1,4 @@
-import 'package:dbaas_project/core/models/project_model.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:flutter/material.dart';
 
 class ProjectProvider with ChangeNotifier {
