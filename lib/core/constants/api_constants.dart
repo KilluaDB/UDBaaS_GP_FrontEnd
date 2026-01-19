@@ -3,4 +3,5 @@ class ApiConstants {
   static const String registerEndPoint = '/api/v1/auth/register';
   static const String loginEndPoint = '/api/v1/auth/login';
   static const String logoutEndPoint = '/api/v1/auth/logout';
+  static const String usersEndPoint = '/api/v1/users/';
 }
