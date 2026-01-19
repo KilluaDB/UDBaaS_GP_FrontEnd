@@ -1,6 +1,5 @@
 import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 
 class Tabs {
   bool isSql;

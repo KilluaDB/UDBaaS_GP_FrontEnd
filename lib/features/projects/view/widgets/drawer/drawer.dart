@@ -19,7 +19,7 @@ class ProjectDrawer extends StatelessWidget {
     required this.project,
   });
 
-  late final tabs = project.DBType == 'SQL' ? Tabs.sqlTabs : Tabs.noSqlTabs;
+  late final tabs = project.dbType?.toUpperCase() == 'SQL' ? Tabs.sqlTabs : Tabs.noSqlTabs;
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -53,7 +53,7 @@ class ProjectDrawer extends StatelessWidget {
                 ),
                 SizedBox(width: 8),
                 Text(
-                  "User Name",
+                  project.name!,
                   style: textTheme.titleLarge!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -72,7 +72,7 @@ class ProjectDrawer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    project.DBType,
+                    project.dbType!,
                     style: textTheme.titleMedium!.copyWith(
                       fontSize: 12,
                       color: AppTheme.backgroundColor,
@@ -80,7 +80,7 @@ class ProjectDrawer extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 20.w),
-                Text(project.providerType, style: textTheme.titleMedium),
+                Text(project.resourceTier!, style: textTheme.titleMedium),
               ],
             ),
 
