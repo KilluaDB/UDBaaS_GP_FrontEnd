@@ -1,5 +1,5 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/core/provider/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/projects/widgets/create_project.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';

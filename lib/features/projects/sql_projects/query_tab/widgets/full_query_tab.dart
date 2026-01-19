@@ -1,6 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:dbaas_project/core/provider/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

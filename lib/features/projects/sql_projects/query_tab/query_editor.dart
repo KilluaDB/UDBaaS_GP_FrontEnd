@@ -1,5 +1,5 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/core/provider/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/projects/sql_projects/query_tab/widgets/empty_tab_query.dart';
 import 'package:dbaas_project/features/projects/sql_projects/query_tab/widgets/full_query_tab.dart';
 import 'package:flutter/material.dart';
