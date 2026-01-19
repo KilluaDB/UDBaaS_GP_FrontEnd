@@ -102,9 +102,12 @@ class DeleteSection extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                       ),
                 onPressed: () {
-  context.read<SettingCubit>().delete(
-    context.read<UserProvider>().currentUser!.data!.id!,
-  );
+    final userId = context.read<UserProvider>().currentUser?.data?.id;
+        if (userId != null) {
+          context.read<SettingCubit>().delete(userId);
+        } else {
+          UiUtils.showErrorMessage("User ID not found");
+        }
 },
 
                       child: Row(
