@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/helper/notification_plugin.dart';
-import 'package:dbaas_project/core/provider/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 class NotificationSection extends StatelessWidget {
   late SettingsProvider provider;
+  
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<SettingsProvider>(context);
@@ -59,7 +60,7 @@ class NotificationSection extends StatelessWidget {
           SizedBox(height: 24.h),
 
           _buildNotificationRow(
-            context,
+            textTheme,
             'Push Notifications',
             'Get notified when you create or edit tables, schemas, and queries',
             provider.pushNotifications,
@@ -68,14 +69,14 @@ class NotificationSection extends StatelessWidget {
           Divider(height: 1.h),
           SizedBox(height: 24.h),
           _buildNotificationRow(
-            context,
+            textTheme,
             'Query Alerts',
             'Alert on long-running queries',
             provider.queryAlerts,
             (val) => provider.setQueryAlerts(val),
           ),
           _buildNotificationRow(
-            context,
+            textTheme,
             'Schema Changes',
             'Notify on database schema modifications',
             provider.schemaChanges,
@@ -87,13 +88,13 @@ class NotificationSection extends StatelessWidget {
   }
 
   Widget _buildNotificationRow(
-    BuildContext context,
+   TextTheme textTheme,
     String title,
     String subTitle,
     bool value,
     Function(bool) onChanged,
   ) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+  
 
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
