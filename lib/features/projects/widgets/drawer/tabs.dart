@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 class Tabs {
   bool isSql;
   Tabs({required this.isSql});
-    static List<Map<String, String>> sqlTabs = [
+  static List<Map<String, String>> sqlTabs = [
     {
       'name': 'Dashboard',
       'selected': AppImages.dashBoardIconSelected,
@@ -38,12 +38,12 @@ class Tabs {
     },
     {
       'name': 'Delete Project',
-    
+
       'selected': AppImages.deleteIconSelected,
       'unselected': AppImages.deleteIcon,
     },
   ];
-    static List<Map<String, String>> noSqlTabs = [
+  static List<Map<String, String>> noSqlTabs = [
     {
       'name': 'Dashboard',
       'selected': AppImages.dashBoardIconSelected,
@@ -51,7 +51,7 @@ class Tabs {
     },
     {
       'name': 'Collections',
-         'selected': AppImages.collectionIconSelected,
+      'selected': AppImages.collectionIconSelected,
       'unselected': AppImages.collectionIcon,
     },
     {
@@ -59,13 +59,11 @@ class Tabs {
       'selected': AppImages.editorIconSelected,
       'unselected': AppImages.editorIcon,
     },
-        {
+    {
       'name': 'Delete Project',
-    
+
       'selected': AppImages.deleteIconSelected,
       'unselected': AppImages.deleteIcon,
     },
-
   ];
-
 }

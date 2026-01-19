@@ -1,4 +1,3 @@
-
 class Validator {
   static String? validateEmail(String? val) {
     final RegExp emailRegex = RegExp(
@@ -19,26 +18,22 @@ class Validator {
     if (val == null) {
       return 'this field is required';
     } else if (val.isEmpty) {
-      return'this field is required';
+      return 'this field is required';
     } else if (val.length < 8) {
       return 'strong password please';
     } else {
       return null;
     }
   }
-static String? validateProjectName(String? val) {
-  final RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$'); 
-  if (val == null || val.trim().isEmpty) {
-    return 'This field is required';
-  } else if (!nameRegex.hasMatch(val.trim())) {
-    return 'This field is required(Only Spaces is allowed no Specail characters)';
-  } else {
-    return null;
+
+  static String? validateProjectName(String? val) {
+    final RegExp nameRegex = RegExp(r'^[a-zA-Z0-9 ]+$');
+    if (val == null || val.trim().isEmpty) {
+      return 'This field is required';
+    } else if (!nameRegex.hasMatch(val.trim())) {
+      return 'This field is required(Only Spaces is allowed no Specail characters)';
+    } else {
+      return null;
+    }
   }
-}
-
-
-
-
-
 }

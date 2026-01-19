@@ -85,13 +85,14 @@ class _EmptyProjectsState extends State<EmptyProjects> {
                   ),
                 ],
               ),
-                            onTap: () async {
-                    
-                      final result = await Navigator.of(context).pushNamed(CreateProjectPage.routeName);
-  if (result == true) {
-      setState(() {}); 
-  }
-                      },
+              onTap: () async {
+                final result = await Navigator.of(
+                  context,
+                ).pushNamed(CreateProjectPage.routeName);
+                if (result == true) {
+                  setState(() {});
+                }
+              },
             ),
           ],
         ),

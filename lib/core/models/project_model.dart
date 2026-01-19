@@ -10,8 +10,8 @@ class ProjectModel {
     required this.providerType,
     this.id = 1,
   });
-   static List<ProjectModel> projects = [];
- static void addProjects(ProjectModel project) {
+  static List<ProjectModel> projects = [];
+  static void addProjects(ProjectModel project) {
     projects.add(project);
   }
 }

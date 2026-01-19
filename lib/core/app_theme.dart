@@ -5,6 +5,7 @@ class AppTheme {
   static const Color black = Color(0xff1E1E1E);
   static const Color white = Color(0xffFFFFFF);
   static const Color gray = Color(0xff4A5565);
+    static const Color green = Colors.green;
   static const Color backgroundColor = Color(0xff51A2FF);
 
   static const Color semiGray = Color(0xffF3F4F6);
@@ -12,10 +13,8 @@ class AppTheme {
 
   static const Color red = Colors.red;
   static ThemeData lightTheme = ThemeData(
-    drawerTheme: DrawerThemeData(
-      backgroundColor: white
-    ),
-    scaffoldBackgroundColor: backgroundColor.withValues( alpha: 0.1),
+    drawerTheme: DrawerThemeData(backgroundColor: white),
+    scaffoldBackgroundColor: backgroundColor.withValues(alpha: 0.1),
     textTheme: TextTheme(
       headlineLarge: TextStyle(
         fontSize: 30,
@@ -37,11 +36,11 @@ class AppTheme {
         fontWeight: FontWeight.w400,
         color: black,
       ),
-            headlineSmall: TextStyle(
+      headlineSmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w500,
-        color: black
-      )
+        color: black,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -78,14 +77,10 @@ class AppTheme {
         borderSide: BorderSide(width: 1, color: red),
       ),
     ),
-    
   );
- 
- 
+
   static ThemeData darkTheme = ThemeData(
-    drawerTheme: DrawerThemeData(
-      backgroundColor: semiGray
-    ),
+    drawerTheme: DrawerThemeData(backgroundColor: semiGray),
     scaffoldBackgroundColor: black,
     textTheme: TextTheme(
       headlineLarge: TextStyle(
@@ -96,7 +91,7 @@ class AppTheme {
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-       color: boldGray,
+        color: boldGray,
       ),
       titleSmall: TextStyle(
         fontSize: 15,
@@ -111,8 +106,8 @@ class AppTheme {
       headlineSmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w500,
-        color: white
-      )
+        color: white,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -149,8 +144,5 @@ class AppTheme {
         borderSide: BorderSide(width: 1, color: red),
       ),
     ),
-    
   );
- 
- 
 }

@@ -16,7 +16,7 @@ class CreateProjectSection extends StatefulWidget {
 }
 
 class _CreateProjectSectionState extends State<CreateProjectSection> {
-  bool isFormValid = false; 
+  bool isFormValid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +74,6 @@ class _CreateProjectSectionState extends State<CreateProjectSection> {
               });
             },
           ),
-
-
         ],
       ),
     );

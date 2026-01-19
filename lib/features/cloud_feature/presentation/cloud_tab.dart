@@ -12,11 +12,11 @@ class CloudTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final projectProvider = Provider.of<ProjectProvider>(context); 
+    final projectProvider = Provider.of<ProjectProvider>(context);
 
     final projects = projectProvider.projects;
     TextTheme textTheme = Theme.of(context).textTheme;
-           AppLocalizations local = AppLocalizations.of(context)!;
+    AppLocalizations local = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(32),
       child: Column(
@@ -30,30 +30,31 @@ class CloudTab extends StatelessWidget {
             ),
             textAlign: TextAlign.left,
           ),
-          SizedBox(height: 8.h,),
+          SizedBox(height: 8.h),
           Text(
-              local.manageCloudResources,
+            local.manageCloudResources,
             style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
             textAlign: TextAlign.left,
           ),
-           SizedBox(height: 32.h,),
+          SizedBox(height: 32.h),
           SizedBox(
             width: 448.w,
             height: 36,
             child: TextField(
               decoration: InputDecoration(
-                hintText:local.searchForProject,
+                hintText: local.searchForProject,
                 prefixIcon: Icon(Icons.search),
               ),
             ),
           ),
-    projects.isEmpty
-    ? EmptyProjects(
-        subTitle: local.noProjectsYet,
-        subDecribtion: local.createOneToGetStarted,
-        logoName: AppImages.cloudEmptyProjectsLogo,
-      )
-    : CloudProjects()  ],
+          projects.isEmpty
+              ? EmptyProjects(
+                  subTitle: local.noProjectsYet,
+                  subDecribtion: local.createOneToGetStarted,
+                  logoName: AppImages.cloudEmptyProjectsLogo,
+                )
+              : CloudProjects(),
+        ],
       ),
     );
   }

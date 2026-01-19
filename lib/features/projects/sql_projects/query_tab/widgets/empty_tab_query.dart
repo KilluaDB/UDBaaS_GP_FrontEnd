@@ -30,18 +30,14 @@ class EmptyTabQuery extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SvgPicture.asset(
-            AppImages.codeLogo,
-            width: 80.w,
-            height: 90.h,
-          ),
+          SvgPicture.asset(AppImages.codeLogo, width: 80.w, height: 90.h),
           SizedBox(height: 16.h),
           Text(
             'No Tables Available',
             style: textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20.sp,
-                     color: provider.isDark?AppTheme.white:AppTheme.black,
+              color: provider.isDark ? AppTheme.white : AppTheme.black,
             ),
             textAlign: TextAlign.center,
           ),
@@ -55,11 +51,7 @@ class EmptyTabQuery extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.info_outline,
-                size: 14.sp,
-                color: AppTheme.boldGray,
-              ),
+              Icon(Icons.info_outline, size: 14.sp, color: AppTheme.boldGray),
               SizedBox(width: 4.w),
               Flexible(
                 child: Text(

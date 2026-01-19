@@ -33,7 +33,6 @@ class SettingsScreen extends StatelessWidget {
             AppearanceSection(),
             NotificationSection(),
             DeleteSection(),
-
           ],
         ),
       ),

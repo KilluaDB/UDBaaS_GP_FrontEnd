@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class CustomElevatedButton extends StatelessWidget {
   final Widget child;
@@ -23,20 +21,15 @@ class CustomElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     double _screenWidth = MediaQuery.sizeOf(context).width;
 
     return ElevatedButton(
-      
       style: ElevatedButton.styleFrom(
-        
-        fixedSize:
-            width == null
-                ? Size(_screenWidth,44.8.h)
-                : Size(width!, 44.8.h),
+        fixedSize: width == null
+            ? Size(_screenWidth, 44.8.h)
+            : Size(width!, 44.8.h),
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
-
       ),
       onPressed: onTap,
       child: child,

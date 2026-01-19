@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-
 class CustomTextFormField extends StatefulWidget {
   final String hintText;
   final TextEditingController? controller;
@@ -43,12 +42,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       ),
       decoration: InputDecoration(
         prefixIcon: Padding(
-          padding:  EdgeInsets.symmetric(
-            vertical: 12.h,
-            horizontal: 12.w
-
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+          child: SvgPicture.asset(
+            widget.prefixIconName,
+            width: 20.w,
+            height: 20.h,
           ),
-          child: SvgPicture.asset(widget.prefixIconName, width: 20.w, height: 20.h),
         ),
 
         hintText: widget.hintText,

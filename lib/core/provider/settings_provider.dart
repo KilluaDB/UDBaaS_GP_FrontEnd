@@ -4,23 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
-
-
   ThemeMode currentMode = ThemeMode.light;
 
   bool pushNotifications = false;
   bool queryAlerts = true;
   bool schemaChanges = false;
- SettingsProvider();
+  SettingsProvider();
   static Future<SettingsProvider> init() async {
     final provider = SettingsProvider();
     final prefs = await SharedPreferences.getInstance();
 
     final theme = prefs.getString('currentMode');
-    if (theme == 'dark') provider.currentMode = ThemeMode.dark;
-    else provider.currentMode = ThemeMode.light;
-
-
+    if (theme == 'dark')
+      provider.currentMode = ThemeMode.dark;
+    else
+      provider.currentMode = ThemeMode.light;
 
     return provider;
   }
@@ -38,9 +36,8 @@ class SettingsProvider with ChangeNotifier {
 
   bool get isDark => currentMode == ThemeMode.dark;
 
-
   Future<void> setPushNotifications(bool value) async {
-            if (pushNotifications == value) return;
+    if (pushNotifications == value) return;
 
     pushNotifications == value;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,7 +47,7 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> setQueryAlerts(bool value) async {
-               if (queryAlerts == value) return;
+    if (queryAlerts == value) return;
 
     queryAlerts == value;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,7 +57,7 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> setSchemaChanges(bool value) async {
-                   if (schemaChanges == value) return;
+    if (schemaChanges == value) return;
 
     schemaChanges == value;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -68,12 +65,12 @@ class SettingsProvider with ChangeNotifier {
     schemaChanges = value;
     notifyListeners();
   }
-    File? _avatarFile;
+
+  File? _avatarFile;
   File? get avatarFile => _avatarFile;
 
   void setAvatar(File file) {
     _avatarFile = file;
     notifyListeners();
   }
-
 }

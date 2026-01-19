@@ -11,7 +11,7 @@ class NotificationSection extends StatelessWidget {
   late SettingsProvider provider;
   @override
   Widget build(BuildContext context) {
-  provider = Provider.of<SettingsProvider>(context);
+    provider = Provider.of<SettingsProvider>(context);
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Container(
@@ -19,9 +19,9 @@ class NotificationSection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
       margin: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
       decoration: BoxDecoration(
-          color:  provider.isDark
-                  ? AppTheme.black.withOpacity(0.1)
-                  : AppTheme.white,
+        color: provider.isDark
+            ? AppTheme.black.withOpacity(0.1)
+            : AppTheme.white,
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(
           width: 1,
@@ -45,7 +45,7 @@ class NotificationSection extends StatelessWidget {
                 child: Text(
                   'Notifications',
                   style: textTheme.titleMedium!.copyWith(
-                color: provider.isDark ? AppTheme.white : AppTheme.black,
+                    color: provider.isDark ? AppTheme.white : AppTheme.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -58,7 +58,6 @@ class NotificationSection extends StatelessWidget {
           ),
           SizedBox(height: 24.h),
 
-     
           _buildNotificationRow(
             context,
             'Push Notifications',
@@ -125,12 +124,12 @@ class NotificationSection extends StatelessWidget {
           SizedBox(width: 8.w),
           Switch(
             value: value,
-        onChanged: (newValue) {
-    onChanged(newValue); 
-    if(newValue) {
-      showWebNotification(title, "$title are enabled"); 
-    }
-  },
+            onChanged: (newValue) {
+              onChanged(newValue);
+              if (newValue) {
+                showWebNotification(title, "$title are enabled");
+              }
+            },
             thumbColor: MaterialStateProperty.all(AppTheme.white),
 
             activeTrackColor: AppTheme.primary,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Projects extends StatelessWidget {
   List<ProjectModel> projects;
-   Projects({super.key,required this.projects});
+  Projects({super.key, required this.projects});
 
   @override
   Widget build(BuildContext context) {

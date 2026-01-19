@@ -27,20 +27,19 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
         padding: const EdgeInsets.all(20),
         child: LayoutBuilder(
           builder: (context, constraints) {
-         
             bool isMobile = constraints.maxWidth < 600;
-            bool isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 1000;
+            bool isTablet =
+                constraints.maxWidth >= 600 && constraints.maxWidth < 1000;
             bool isDesktop = constraints.maxWidth >= 1000;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-           
                 Row(
                   children: [
                     IconButton(
                       onPressed: () {
-                      Navigator.pop(context, true);
+                        Navigator.pop(context, true);
                       },
                       icon: Icon(
                         Icons.arrow_back,
@@ -56,13 +55,15 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
 
                 Expanded(
                   child: Align(
-                    alignment: isMobile ? Alignment.topCenter : Alignment.center,
+                    alignment: isMobile
+                        ? Alignment.topCenter
+                        : Alignment.center,
                     child: SizedBox(
                       width: isDesktop
                           ? screenWidth * 0.40
                           : isTablet
-                              ? screenWidth * 0.55
-                              : screenWidth * 0.95,
+                          ? screenWidth * 0.55
+                          : screenWidth * 0.95,
                       child: CreateProjectSection(),
                     ),
                   ),

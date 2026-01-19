@@ -1,25 +1,26 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
-import 'package:dbaas_project/features/Auth/presentation/screens/register_screen.dart';
+import 'package:dbaas_project/features/Auth/view/screens/register_screen.dart';
 import 'package:dbaas_project/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
 class DeleteSection extends StatelessWidget {
   const DeleteSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-SettingsProvider  provider = Provider.of<SettingsProvider>(context);
+    SettingsProvider provider = Provider.of<SettingsProvider>(context);
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
       margin: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
       decoration: BoxDecoration(
-          color:  provider.isDark
-                  ? AppTheme.black.withOpacity(0.1)
-                  : AppTheme.white,
+        color: provider.isDark
+            ? AppTheme.black.withOpacity(0.1)
+            : AppTheme.white,
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(color: AppTheme.red),
       ),
@@ -40,7 +41,10 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
           ),
           SizedBox(height: 24.h),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 0.02.sw, vertical: 0.02.sh),
+            padding: EdgeInsets.symmetric(
+              horizontal: 0.02.sw,
+              vertical: 0.02.sh,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14.r),
               border: Border.all(color: AppTheme.red),
@@ -48,7 +52,6 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-             
                 Expanded(
                   flex: 3,
                   child: Column(
@@ -72,7 +75,6 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
 
                 SizedBox(width: 16.w),
 
-             
                 Expanded(
                   flex: 1,
                   child: ElevatedButton(
@@ -83,7 +85,9 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
                     onPressed: () {
                       //API Delete User
                       Navigator.pushReplacementNamed(
-                          context, RegisterScreen.routeName);
+                        context,
+                        RegisterScreen.routeName,
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +107,6 @@ SettingsProvider  provider = Provider.of<SettingsProvider>(context);
                     ),
                   ),
                 ),
-           
               ],
             ),
           ),
