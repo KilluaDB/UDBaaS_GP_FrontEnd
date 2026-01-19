@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     AppLocalizations local = AppLocalizations.of(context)!;
     final userProvider = context.read<UserProvider>();
-      return BlocProvider(
+    return BlocProvider(
       create: (_) => SettingCubit(userProvider: userProvider),
       child: SingleChildScrollView(
         child: Padding(
@@ -31,14 +31,17 @@ class SettingsScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-      
+
               SizedBox(height: 4.h),
-              Text(local.manageAccountPreferences, style: textTheme.titleMedium),
+              Text(
+                local.manageAccountPreferences,
+                style: textTheme.titleMedium,
+              ),
               SizedBox(height: 24.h),
               ProfileSection(),
               AppearanceSection(),
               NotificationSection(),
-            DeleteSection(),
+              DeleteSection(),
             ],
           ),
         ),

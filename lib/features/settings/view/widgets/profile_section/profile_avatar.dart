@@ -1,15 +1,12 @@
-import 'dart:io';
-import 'dart:typed_data';
+import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/helper/pick_image.dart';
 import 'package:dbaas_project/core/helper/save_avatar.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileAvatar extends StatefulWidget {
   const ProfileAvatar({super.key});
@@ -81,8 +78,8 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                   'Change Avatar',
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                     color: settingsProvider.isDark
-                        ? AppTheme.white
-                        : AppTheme.black,
+                        ? AppTheme.black
+                        : AppTheme.white,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
