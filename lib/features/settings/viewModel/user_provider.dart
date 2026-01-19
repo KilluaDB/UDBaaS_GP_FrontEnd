@@ -66,17 +66,18 @@ class UserProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('display_name', _displayName);
   }
-    Future<void> clearUser() async {
+
+  Future<void> clearUser() async {
     _currentUser = null;
     _displayName = 'User';
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('display_name');
-          if (kIsWeb) {
-        await prefs.remove('web_avatar_bytes');
-      } else {
-        await prefs.remove('avatar_path');
-      }
+    if (kIsWeb) {
+      await prefs.remove('web_avatar_bytes');
+    } else {
+      await prefs.remove('avatar_path');
+    }
 
     notifyListeners();
   }

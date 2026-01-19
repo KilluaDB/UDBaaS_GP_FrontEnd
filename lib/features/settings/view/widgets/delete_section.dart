@@ -82,33 +82,39 @@ class DeleteSection extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: BlocListener<SettingCubit, SettingsStates>(
-                  listener: (context, state) {
-                    if (state is DeleteLoading) {
-                      UiUtils.showLoading(context);
-                    } else if (state is DeleteSuccess) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showSuccessMessage("Account deleted successfully !");
-                      Navigator.of(
-                        context,
-                      ).pushReplacementNamed(RegisterScreen.routeName);
-                    } else if (state is DeleteError) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showErrorMessage(state.message);
-                    }
-                  },
+                    listener: (context, state) {
+                      if (state is DeleteLoading) {
+                        UiUtils.showLoading(context);
+                      } else if (state is DeleteSuccess) {
+                        UiUtils.hideLoading(context);
+                        UiUtils.showSuccessMessage(
+                          "Account deleted successfully !",
+                        );
+                        Navigator.of(
+                          context,
+                        ).pushReplacementNamed(RegisterScreen.routeName);
+                      } else if (state is DeleteError) {
+                        UiUtils.hideLoading(context);
+                        UiUtils.showErrorMessage(state.message);
+                      }
+                    },
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.red,
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                       ),
-                onPressed: () {
-    final userId = context.read<UserProvider>().currentUser?.data?.id;
-        if (userId != null) {
-          context.read<SettingCubit>().delete(userId);
-        } else {
-          UiUtils.showErrorMessage("User ID not found");
-        }
-},
+                      onPressed: () {
+                        final userId = context
+                            .read<UserProvider>()
+                            .currentUser
+                            ?.data
+                            ?.id;
+                        if (userId != null) {
+                          context.read<SettingCubit>().delete(userId);
+                        } else {
+                          UiUtils.showErrorMessage("User ID not found");
+                        }
+                      },
 
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +134,12 @@ class DeleteSection extends StatelessWidget {
                       ),
                     ),
                   ),
+               
+               
+               
                 ),
+            
+            
               ],
             ),
           ),
@@ -170,29 +181,28 @@ class DeleteSection extends StatelessWidget {
 
                 Expanded(
                   flex: 1,
-                  child:BlocListener<SettingCubit, SettingsStates>(
-                  listener: (context, state) {
-                    if (state is LogoutLoading) {
-                      UiUtils.showLoading(context);
-                    } else if (state is LogoutSuccess) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showSuccessMessage("Logged out successfully !");
-                      Navigator.of(
-                        context,
-                      ).pushReplacementNamed(RegisterScreen.routeName);
-                    } else if (state is LogoutError) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showErrorMessage(state.message);
-                    }
-                  },
+                  child: BlocListener<SettingCubit, SettingsStates>(
+                    listener: (context, state) {
+                      if (state is LogoutLoading) {
+                        UiUtils.showLoading(context);
+                      } else if (state is LogoutSuccess) {
+                        UiUtils.hideLoading(context);
+                        UiUtils.showSuccessMessage("Logged out successfully !");
+                        Navigator.of(
+                          context,
+                        ).pushReplacementNamed(RegisterScreen.routeName);
+                      } else if (state is LogoutError) {
+                        UiUtils.hideLoading(context);
+                        UiUtils.showErrorMessage(state.message);
+                      }
+                    },
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.red,
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                       ),
                       onPressed: () {
-                     context.read<SettingCubit>().logout();
-            
+                        context.read<SettingCubit>().logout();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

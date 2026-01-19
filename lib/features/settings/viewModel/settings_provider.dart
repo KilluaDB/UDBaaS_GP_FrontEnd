@@ -24,9 +24,10 @@ class SettingsProvider with ChangeNotifier {
     else
       provider.currentMode = ThemeMode.light;
 
-  provider.pushNotifications = prefs.getBool('Push Notification') ?? false;
-  provider.queryAlerts = prefs.getBool('Query Notification') ?? true;
-  provider.schemaChanges = prefs.getBool('schemaChanges Notification') ?? false;
+    provider.pushNotifications = prefs.getBool('Push Notification') ?? false;
+    provider.queryAlerts = prefs.getBool('Query Notification') ?? true;
+    provider.schemaChanges =
+        prefs.getBool('schemaChanges Notification') ?? false;
 
     return provider;
   }
@@ -57,7 +58,6 @@ class SettingsProvider with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('avatar_path', newFile.path);
     }
-
 
     if (kIsWeb && bytes != null) {
       webAvatarBytes = bytes;
@@ -104,14 +104,13 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
   Future<void> setPushNotifications(bool value) async {
     if (pushNotifications == value) return;
-   pushNotifications = value;
-   
+    pushNotifications = value;
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('Push Notification', pushNotifications);
- 
+
     notifyListeners();
   }
 
@@ -128,10 +127,10 @@ class SettingsProvider with ChangeNotifier {
   Future<void> setSchemaChanges(bool value) async {
     if (schemaChanges == value) return;
 
-      schemaChanges = value;
+    schemaChanges = value;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('schemaChanges Notification', schemaChanges);
- 
+
     notifyListeners();
   }
 }

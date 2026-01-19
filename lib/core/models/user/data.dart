@@ -14,7 +14,7 @@ class Data {
     this.status,
     this.createdAt,
     this.name,
-    this. accessToken
+    this.accessToken,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(

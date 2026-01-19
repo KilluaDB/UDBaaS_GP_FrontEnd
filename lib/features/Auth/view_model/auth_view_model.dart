@@ -1,4 +1,3 @@
-
 import 'package:dbaas_project/core/models/user/data.dart';
 import 'package:dbaas_project/core/models/user/user.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
@@ -20,7 +19,7 @@ class AuthViewModel extends Cubit<AuthState> {
 
       User user = User.fromJson({
         'message': response.message,
-        'data': Data(email: email,accessToken:response.data?.accessToken),
+        'data': Data(email: email, accessToken: response.data?.accessToken),
       });
 
       userProvider.setUser(user);
@@ -35,9 +34,9 @@ class AuthViewModel extends Cubit<AuthState> {
     try {
       final response = await dataSource.login(email, password);
 
-         User user = User.fromJson({
+      User user = User.fromJson({
         'message': response.message,
-        'data': Data(email: email,accessToken:response.data?.accessToken),
+        'data': Data(email: email, accessToken: response.data?.accessToken),
       });
       userProvider.setUser(user);
       emit(LoginSuccess(response));

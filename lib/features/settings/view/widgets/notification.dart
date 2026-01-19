@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class NotificationSection extends StatelessWidget {
   late SettingsProvider provider;
-  
+
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<SettingsProvider>(context);
@@ -88,14 +88,12 @@ class NotificationSection extends StatelessWidget {
   }
 
   Widget _buildNotificationRow(
-   TextTheme textTheme,
+    TextTheme textTheme,
     String title,
     String subTitle,
     bool value,
     Function(bool) onChanged,
   ) {
-  
-
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
       child: Row(

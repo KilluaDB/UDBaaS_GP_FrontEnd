@@ -1,12 +1,11 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/Auth/view/screens/register_screen.dart';
 import 'package:dbaas_project/features/home/presentation/screens/home_screen.dart';
-import 'package:dbaas_project/features/projects/noSql_projects/screens/main_screen_noSql.dart';
-import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
-import 'package:dbaas_project/features/projects/sql_projects/screens/main_screen_sql.dart';
+import 'package:dbaas_project/features/no_sql_projects/view/screens/main_screen_noSql.dart';
+import 'package:dbaas_project/features/projects/view/screens/create_project_screen.dart';
+import 'package:dbaas_project/features/sql_projects/view/screens/main_screen_sql.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +21,6 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider<SettingsProvider>.value(value: settingsProvider),
-        ChangeNotifierProvider(create: (_) => ProjectProvider()),
       ],
       child: const DBaasApp(),
     ),
