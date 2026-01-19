@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/constants/app_images.dart';
 
 class Tabs {
-      List<Map<String, String>> tabsData = [
+  List<Map<String, String>> tabsData = [
     {
       'name': 'Projects',
       'selected': AppImages.projectSelected,

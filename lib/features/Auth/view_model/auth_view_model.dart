@@ -1,6 +1,7 @@
+
 import 'package:dbaas_project/core/models/user/data.dart';
 import 'package:dbaas_project/core/models/user/user.dart';
-import 'package:dbaas_project/core/provider/user_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dbaas_project/features/Auth/data/data_source/api_service.dart';
@@ -8,9 +9,8 @@ import 'package:dbaas_project/features/Auth/data/data_source/api_service.dart';
 import 'auth_states.dart';
 
 class AuthViewModel extends Cubit<AuthState> {
-  
   final AuthAPIService dataSource = AuthAPIService();
- final UserProvider userProvider; 
+  final UserProvider userProvider;
   AuthViewModel({required this.userProvider}) : super(AuthInit());
 
   Future<void> register(String email, String password) async {
@@ -20,12 +20,10 @@ class AuthViewModel extends Cubit<AuthState> {
 
       User user = User.fromJson({
         'message': response.message,
-        'data': Data(email: email),
+        'data': Data(email: email,accessToken:response.data?.accessToken),
       });
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('access_token', response.data!.accessToken ?? '');
-      userProvider.updateUser(user);
+      userProvider.setUser(user);
       emit(RegisterSuccess(response));
     } catch (e) {
       emit(RegisterError(e.toString()));
@@ -37,36 +35,14 @@ class AuthViewModel extends Cubit<AuthState> {
     try {
       final response = await dataSource.login(email, password);
 
-      User user = User.fromJson({
+         User user = User.fromJson({
         'message': response.message,
-        'data': Data(email: email),
+        'data': Data(email: email,accessToken:response.data?.accessToken),
       });
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('access_token', response.data!.accessToken ?? '');
-    userProvider.updateUser(user);
+      userProvider.setUser(user);
       emit(LoginSuccess(response));
     } catch (e) {
       emit(LoginError(e.toString()));
-    }
-  }
-
-  Future<void> logout() async {
-    emit(LogoutLoading());
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final accessToken = prefs.getString('access_token');
-
-      if (accessToken == null) throw Exception("No access token found");
-
-      final response = await dataSource.logout(accessToken);
-
-      await prefs.remove('access_token');
-      await prefs.remove('refresh_token');
-
-      emit(LogoutSuccess(response));
-    } catch (e) {
-      emit(logoutError(e.toString()));
     }
   }
 }

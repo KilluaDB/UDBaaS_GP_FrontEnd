@@ -1,6 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:dbaas_project/core/provider/user_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/Auth/view/widgets/auth_section.dart';
 import 'package:dbaas_project/features/Auth/view_model/auth_view_model.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     AppLocalizations local = AppLocalizations.of(context)!;
-  double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppTheme.white,
@@ -54,11 +54,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: 32.h),
 
-          
                 Container(
-              width: screenWidth*(557/screenWidth).w,
+                  width: screenWidth * (557 / screenWidth).w,
                   height: (642).h,
-                  padding: EdgeInsets.symmetric(horizontal: 34.w, vertical: 34.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 34.w,
+                    vertical: 34.h,
+                  ),
                   decoration: BoxDecoration(
                     color: AppTheme.white,
                     borderRadius: BorderRadius.circular(16.r),
@@ -99,7 +101,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Auth Section
                       BlocProvider(
-                        create: (_) => AuthViewModel(userProvider: context.read<UserProvider>()),
+                        create: (_) => AuthViewModel(
+                          userProvider: context.read<UserProvider>(),
+                        ),
                         child: AuthSection(
                           isSignUp: isSignUp,
                           onTap: switchAuthentication,
@@ -108,7 +112,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-            
               ],
             ),
           ),

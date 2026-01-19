@@ -41,10 +41,11 @@ class HomeDrawer extends StatelessWidget {
                   return InkWell(
                     onTap: () => onItemSelected(index),
                     child: DrawerItem(
-                      name:  homeViewModel.tabsList[index]['name']!,
+                      name: homeViewModel.tabsList[index]['name']!,
                       isSelected: selectedIndex == index,
-                      selectedImage:  homeViewModel.tabsList[index]['selected']!,
-                      unselectedImage:  homeViewModel.tabsList[index]['unselected']!,
+                      selectedImage: homeViewModel.tabsList[index]['selected']!,
+                      unselectedImage:
+                          homeViewModel.tabsList[index]['unselected']!,
                     ),
                   );
                 },
