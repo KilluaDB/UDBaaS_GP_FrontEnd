@@ -1,11 +1,21 @@
 class Data {
   String? id;
-  String? email;
+  String? email = 'guest@gmail.com';
   String? role;
   String? status;
   String? createdAt;
+  String? name = "Guest";
+  String? accessToken;
 
-  Data({this.id, this.email, this.role, this.status, this.createdAt});
+  Data({
+    this.id,
+    this.email,
+    this.role,
+    this.status,
+    this.createdAt,
+    this.name,
+    this. accessToken
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json['id'] as String?,
