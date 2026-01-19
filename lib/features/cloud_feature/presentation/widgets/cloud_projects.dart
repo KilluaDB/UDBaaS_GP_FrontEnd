@@ -45,10 +45,15 @@ class CloudProjects extends StatelessWidget {
                     SizedBox(width: 12.w),
                     Column(
                       children: [
-                        Text("$type", style:          textTheme.titleLarge!.copyWith(
-                      color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
-                      fontWeight: FontWeight.bold,
-                    ),),
+                        Text(
+                          "$type",
+                          style: textTheme.titleLarge!.copyWith(
+                            color: settingsProvider.isDark
+                                ? AppTheme.white
+                                : AppTheme.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Text(
                           "${projectsOfType.length} Projects",
                           style: textTheme.titleMedium,

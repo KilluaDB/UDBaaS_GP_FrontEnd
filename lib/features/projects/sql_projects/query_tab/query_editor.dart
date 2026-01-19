@@ -27,7 +27,7 @@ class _QueryEditorState extends State<QueryEditor> {
           Text(
             'SQL Editor',
             style: textTheme.headlineSmall!.copyWith(
-              color: provider.isDark?AppTheme.white:AppTheme.black,
+              color: provider.isDark ? AppTheme.white : AppTheme.black,
               fontWeight: FontWeight.bold,
               fontSize: 22.sp,
             ),

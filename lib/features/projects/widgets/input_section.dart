@@ -54,7 +54,10 @@ class _InputSectionState extends State<InputSection> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final AppLocalizations local = AppLocalizations.of(context)!;
     SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
-    ProjectProvider projectProvider = Provider.of<ProjectProvider>(context, listen: false);
+    ProjectProvider projectProvider = Provider.of<ProjectProvider>(
+      context,
+      listen: false,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -99,18 +102,24 @@ class _InputSectionState extends State<InputSection> {
           child: DropdownButton<String>(
             isExpanded: true,
             underline: SizedBox(),
-            iconEnabledColor: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
+            iconEnabledColor: settingsProvider.isDark
+                ? AppTheme.white
+                : AppTheme.black,
 
             value: selectedDatabase,
 
             hint: Text(
               "Select database type",
               style: textTheme.titleMedium!.copyWith(
-                color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
+                color: settingsProvider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
               ),
             ),
 
-            dropdownColor: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
+            dropdownColor: settingsProvider.isDark
+                ? AppTheme.black
+                : AppTheme.white,
 
             items: dataBase
                 .map(
@@ -160,18 +169,24 @@ class _InputSectionState extends State<InputSection> {
           child: DropdownButton<String>(
             isExpanded: true,
             underline: SizedBox(),
-            iconEnabledColor: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
+            iconEnabledColor: settingsProvider.isDark
+                ? AppTheme.white
+                : AppTheme.black,
 
             value: selectedCloudProvider,
 
             hint: Text(
               "Select Cloud Provider",
               style: textTheme.titleMedium!.copyWith(
-                color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
+                color: settingsProvider.isDark
+                    ? AppTheme.white
+                    : AppTheme.black,
               ),
             ),
 
-            dropdownColor: settingsProvider.isDark ? AppTheme.black : AppTheme.white,
+            dropdownColor: settingsProvider.isDark
+                ? AppTheme.black
+                : AppTheme.white,
 
             items: cloudProviders
                 .map(
@@ -205,7 +220,7 @@ class _InputSectionState extends State<InputSection> {
               child: CustomElevatedButton(
                 child: Text(local.cancel),
                 onTap: () {
-               Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 backgroundColor: settingsProvider.isDark
                     ? AppTheme.black

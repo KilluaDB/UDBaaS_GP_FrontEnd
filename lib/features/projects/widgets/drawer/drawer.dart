@@ -19,7 +19,7 @@ class ProjectDrawer extends StatelessWidget {
     required this.project,
   });
 
-  late final  tabs = project.DBType == 'SQL' ? Tabs.sqlTabs : Tabs.noSqlTabs;
+  late final tabs = project.DBType == 'SQL' ? Tabs.sqlTabs : Tabs.noSqlTabs;
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -88,7 +88,7 @@ class ProjectDrawer extends StatelessWidget {
             Divider(color: AppTheme.black.withValues(alpha: 0.1), thickness: 1),
             SizedBox(
               child: ListView.builder(
-                itemCount: tabs.length-1,
+                itemCount: tabs.length - 1,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return InkWell(
@@ -105,12 +105,12 @@ class ProjectDrawer extends StatelessWidget {
             ),
             Divider(color: AppTheme.black.withValues(alpha: 0.1), thickness: 1),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: DrawerItem(
                 name: tabs[tabs.length - 1]['name']!,
                 isSelected: selectedIndex == tabs.length,
-                selectedImage: tabs[tabs.length-1]['selected']!,
-                unselectedImage: tabs[tabs.length-1]['unselected']!,
+                selectedImage: tabs[tabs.length - 1]['selected']!,
+                unselectedImage: tabs[tabs.length - 1]['unselected']!,
                 isDelete: true,
               ),
             ),

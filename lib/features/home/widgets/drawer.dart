@@ -5,14 +5,12 @@ import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
 class HomeDrawer extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemSelected;
 
-  HomeDrawer({
-    required this.selectedIndex,
-    required this.onItemSelected,
-  });
+  HomeDrawer({required this.selectedIndex, required this.onItemSelected});
 
   final List<Map<String, String>> tabs = [
     {
@@ -35,9 +33,8 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-           AppLocalizations local = AppLocalizations.of(context)!;
+    AppLocalizations local = AppLocalizations.of(context)!;
     return Drawer(
-     
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(

@@ -6,7 +6,7 @@ import 'package:dbaas_project/features/projects/widgets/drawer/drawer.dart';
 import 'package:flutter/material.dart';
 
 class MainScreenNOSQL extends StatefulWidget {
-    static const String routeName = '/noSqlProject';
+  static const String routeName = '/noSqlProject';
   const MainScreenNOSQL({super.key});
 
   @override
@@ -14,14 +14,9 @@ class MainScreenNOSQL extends StatefulWidget {
 }
 
 class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
-    int selectedIndex = 0;
+  int selectedIndex = 0;
 
-  final List<Widget> tabs = [
-      DashBoard(),
-    CollectionEditor(),
-    Collections(),
-  
-  ];
+  final List<Widget> tabs = [DashBoard(), CollectionEditor(), Collections()];
   @override
   Widget build(BuildContext context) {
     ProjectModel project =

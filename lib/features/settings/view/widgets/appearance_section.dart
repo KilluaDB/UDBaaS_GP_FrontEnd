@@ -7,15 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+
 class AppearanceSection extends StatefulWidget {
   @override
   State<AppearanceSection> createState() => _AppearanceSectionState();
 }
 
 class _AppearanceSectionState extends State<AppearanceSection> {
-  List<LanguageModel> languages = [
-    LanguageModel(code: 'en', name: 'English'),
-  ];
+  List<LanguageModel> languages = [LanguageModel(code: 'en', name: 'English')];
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +23,16 @@ class _AppearanceSectionState extends State<AppearanceSection> {
     final AppLocalizations local = AppLocalizations.of(context)!;
 
     return Center(
-      child: SingleChildScrollView( // لو المحتوى أطول من الشاشة
+      child: SingleChildScrollView(
+        // لو المحتوى أطول من الشاشة
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            horizontal: 0.04.sw,
-            vertical: 0.03.sh,
-          ),
-          margin: EdgeInsets.symmetric(
-            horizontal: 0.04.sw,
-            vertical: 0.03.sh,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
+          margin: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
           decoration: BoxDecoration(
-              color:  provider.isDark
-                  ? AppTheme.black.withOpacity(0.1)
-                  : AppTheme.white,
+            color: provider.isDark
+                ? AppTheme.black.withOpacity(0.1)
+                : AppTheme.white,
             borderRadius: BorderRadius.circular(14.r),
             border: Border.all(
               width: 1,
@@ -62,7 +56,9 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                     child: Text(
                       local.appearance,
                       style: textTheme.titleMedium!.copyWith(
-                        color: provider.isDark ? AppTheme.white : AppTheme.black,
+                        color: provider.isDark
+                            ? AppTheme.white
+                            : AppTheme.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -89,11 +85,16 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                         Text(
                           local.darkMode,
                           style: textTheme.titleMedium!.copyWith(
-                            color: provider.isDark ? AppTheme.white : AppTheme.black,
+                            color: provider.isDark
+                                ? AppTheme.white
+                                : AppTheme.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(local.switchBetweenThemes, style: textTheme.titleMedium),
+                        Text(
+                          local.switchBetweenThemes,
+                          style: textTheme.titleMedium,
+                        ),
                       ],
                     ),
                   ),
@@ -138,10 +139,7 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                   ),
                   SizedBox(width: 24.w),
                   Expanded(
-                    child: Image.asset(
-                      AppImages.darkMode,
-                      fit: BoxFit.contain,
-                    ),
+                    child: Image.asset(AppImages.darkMode, fit: BoxFit.contain),
                   ),
                 ],
               ),
@@ -152,8 +150,6 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                 thickness: 1,
               ),
               SizedBox(height: 24.h),
-    
-           
             ],
           ),
         ),

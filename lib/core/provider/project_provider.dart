@@ -15,6 +15,4 @@ class ProjectProvider with ChangeNotifier {
     _projects.removeAt(index);
     notifyListeners();
   }
-
-  
 }

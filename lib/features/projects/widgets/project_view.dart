@@ -28,9 +28,17 @@ class Project extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (project.DBType == 'SQL') {
-          Navigator.pushNamed(context, MainScreenSQL.routeName,arguments: project);
+          Navigator.pushNamed(
+            context,
+            MainScreenSQL.routeName,
+            arguments: project,
+          );
         } else {
-                Navigator.pushNamed(context, MainScreenNOSQL.routeName,arguments: project);
+          Navigator.pushNamed(
+            context,
+            MainScreenNOSQL.routeName,
+            arguments: project,
+          );
         }
       },
       child: Container(
@@ -98,8 +106,7 @@ class Project extends StatelessWidget {
                 ),
               ],
             ),
-            
-            
+
             SizedBox(height: 4.h),
             Text(project.providerType, style: textTheme.titleMedium),
           ],

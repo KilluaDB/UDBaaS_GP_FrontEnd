@@ -3,6 +3,7 @@ import 'package:dbaas_project/features/home/widgets/drawer.dart';
 import 'package:dbaas_project/features/projects/project_tab.dart';
 import 'package:dbaas_project/features/settings/view/presentation/settings_screen.dart';
 import 'package:flutter/material.dart';
+
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
 
@@ -13,11 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
 
-  final List<Widget> tabs = [
-    ProjectTab(),
-    CloudTab(),
-    SettingsScreen(),
-  ];
+  final List<Widget> tabs = [ProjectTab(), CloudTab(), SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
 
-          Expanded(
-            child: tabs[selectedIndex],
-          ),
+          Expanded(child: tabs[selectedIndex]),
         ],
       ),
     );
