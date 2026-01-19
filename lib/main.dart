@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/provider/project_provider.dart';
-import 'package:dbaas_project/core/provider/settings_provider.dart';
-import 'package:dbaas_project/core/provider/user_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/Auth/view/screens/register_screen.dart';
 import 'package:dbaas_project/features/home/presentation/screens/home_screen.dart';
 import 'package:dbaas_project/features/projects/noSql_projects/screens/main_screen_noSql.dart';

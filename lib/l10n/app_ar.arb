@@ -44,7 +44,10 @@
   "projectName": "اسم المشروع",
   "databaseType": "نوع قاعدة البيانات",
   "cloudProvider": "مزود السحابة",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "ProfileSettings":"Profile Settings",
+  "updateInforamtions":"Update your personal information and profile details",
+  "SaveProfile":"Save Profile"
 
 
 

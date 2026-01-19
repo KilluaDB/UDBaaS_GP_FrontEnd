@@ -1,5 +1,4 @@
 import 'package:dbaas_project/features/Auth/data/models/login_response/login_response.dart';
-import 'package:dbaas_project/features/Auth/data/models/logout_response.dart';
 import 'package:dbaas_project/features/Auth/data/models/register_response/register_response.dart';
 
 abstract class AuthState {}
@@ -32,17 +31,4 @@ class LoginError extends AuthState {
   final String message;
 
   LoginError(this.message);
-}
-class LogoutLoading extends AuthState {}
-
-class LogoutSuccess extends AuthState {
-  final LogoutResponse logoutResponse;
-
-  LogoutSuccess(this.logoutResponse);
-}
-
-class logoutError extends AuthState {
-  final String message;
-
-  logoutError(this.message);
 }

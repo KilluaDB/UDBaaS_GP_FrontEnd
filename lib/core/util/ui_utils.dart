@@ -3,7 +3,6 @@ import 'package:dbaas_project/core/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class UiUtils {
   static void showLoading(
     BuildContext context, {
@@ -12,21 +11,20 @@ class UiUtils {
   }) => showDialog(
     context: context,
     barrierDismissible: false,
-    builder:
-        (_) => PopScope(
-          canPop: canPop ?? false,
-          child: AlertDialog(
-            content: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.2,
-              child:
-                  content ??
-                  const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [LoadingIndicator()],
-                  ),
-            ),
-          ),
+    builder: (_) => PopScope(
+      canPop: canPop ?? false,
+      child: AlertDialog(
+        content: SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.2,
+          child:
+              content ??
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [LoadingIndicator()],
+              ),
         ),
+      ),
+    ),
   );
 
   static void hideLoading(BuildContext context) => Navigator.of(context).pop();

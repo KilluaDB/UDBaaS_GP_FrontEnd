@@ -1,7 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:flutter/material.dart';
 
-
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({super.key});
 

@@ -46,14 +46,14 @@ class _AuthSectionState extends State<AuthSection> {
 
   @override
   Widget build(BuildContext context) {
-       AppLocalizations local = AppLocalizations.of(context)!;
+    AppLocalizations local = AppLocalizations.of(context)!;
     TextTheme textTheme = Theme.of(context).textTheme;
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        Text(local.emailAddress, style: textTheme.titleSmall),
+          Text(local.emailAddress, style: textTheme.titleSmall),
           SizedBox(height: 8.h),
           CustomTextFormField(
             controller: emailController,
@@ -103,7 +103,7 @@ class _AuthSectionState extends State<AuthSection> {
                       }
                     },
                     child: Text(
-                     local.signIn,
+                      local.signIn,
                       style: textTheme.titleSmall!.copyWith(
                         color: AppTheme.white,
                       ),
@@ -137,7 +137,7 @@ class _AuthSectionState extends State<AuthSection> {
                       }
                     },
                     child: Text(
-                    local.createAccount,
+                      local.createAccount,
                       style: textTheme.titleSmall!.copyWith(
                         color: AppTheme.white,
                       ),
@@ -152,15 +152,17 @@ class _AuthSectionState extends State<AuthSection> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                widget. isSignUp ? local.alreadyHaveAccount : local.dontHaveAccount,
+                widget.isSignUp
+                    ? local.alreadyHaveAccount
+                    : local.dontHaveAccount,
                 style: textTheme.titleSmall,
-                  softWrap: true,
+                softWrap: true,
               ),
               InkWell(
                 onTap: widget.onTap,
                 child: Text(
-                    softWrap: true,
-                  widget. isSignUp ?local.signIn:local.signUp,
+                  softWrap: true,
+                  widget.isSignUp ? local.signIn : local.signUp,
                   style: textTheme.titleSmall!.copyWith(
                     color: AppTheme.primary,
                     fontWeight: FontWeight.bold,
@@ -173,5 +175,4 @@ class _AuthSectionState extends State<AuthSection> {
       ),
     );
   }
-
 }

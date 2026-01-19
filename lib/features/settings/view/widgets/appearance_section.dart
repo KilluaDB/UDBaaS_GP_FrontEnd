@@ -1,7 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/core/models/language_model.dart';
-import 'package:dbaas_project/core/provider/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,8 +14,6 @@ class AppearanceSection extends StatefulWidget {
 }
 
 class _AppearanceSectionState extends State<AppearanceSection> {
-  List<LanguageModel> languages = [LanguageModel(code: 'en', name: 'English')];
-
   @override
   Widget build(BuildContext context) {
     SettingsProvider provider = Provider.of<SettingsProvider>(context);
@@ -24,7 +22,6 @@ class _AppearanceSectionState extends State<AppearanceSection> {
 
     return Center(
       child: SingleChildScrollView(
-        // لو المحتوى أطول من الشاشة
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.03.sh),
@@ -48,7 +45,7 @@ class _AppearanceSectionState extends State<AppearanceSection> {
                 children: [
                   SvgPicture.asset(
                     AppImages.apperance,
-                    width: 32.r, // استخدم r بدل w/h عشان scaling ثابت
+                    width: 32.r,
                     height: 32.r,
                   ),
                   SizedBox(width: 12.w),
