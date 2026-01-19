@@ -9,7 +9,7 @@ import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
 import 'package:dbaas_project/features/Auth/view_model/auth_states.dart';
 import 'package:dbaas_project/features/Auth/view_model/auth_view_model.dart';
 
-import 'package:dbaas_project/features/home/home_screen.dart';
+import 'package:dbaas_project/features/home/presentation/screens/home_screen.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

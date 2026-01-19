@@ -66,4 +66,6 @@ class Tabs {
       'unselected': AppImages.deleteIcon,
     },
   ];
+
+  static get tabsData => null;
 }

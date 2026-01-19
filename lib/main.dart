@@ -3,7 +3,7 @@ import 'package:dbaas_project/core/provider/project_provider.dart';
 import 'package:dbaas_project/core/provider/settings_provider.dart';
 import 'package:dbaas_project/core/provider/user_provider.dart';
 import 'package:dbaas_project/features/Auth/view/screens/register_screen.dart';
-import 'package:dbaas_project/features/home/home_screen.dart';
+import 'package:dbaas_project/features/home/presentation/screens/home_screen.dart';
 import 'package:dbaas_project/features/projects/noSql_projects/screens/main_screen_noSql.dart';
 import 'package:dbaas_project/features/projects/screens/create_project_screen.dart';
 import 'package:dbaas_project/features/projects/sql_projects/screens/main_screen_sql.dart';
@@ -52,7 +52,7 @@ class DBaasApp extends StatelessWidget {
             MainScreenNOSQL.routeName: (_) => MainScreenNOSQL(),
             MainScreenSQL.routeName: (_) => MainScreenSQL(),
           },
-          initialRoute: RegisterScreen.routeName,
+          initialRoute: HomeScreen.routeName,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: provider.currentMode,
