@@ -1,5 +1,4 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/features/projects/view_model/project_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/Auth/view/screens/register_screen.dart';
@@ -22,7 +21,6 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider<SettingsProvider>.value(value: settingsProvider),
-        ChangeNotifierProvider(create: (_) => ProjectProvider()),
       ],
       child: const DBaasApp(),
     ),
