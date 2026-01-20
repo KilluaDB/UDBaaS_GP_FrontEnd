@@ -83,14 +83,14 @@ class _AuthSectionState extends State<AuthSection> {
                     if (state is LoginLoading) {
                       UiUtils.showLoading(context);
                     } else if (state is LoginSuccess) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showSuccessMessage("Successfull Login !");
+                      UiUtils.hideLoading();
+                      UiUtils.showSuccessMessage(context,"Successfull Login !");
                       Navigator.of(
                         context,
                       ).pushReplacementNamed(HomeScreen.routeName);
                     } else if (state is LoginError) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showErrorMessage(state.message);
+                      UiUtils.hideLoading();
+                      UiUtils.showErrorMessage(context,state.message);
                     }
                   },
                   child: CustomElevatedButton(
@@ -115,16 +115,16 @@ class _AuthSectionState extends State<AuthSection> {
                     if (state is RegisterLoading) {
                       UiUtils.showLoading(context);
                     } else if (state is RegisterSuccess) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showSuccessMessage(
+                      UiUtils.hideLoading();
+                      UiUtils.showSuccessMessage(context,
                         state.registerResponse.message!,
                       );
                       Navigator.of(
                         context,
                       ).pushReplacementNamed(HomeScreen.routeName);
                     } else if (state is RegisterError) {
-                      UiUtils.hideLoading(context);
-                      UiUtils.showErrorMessage(state.message);
+                      UiUtils.hideLoading();
+                      UiUtils.showErrorMessage(context,state.message);
                     }
                   },
                   child: CustomElevatedButton(

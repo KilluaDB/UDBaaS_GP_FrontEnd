@@ -21,8 +21,8 @@ class Projects extends StatelessWidget {
           }
 
           if (state is DeleteProjectSuccess) {
-            UiUtils.hideLoading(context);
-            UiUtils.showSuccessMessage(
+            UiUtils.hideLoading();
+            UiUtils.showSuccessMessage(context,
               "Project deleted successfully!",
             );
 
@@ -31,8 +31,8 @@ class Projects extends StatelessWidget {
           }
 
           if (state is DeleteProjectError) {
-            UiUtils.hideLoading(context);
-            UiUtils.showErrorMessage(state.message);
+            UiUtils.hideLoading();
+            UiUtils.showErrorMessage(context,state.message);
           }
         },
         child: GridView.builder(

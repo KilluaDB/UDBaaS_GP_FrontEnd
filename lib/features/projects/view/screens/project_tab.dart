@@ -149,11 +149,11 @@ class _ProjectTabState extends State<ProjectTab> {
           if (state is GetAllProjectsLoading) {
       UiUtils.showLoading(context);
           } else {
-      UiUtils.hideLoading(context);
+      UiUtils.hideLoading();
           }
       
           if (state is GetAllProjectsError) {
-      UiUtils.showErrorMessage(state.message);
+      UiUtils.showErrorMessage(context,state.message);
           }
         },
         builder: (context, state) {

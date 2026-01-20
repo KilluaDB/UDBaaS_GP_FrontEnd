@@ -67,16 +67,16 @@ class _InputSectionState extends State<InputSection> {
         if (state is CreateProjectLoading) {
           UiUtils.showLoading(context);
         } else {
-          UiUtils.hideLoading(context);
+          UiUtils.hideLoading();
         }
 
         if (state is CreateProjectSuccess) {
-          UiUtils.showSuccessMessage("Project created successfully");
+          UiUtils.showSuccessMessage(context,"Project created successfully");
           Navigator.pop(context);
         }
 
         if (state is CreateProjectError) {
-          UiUtils.showErrorMessage(state.message);
+          UiUtils.showErrorMessage(context,state.message);
         }
       },
       builder: (context, state) {

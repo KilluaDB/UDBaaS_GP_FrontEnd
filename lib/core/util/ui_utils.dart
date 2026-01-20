@@ -1,48 +1,77 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class UiUtils {
+
+  static OverlayEntry? _loadingOverlay;
+
   static void showLoading(
     BuildContext context, {
     Widget? content,
-    bool? canPop,
-  }) => showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (_) => PopScope(
-      canPop: canPop ?? false,
-      child: AlertDialog(
-        content: SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.2,
-          child:
-              content ??
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [LoadingIndicator()],
+  }) {
+    if (_loadingOverlay != null) return; 
+
+    _loadingOverlay = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+       
+          ModalBarrier(
+            dismissible: false,
+            color: Colors.black45,
+          ),
+      
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
               ),
-        ),
+              child: content ?? const LoadingIndicator(),
+            ),
+          ),
+        ],
       ),
-    ),
-  );
+    );
 
-  static void hideLoading(BuildContext context) => Navigator.of(context).pop();
+    Overlay.of(context)?.insert(_loadingOverlay!);
+  }
 
-  static void showSuccessMessage(String message) => Fluttertoast.showToast(
-    msg: message,
-    toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 5,
-    backgroundColor: AppTheme.green,
-    textColor: AppTheme.white,
-  );
-  static void showErrorMessage(String? message) => Fluttertoast.showToast(
-    msg: message ?? "Something Went Wrong",
-    toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 5,
-    backgroundColor: AppTheme.red,
-    textColor: AppTheme.white,
-  );
+  static void hideLoading() {
+    _loadingOverlay?.remove();
+    _loadingOverlay = null;
+  }
+
+  // ------------------ SnackBar Messages ------------------
+  static void showSuccessMessage(BuildContext context, String message) {
+    _showSnackBar(context, message, AppTheme.green);
+  }
+
+  static void showErrorMessage(BuildContext context, String? message) {
+    _showSnackBar(context, message ?? "Something went wrong", AppTheme.red);
+  }
+
+  static void _showSnackBar(BuildContext context, String message, Color color) {
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.all(16),
+      duration: const Duration(seconds: 4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
