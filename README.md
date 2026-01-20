@@ -52,8 +52,17 @@ An integrated, cloud-based platform that:
 ---
 
 ## Implemented Features & Interface
+### 1. Security & Authentication
+The platform implements a secure authentication layer to protect user configurations and database credentials. This includes:
+- **JWT Token Management:** Secure storage and injection of tokens into API headers.
+- **Form Validation:** Client-side validation for emails and password strength.
+- **Session Persistence:** Keeping users logged in across browser refreshes.
 
-### 1. Project Management
+| Login Screen | Registration |
+|---|---|
+| ![Login](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/signIn.png) | ![Register](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/signUP.png) |
+| *Secure login for authorized users.* | *Onboarding flow for new developers.* |
+### 2. Project Management
 The platform allows users to create and organize multiple database projects. It features a responsive grid layout that handles various project states including loading, success, and deletion.
 
 | Project Dashboard (Empty State) | Project Selection |
@@ -61,7 +70,7 @@ The platform allows users to create and organize multiple database projects. It 
 | ![Home](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/home.png) | ![Display Project](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/display%20project.png) |
 | *Initial view when no projects are created.* | *Grid view showing active SQL and NoSQL projects.* |
 
-### 2. Project Creation Flow
+### 3. Project Creation Flow
 Users can easily spin up new database instances by defining the project name, database engine (SQL/NoSQL), and preferred cloud provider (AWS, GCP, etc.).
 
 ![Create Project](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/createProject.png)
@@ -70,7 +79,7 @@ Users can easily spin up new database instances by defining the project name, da
 
 *The simplified workflow for initializing a new database project.*
 
-### 3. Schema & Table Management
+### 4. Schema & Table Management
 For SQL databases, the interface provides a powerful tool to define table structures, primary keys, and column types without writing complex DDL scripts.
 
 | Table Definition | Table Overview |
@@ -78,7 +87,7 @@ For SQL databases, the interface provides a powerful tool to define table struct
 | ![Create Table](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/create%20table.png) | ![Display Tables](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/display%20tables.png) |
 | *Form for defining columns, data types, and constraints.* | *List view of all created tables within a project.* |
 
-### 4. Data Manipulation (CRUD Operations)
+### 5. Data Manipulation (CRUD Operations)
 The platform provides a spreadsheet-like interface for managing records. Users can insert, view, and update data directly through the UI.
 
 **Adding New Records:**
