@@ -1,10 +1,14 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/home/presentation/widgets/drawer_item.dart';
 import 'package:dbaas_project/features/projects/view/widgets/drawer/tabs.dart';
+import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
+import 'package:dbaas_project/features/projects/view_model/project_states.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -104,16 +108,60 @@ class ProjectDrawer extends StatelessWidget {
               ),
             ),
             Divider(color: AppTheme.black.withValues(alpha: 0.1), thickness: 1),
-            InkWell(
-              onTap: () {},
-              child: DrawerItem(
-                name: tabs[tabs.length - 1]['name']!,
-                isSelected: selectedIndex == tabs.length,
-                selectedImage: tabs[tabs.length - 1]['selected']!,
-                unselectedImage: tabs[tabs.length - 1]['unselected']!,
-                isDelete: true,
-              ),
+
+BlocListener<ProjectCubit, ProjectStates>(
+  listener: (context, state) {
+    if (state is DeleteProjectLoading) {
+      UiUtils.showLoading(context);
+    }
+
+    if (state is DeleteProjectSuccess) {
+      UiUtils.hideLoading(context);
+      UiUtils.showSuccessMessage("Project deleted successfully!");
+      Navigator.pop(context); 
+      
+      context.read<ProjectCubit>().getAllProject();
+    }
+
+    if (state is DeleteProjectError) {
+      UiUtils.hideLoading(context);
+      UiUtils.showErrorMessage(state.message);
+    }
+  },
+  child: InkWell(
+    onTap: () {
+   
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this project?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text("Cancel"),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx); 
+                context.read<ProjectCubit>().deleteProject(project.id!);
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        ),
+      );
+    },
+    child: DrawerItem(
+      name: tabs[tabs.length - 1]['name']!,
+      isSelected: selectedIndex == tabs.length,
+      selectedImage: tabs[tabs.length - 1]['selected']!,
+      unselectedImage: tabs[tabs.length - 1]['unselected']!,
+      isDelete: true,
+    ),
+  ),
+),
+
           ],
         ),
       ),
