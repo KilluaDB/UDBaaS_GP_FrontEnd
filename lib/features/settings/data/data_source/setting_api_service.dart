@@ -32,7 +32,7 @@ class SettingApiService {
 
       final response = await http.delete(
         uri,
-        headers: {'Authorization': 'Bearer $accessToken'},
+        headers: {'Authorization': 'Bearer $accessToken','Content-Type': 'application/json',},
       );
 
       if (response.statusCode == 204 || response.body.isEmpty) {

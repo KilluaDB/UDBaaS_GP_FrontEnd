@@ -44,7 +44,7 @@ class SettingCubit extends Cubit<SettingsStates> {
       userProvider.clearUser();
       emit(DeleteSuccess(response));
     } catch (e) {
-      emit(DeleteError(e.toString()));
+      emit(DeleteError(e.toString().replaceAll('Exception: ', '')));
     }
   }
 }
