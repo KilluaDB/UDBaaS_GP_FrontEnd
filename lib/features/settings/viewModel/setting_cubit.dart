@@ -29,22 +29,24 @@ class SettingCubit extends Cubit<SettingsStates> {
     }
   }
 
-  Future<void> delete(String userId) async {
-    emit(DeleteLoading());
-    try {
-      final accessToken = userProvider.currentUser?.data?.accessToken;
+Future<void> deleteAccount() async {
+  emit(DeleteLoading());
+  try {
+    // بناخد التوكن من الـ userProvider اللي إنتي باعتّاه للـ Cubit أصلاً
+    final token = userProvider.currentUser?.data?.accessToken;
 
-      if (accessToken == null || accessToken.isEmpty) {
-        emit(DeleteError("User not logged in"));
-        return;
-      }
-
-      final response = await _dataSource.delete(accessToken, userId);
-
-      userProvider.clearUser();
-      emit(DeleteSuccess(response));
-    } catch (e) {
-      emit(DeleteError(e.toString().replaceAll('Exception: ', '')));
+    if (token == null || token.isEmpty) {
+      emit(DeleteError("Session expired, please login again"));
+      return;
     }
+
+    // بنبعت التوكن للـ ApiService وهي هتطلع الـ ID وتتصرف
+    final response = await _dataSource.delete(token);
+
+    await userProvider.clearUser(); // بنمسح بيانات اليوزر من الموبايل
+    emit(DeleteSuccess(response));
+  } catch (e) {
+    emit(DeleteError(e.toString()));
   }
+}
 }

@@ -77,9 +77,8 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                 label: Text(
                   'Change Avatar',
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: settingsProvider.isDark
-                        ? AppTheme.black
-                        : AppTheme.white,
+                    color: AppTheme.black
+                     
                   ),
                 ),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.white),

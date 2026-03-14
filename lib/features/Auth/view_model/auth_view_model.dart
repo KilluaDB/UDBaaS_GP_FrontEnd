@@ -52,7 +52,7 @@ class AuthViewModel extends Cubit<AuthState> {
           ),
         );
         
-        userProvider.setUser(user);
+         userProvider.setUser(user);
         emit(LoginSuccess(response));
       } else {
         emit(LoginError("Login failed: No data received"));

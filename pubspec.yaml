@@ -46,6 +46,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   dartz: ^0.10.1
   fluttertoast: ^8.2.12
+  jwt_decoder: ^2.0.1
   
 
 dev_dependencies:

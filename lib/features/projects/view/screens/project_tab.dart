@@ -20,15 +20,24 @@ class ProjectTab extends StatefulWidget {
 }
 
 class _ProjectTabState extends State<ProjectTab> {
- int selectedIndex = 0;
   String searchQuery = "";
   TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProjectCubit>().getAllProject();
+    });
+  }
 
   @override
   void dispose() {
     searchController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -36,151 +45,114 @@ class _ProjectTabState extends State<ProjectTab> {
     final textTheme = Theme.of(context).textTheme;
     AppLocalizations local = AppLocalizations.of(context)!;
 
-      return Padding(
-        padding: EdgeInsets.all(32.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              local.projects,
-              style: textTheme.headlineLarge!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+    return Padding(
+      padding: EdgeInsets.all(32.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            local.projects,
+            style: textTheme.headlineLarge!.copyWith(
+              fontWeight: FontWeight.w500,
             ),
-            SizedBox(height: 8.h),
-            Text(
-              local.manageProjects,
-              style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 32.h),
-      
-            LayoutBuilder(
-              builder: (context, constraints) {
-                bool isWide = constraints.maxWidth > 600; 
-      
-                if (isWide) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                SizedBox(
-  width: 448.w,
-  height: 36,
-  child: TextField(
-    controller: searchController,
-    decoration: InputDecoration(
-      hintText: local.searchForProject,
-      prefixIcon: const Icon(Icons.search),
-    ),
-    onChanged: (value) {
-      setState(() {
-        searchQuery = value;
-      });
-    },
-  ),
-),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            local.manageProjects,
+            style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 32.h),
 
-                      CustomElevatedButton(
-                        width: buttonWidth.clamp(150, 250),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, size: 16, color: AppTheme.white),
-                            SizedBox(width: 8.w),
-                            Text(
-                              local.newProject,
-                              style: textTheme.titleSmall!.copyWith(
-                                color: AppTheme.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(
-                            context,
-                          ).pushNamed(CreateProjectPage.routeName);
-                        },
-                      ),
-                    ],
-                  );
+          LayoutBuilder(
+            builder: (context, constraints) {
+              bool isWide = constraints.maxWidth > 600;
+              
+              Widget searchField = SizedBox(
+                width: isWide ? 448.w : double.infinity,
+                height: 36,
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: local.searchForProject,
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      searchQuery = value;
+                    });
+                  },
+                ),
+              );
+
+              Widget addButton = CustomElevatedButton(
+                width: isWide ? buttonWidth.clamp(150, 250) : double.infinity,
+                onTap: () async {
+                
+                  final result = await Navigator.of(context).pushNamed(CreateProjectPage.routeName);
+                  
+              
+                  if (mounted) {
+                    context.read<ProjectCubit>().getAllProject();
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add, size: 16, color: AppTheme.white),
+                    SizedBox(width: 8.w),
+                    Text(
+                      local.newProject,
+                      style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
+                    ),
+                  ],
+                ),
+              );
+
+              return isWide 
+                ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [searchField, addButton])
+                : Column(children: [searchField, SizedBox(height: 16.h), addButton]);
+            },
+          ),
+          
+          SizedBox(height: 24.h),
+
+     
+          Expanded(
+            child: BlocConsumer<ProjectCubit, ProjectStates>(
+              listener: (context, state) {
+                if (state is GetAllProjectsLoading) {
+                  UiUtils.showLoading(context);
                 } else {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 36,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: local.searchForProject,
-                            prefixIcon: Icon(Icons.search),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      CustomElevatedButton(
-                        width: double.infinity,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, size: 16, color: AppTheme.white),
-                            SizedBox(width: 8.w),
-                            Text(
-                              local.newProject,
-                              style: textTheme.titleSmall!.copyWith(
-                                color: AppTheme.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(
-                            context,
-                          ).pushNamed(CreateProjectPage.routeName);
-                        },
-                      ),
-                    ],
-                  );
+                  UiUtils.hideLoading();
+                }
+
+                if (state is GetAllProjectsError) {
+                  UiUtils.showErrorMessage(context, state.message);
                 }
               },
+              builder: (context, state) {
+                if (state is GetAllProjectsSuccess) {
+                
+                  final allData = state.getProjectSuccessResponse.data ?? [];
+                  final projects = SearchingProject.filterProjects(allData, searchQuery);
+
+                  if (projects.isEmpty) {
+                    return EmptyProjects();
+                  }
+
+                  return Projects(projects: projects);
+                }
+
+                if (state is GetAllProjectsError) {
+                  return EmptyProjects(); 
+                }
+
+                return const SizedBox();
+              },
             ),
-      BlocConsumer<ProjectCubit, ProjectStates>(
-        listener: (context, state) {
-          if (state is GetAllProjectsLoading) {
-      UiUtils.showLoading(context);
-          } else {
-      UiUtils.hideLoading();
-          }
-      
-          if (state is GetAllProjectsError) {
-      UiUtils.showErrorMessage(context,state.message);
-          }
-        },
-        builder: (context, state) {
-          if (state is GetAllProjectsLoading) {
-      return const SizedBox(); 
-          }
-      
-          if (state is GetAllProjectsSuccess) {
-      final projects =SearchingProject. filterProjects(state.getProjectSuccessResponse.data ?? [],searchQuery);
-      
-      if (  projects.isEmpty) {
-        return  EmptyProjects();
-      }
-      
-      return Projects(projects: projects);
-          }
-      
-          if (state is GetAllProjectsError) {
-      return  EmptyProjects(); 
-          }
-      
-          return const SizedBox();
-        },
+          ),
+        ],
       ),
-      
-          ],
-        ),
-      );
+    );
   }
 }

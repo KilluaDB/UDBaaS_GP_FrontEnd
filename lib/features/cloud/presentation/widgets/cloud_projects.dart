@@ -18,7 +18,7 @@ class CloudProjects extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final settingsProvider = context.watch<SettingsProvider>();
 
-    final cloudTypes = ["AWS", "Firebase", "Supabase", "Mongo Atlas"];
+    final cloudTypes = ["AWS", "Firebase", "Supabase", "Mongo Atlas","free"];
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -90,7 +90,7 @@ class CloudProjects extends StatelessWidget {
                       crossAxisCount: crossAxisCount,
                       mainAxisSpacing: 16,
                       crossAxisSpacing: 16,
-                      childAspectRatio: 313 / 210,
+                      childAspectRatio: 313 / 300,
                     ),
                     itemCount: projectsOfType.length,
                     itemBuilder: (context, index) {

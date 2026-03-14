@@ -13,48 +13,56 @@ class Projects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocListener<ProjectCubit, ProjectStates>(
-        listener: (context, state) {
-          if (state is DeleteProjectLoading) {
-            UiUtils.showLoading(context);
-          }
+    return BlocConsumer<ProjectCubit, ProjectStates>(
+      listener: (context, state) {
+        if (state is DeleteProjectLoading) {
+          UiUtils.showLoading(context);
+        }
 
-          if (state is DeleteProjectSuccess) {
-            UiUtils.hideLoading();
-            UiUtils.showSuccessMessage(context,
-              "Project deleted successfully!",
-            );
+        if (state is DeleteProjectSuccess) {
+          UiUtils.hideLoading();
+          UiUtils.showSuccessMessage(context, "Project deleted successfully!");
+          
+         
+          context.read<ProjectCubit>().getAllProject();
+        }
 
+        if (state is DeleteProjectError) {
+          UiUtils.hideLoading();
+          UiUtils.showErrorMessage(context, state.message);
+        }
+      },
+      builder: (context, state) {
+
+        List<ProjectModel> displayList = projects;
         
-            context.read<ProjectCubit>().getAllProject();
-          }
+        if (state is GetAllProjectsSuccess) {
+          displayList = state.getProjectSuccessResponse.data ?? [];
+        }
 
-          if (state is DeleteProjectError) {
-            UiUtils.hideLoading();
-            UiUtils.showErrorMessage(context,state.message);
-          }
-        },
-        child: GridView.builder(
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             childAspectRatio: 313 / 200,
           ),
-          itemCount: projects.length,
+          itemCount: displayList.length, 
           itemBuilder: (context, index) {
+            final project = displayList[index];
             return ProjectView(
-              project: projects[index],
+              project: project,
               onDelete: () {
-                context
-                    .read<ProjectCubit>()
-                    .deleteProject(projects[index].id!);
+                if (project.id != null) {
+                  context.read<ProjectCubit>().deleteProject(project.id!);
+                }
               },
             );
           },
-        ),
-      ),
+        );
+      },
     );
   }
 }

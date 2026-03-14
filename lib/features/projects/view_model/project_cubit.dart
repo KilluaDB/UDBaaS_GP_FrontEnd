@@ -13,7 +13,7 @@ class ProjectCubit extends Cubit<ProjectStates> {
 
 
   Future<void> createProject(
-      String name, String dbType, String resourceTier) async {
+      String name, String dbType) async {
     emit(CreateProjectLoading());
     try {
       final accessToken = userProvider.currentUser?.data?.accessToken;
@@ -23,7 +23,7 @@ class ProjectCubit extends Cubit<ProjectStates> {
       }
 
       final response =
-          await _dataSource.createProject(accessToken, name, dbType, resourceTier);
+          await _dataSource.createProject(accessToken, name, dbType);
 
       emit(CreateProjectSuccess(response)); 
     } catch (e) {

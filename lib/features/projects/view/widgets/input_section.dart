@@ -168,9 +168,9 @@ class _InputSectionState extends State<InputSection> {
       ? () {
           final name = projectNameController.text.trim();
           final db = selectedDatabase!;
-          final provider = selectedCloudProvider!;
+       
 
-          context.read<ProjectCubit>().createProject(name, db, provider);
+          context.read<ProjectCubit>().createProject(name, db);
         }
       : (){},
                   ),

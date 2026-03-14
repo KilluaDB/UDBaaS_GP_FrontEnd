@@ -12,7 +12,7 @@ class ProjectApiService {
     String accessToken,
     String name,
     String dbType,
-    String resourceTier,
+
   ) async {
     final uri = Uri.parse(
       '${ApiConstants.baseURL}${ApiConstants.allProjectsEndPoint}',
@@ -27,7 +27,7 @@ class ProjectApiService {
         body: jsonEncode({
           'name': name,
           'db_type': dbType,
-          'resource_tier': resourceTier,
+        
         }),
       );
 
