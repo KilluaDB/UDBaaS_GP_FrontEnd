@@ -1,6 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/helper/searching_project.dart';
-import 'package:dbaas_project/core/widgets/loading_indicator.dart';
+import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
 import 'package:dbaas_project/features/projects/view/screens/no_projects_screen.dart';
 import 'package:dbaas_project/features/cloud/presentation/widgets/cloud_projects.dart';
@@ -90,7 +90,7 @@ class _CloudTabState extends State<CloudTab> {
                     child: BlocBuilder<ProjectCubit, ProjectStates>(
                       builder: (context, state) {
                         if (state is GetAllProjectsLoading) {
-                          LoadingIndicator();
+                         UiUtils.showLoading(context);
                         }
 
                         if (state is GetAllProjectsError) {

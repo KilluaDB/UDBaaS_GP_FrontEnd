@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dbaas_project/core/constants/api_constants.dart';
 import 'package:dbaas_project/features/Auth/data/models/login_response/login_response.dart';
-import 'package:dbaas_project/features/settings/data/models/logout_response.dart';
 import 'package:dbaas_project/features/Auth/data/models/register_response/register_response.dart';
 import 'package:http/http.dart' as http;
 

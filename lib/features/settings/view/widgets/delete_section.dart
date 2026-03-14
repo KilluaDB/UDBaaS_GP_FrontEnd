@@ -86,16 +86,16 @@ class DeleteSection extends StatelessWidget {
                       if (state is DeleteLoading) {
                         UiUtils.showLoading(context);
                       } else if (state is DeleteSuccess) {
-                        UiUtils.hideLoading(context);
-                        UiUtils.showSuccessMessage(
+                        UiUtils.hideLoading();
+                        UiUtils.showSuccessMessage(context,
                           "Account deleted successfully !",
                         );
                         Navigator.of(
                           context,
                         ).pushReplacementNamed(RegisterScreen.routeName);
                       } else if (state is DeleteError) {
-                        UiUtils.hideLoading(context);
-                        UiUtils.showErrorMessage(state.message);
+                        UiUtils.hideLoading();
+                        UiUtils.showErrorMessage(context,state.message);
                       }
                     },
                     child: ElevatedButton(
@@ -112,7 +112,7 @@ class DeleteSection extends StatelessWidget {
                         if (userId != null) {
                           context.read<SettingCubit>().delete(userId);
                         } else {
-                          UiUtils.showErrorMessage("User ID not found");
+                          UiUtils.showErrorMessage(context,"User ID not found");
                         }
                       },
 
@@ -186,14 +186,14 @@ class DeleteSection extends StatelessWidget {
                       if (state is LogoutLoading) {
                         UiUtils.showLoading(context);
                       } else if (state is LogoutSuccess) {
-                        UiUtils.hideLoading(context);
-                        UiUtils.showSuccessMessage("Logged out successfully !");
+                        UiUtils.hideLoading();
+                        UiUtils.showSuccessMessage(context,"Logged out successfully !");
                         Navigator.of(
                           context,
                         ).pushReplacementNamed(RegisterScreen.routeName);
                       } else if (state is LogoutError) {
-                        UiUtils.hideLoading(context);
-                        UiUtils.showErrorMessage(state.message);
+                        UiUtils.hideLoading();
+                        UiUtils.showErrorMessage(context,state.message);
                       }
                     },
                     child: ElevatedButton(
