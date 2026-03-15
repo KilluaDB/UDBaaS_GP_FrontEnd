@@ -1,4 +1,4 @@
-import 'package:dbaas_project/features/settings/data/models/delete_response/delete_response.dart';
+import 'package:dbaas_project/features/settings/data/models/delete_response.dart';
 import 'package:dbaas_project/features/settings/data/models/logout_response.dart';
 
 abstract class SettingsStates {}

@@ -143,10 +143,7 @@ class _ProjectTabState extends State<ProjectTab> {
                   return Projects(projects: projects);
                 }
 
-                if (state is GetAllProjectsError) {
-                  return EmptyProjects(); 
-                }
-
+          
                 return const SizedBox();
               },
             ),
