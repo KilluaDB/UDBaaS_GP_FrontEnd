@@ -101,7 +101,7 @@ class AppTheme {
       titleLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w400,
-        color: black,
+        color: white,
       ),
       headlineSmall: TextStyle(
         fontSize: 24,

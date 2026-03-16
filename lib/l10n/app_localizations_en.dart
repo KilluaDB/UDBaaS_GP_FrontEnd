@@ -159,4 +159,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveProfile => 'Save Profile';
+
+  @override
+  String get noTablesAvailable => 'No Tables Available';
+
+  @override
+  String get sqlEditor => 'SQL Editor';
 }
