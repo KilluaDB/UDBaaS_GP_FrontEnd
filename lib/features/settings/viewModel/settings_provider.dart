@@ -1,6 +1,6 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart'; // kIsWeb
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart'; // getApplicationDocumentsDirectory
@@ -22,7 +22,7 @@ class SettingsProvider with ChangeNotifier {
     if (theme == 'dark')
       provider.currentMode = ThemeMode.dark;
     else
-      provider.currentMode = ThemeMode.light;
+      provider.currentMode = ThemeMode.dark;
 
     provider.pushNotifications = prefs.getBool('Push Notification') ?? false;
     provider.queryAlerts = prefs.getBool('Query Notification') ?? true;

@@ -1,4 +1,6 @@
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart';
+import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/dash_board.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/query_editor.dart';
@@ -31,7 +33,9 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
       name: 'test',
       resourceTier: 'free',
     );
+    // ProjectModel project =
 
+    //     ModalRoute.of(context)!.settings.arguments as ProjectModel;
   
     final List<Widget> tabs = [
       DashBoard(),
@@ -40,29 +44,25 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
       QueryEditor(project: project),
       SchemaVisualizer(),
       SchemeGenerator(),
+      DeleteScreen(project: project,)
     ];
 
   
-    return BlocProvider(
-      create: (context) => QueryCubit(
-        userProvider: context.read<UserProvider>(),
-      ),
-      child: Scaffold(
-        body: Row(
-          children: [
-            ProjectDrawer(
-              project: project,
-              selectedIndex: selectedIndex,
-              onItemSelected: (index) {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-            ),
-    
-            Expanded(child: tabs[selectedIndex]),
-          ],
-        ),
+    return Scaffold(
+      body: Row(
+        children: [
+          ProjectDrawer(
+            project: project,
+            selectedIndex: selectedIndex,
+            onItemSelected: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+          ),
+        
+          Expanded(child: tabs[selectedIndex]),
+        ],
       ),
     );
   }

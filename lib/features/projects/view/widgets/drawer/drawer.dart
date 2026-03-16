@@ -2,6 +2,7 @@ import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/home/presentation/widgets/drawer_item.dart';
+import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart';
 import 'package:dbaas_project/features/projects/view/widgets/drawer/tabs.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,9 @@ class ProjectDrawer extends StatelessWidget {
     required this.project,
   });
 
-  late final tabs = project.dbType?.toUpperCase() == 'SQL' ? Tabs.sqlTabs : Tabs.noSqlTabs;
+  late final tabs = project.dbType?.toUpperCase() == 'SQL'
+      ? Tabs.sqlTabs
+      : Tabs.noSqlTabs;
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -105,10 +108,10 @@ class ProjectDrawer extends StatelessWidget {
             ),
             Divider(color: AppTheme.black.withValues(alpha: 0.1), thickness: 1),
             InkWell(
-              onTap: () {},
+              onTap: ()  => onItemSelected(tabs.length - 1),
               child: DrawerItem(
                 name: tabs[tabs.length - 1]['name']!,
-                isSelected: selectedIndex == tabs.length,
+                isSelected: selectedIndex == tabs.length-1,
                 selectedImage: tabs[tabs.length - 1]['selected']!,
                 unselectedImage: tabs[tabs.length - 1]['unselected']!,
                 isDelete: true,
