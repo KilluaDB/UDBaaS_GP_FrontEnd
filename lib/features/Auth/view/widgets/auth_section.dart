@@ -10,6 +10,7 @@ import 'package:dbaas_project/features/Auth/view_model/auth_states.dart';
 import 'package:dbaas_project/features/Auth/view_model/auth_view_model.dart';
 
 import 'package:dbaas_project/features/home/presentation/screens/home_screen.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,7 @@ class _AuthSectionState extends State<AuthSection> {
 
   @override
   Widget build(BuildContext context) {
+        final settingsProvider = context.watch<SettingsProvider>();
     AppLocalizations local = AppLocalizations.of(context)!;
     TextTheme textTheme = Theme.of(context).textTheme;
     return Form(
@@ -155,7 +157,7 @@ class _AuthSectionState extends State<AuthSection> {
                 widget.isSignUp
                     ? local.alreadyHaveAccount
                     : local.dontHaveAccount,
-                style: textTheme.titleSmall,
+                style: textTheme.titleSmall!.copyWith(color:settingsProvider.isDark?AppTheme.black:AppTheme.white),
                 softWrap: true,
               ),
               InkWell(

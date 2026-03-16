@@ -1,5 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -29,8 +31,11 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
   late bool isObscure = widget.isPassword;
+  
   @override
   Widget build(BuildContext context) {
+      final settingsProvider = context.watch<SettingsProvider>();
+
     return TextFormField(
       controller: widget.controller,
       onChanged: widget.onChanged,
@@ -38,7 +43,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       style: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16.sp,
-        color: AppTheme.gray,
+        color:settingsProvider.isDark? AppTheme.white:AppTheme.gray,
       ),
       decoration: InputDecoration(
         prefixIcon: Padding(
