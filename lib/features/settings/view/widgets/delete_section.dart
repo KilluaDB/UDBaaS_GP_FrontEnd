@@ -103,15 +103,18 @@ class DeleteSection extends StatelessWidget {
                         backgroundColor: AppTheme.red,
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                       ),
-               onPressed: () {
-
-  try {
-    final cubit = context.read<SettingCubit>();
-    cubit.deleteAccount();
-  } catch (e) {
-    print("UI CRASH ERROR: $e");
-  }
-},
+                      onPressed: () {
+                        final userId = context
+                            .read<UserProvider>()
+                            .currentUser
+                            ?.data
+                            ?.id;
+                        if (userId != null) {
+                          context.read<SettingCubit>().delete(userId);
+                        } else {
+                          UiUtils.showErrorMessage(context,"User ID not found");
+                        }
+                      },
 
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
