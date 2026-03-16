@@ -72,6 +72,7 @@ class _InputSectionState extends State<InputSection> {
 
         if (state is CreateProjectSuccess) {
           UiUtils.showSuccessMessage(context,"Project created successfully");
+          context.read<ProjectCubit>().getAllProject();
           Navigator.pop(context);
         }
 

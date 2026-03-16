@@ -1,5 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
 import 'package:dbaas_project/features/projects/view/screens/create_project_screen.dart';
@@ -79,14 +80,14 @@ class _EmptyProjectsState extends State<EmptyProjects> {
                   ),
                 ],
               ),
-              onTap: () async {
-                final result = await Navigator.of(
-                  context,
-                ).pushNamed(CreateProjectPage.routeName);
-                if (result == true) {
-                  setState(() {});
-                }
-              },
+      onTap: () async {
+
+  final result = await Navigator.of(context).pushNamed(CreateProjectPage.routeName);
+  
+  if (context.mounted) {
+     context.read<ProjectCubit>().getAllProject();
+  }
+},
             ),
           ],
         ),
