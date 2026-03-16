@@ -1,4 +1,4 @@
-import '../project_model.dart';
+import 'project_model.dart';
 
 class ProjectCreateResponse {
   String? status;
