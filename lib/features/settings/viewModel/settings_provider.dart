@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart'; // getApplicationDocumentsDir
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
-  ThemeMode currentMode = ThemeMode.light;
+  ThemeMode currentMode = ThemeMode.dark;
   File? avatarFile;
   Uint8List? webAvatarBytes;
   bool pushNotifications = false;

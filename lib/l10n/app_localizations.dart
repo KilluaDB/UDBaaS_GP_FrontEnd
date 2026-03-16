@@ -391,6 +391,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save Profile'**
   String get saveProfile;
+
+  /// No description provided for @noTablesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No Tables Available'**
+  String get noTablesAvailable;
+
+  /// No description provided for @sqlEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'SQL Editor'**
+  String get sqlEditor;
 }
 
 class _AppLocalizationsDelegate

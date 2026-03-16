@@ -47,7 +47,9 @@
   "cancel": "إلغاء",
   "ProfileSettings":"Profile Settings",
   "updateInforamtions":"Update your personal information and profile details",
-  "SaveProfile":"Save Profile"
+  "SaveProfile":"Save Profile",
+  "noTablesAvailable":"No Tables Available",
+  "sqlEditor":"SQL Editor"
 
 
 

@@ -6,7 +6,7 @@ import 'package:dbaas_project/features/projects/view/screens/no_projects_screen.
 import 'package:dbaas_project/features/cloud/presentation/widgets/cloud_projects.dart';
 import 'package:dbaas_project/features/projects/view_model/project_states.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/sql_projects/view/widgets/query_tab/widgets/full_query_tab.dart';
+import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

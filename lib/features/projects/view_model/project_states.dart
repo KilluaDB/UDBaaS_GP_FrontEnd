@@ -1,6 +1,6 @@
 import 'package:dbaas_project/features/projects/data/models/delete_project_response.dart';
-import 'package:dbaas_project/features/projects/data/models/get_projects_response/get_projects_response.dart';
-import 'package:dbaas_project/features/projects/data/models/project_create_response/project_create_response.dart';
+import 'package:dbaas_project/features/projects/data/models/get_projects_response.dart';
+import 'package:dbaas_project/features/projects/data/models/project_create_response.dart';
 
 abstract class ProjectStates {}
 class ProjectInit extends ProjectStates {}

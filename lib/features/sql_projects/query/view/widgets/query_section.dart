@@ -1,43 +1,40 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/core/util/ui_utils.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
+import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
+import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-late TextTheme textTheme;
-late SettingsProvider provider;
+class QueryPart extends StatefulWidget {
+  ProjectModel project;
+   QueryPart({required this.project});
 
-class FullQueryTab extends StatefulWidget {
   @override
-  State<FullQueryTab> createState() => _FullQueryTabState();
+  State<QueryPart> createState() => _QueryPartState();
 }
 
-class _FullQueryTabState extends State<FullQueryTab> {
+class _QueryPartState extends State<QueryPart> {
+late TextEditingController _queryController;
+
+  @override
+  void initState() {
+    super.initState();
+    _queryController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _queryController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<SettingsProvider>(context);
     textTheme = Theme.of(context).textTheme;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _QueryPart(),
-          SizedBox(height: 24.h),
-          ResultPart(),
-        ],
-      ),
-    );
-  }
-}
-
-class _QueryPart extends StatelessWidget {
-  final TextEditingController _queryController = TextEditingController(
-    text: '-- Example: Query the ff table\nSELECT * FROM ff LIMIT 10;',
-  );
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
@@ -54,10 +51,10 @@ class _QueryPart extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Header
+         
           Row(
             children: [
-              Icon(Icons.code, size: 18.sp, color: AppTheme.primary),
+              Icon(Icons.code, size: 28.sp, color: AppTheme.primary),
               SizedBox(width: 12.w),
               Text(
                 'SQL Query Editor',
@@ -80,7 +77,7 @@ class _QueryPart extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          /// Query editor (editable)
+        
           Container(
             width: double.infinity,
             height: 180.h,
@@ -96,6 +93,7 @@ class _QueryPart extends StatelessWidget {
               style: textTheme.bodySmall!.copyWith(
                 fontSize: 13.sp,
                 height: 1.5,
+                fontFamily: 'monospace',
                 color: provider.isDark ? AppTheme.white : AppTheme.black,
               ),
               decoration: InputDecoration(
@@ -111,7 +109,18 @@ class _QueryPart extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: ElevatedButton.icon(
               onPressed: () {
-                final query = _queryController.text;
+   final query = _queryController.text.trim();
+                if (query.isEmpty) {
+                  UiUtils.showErrorMessage(context, "Please write a query first");
+                  return;
+                }
+                
+                final user = context.read<UserProvider>().currentUser;
+                if (user != null) {
+                  context.read<QueryCubit>().executeQuery(query, widget.project.id!);
+                } else {
+                  UiUtils.showErrorMessage(context, "User not authenticated");
+                }
               },
               icon: Icon(Icons.play_arrow, size: 18.sp),
               label: Text('Execute Query', style: TextStyle(fontSize: 14.sp)),
@@ -120,58 +129,9 @@ class _QueryPart extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class ResultPart extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 0.09.sw, vertical: 0.06.sh),
-
-          decoration: BoxDecoration(
-            color: provider.isDark ? AppTheme.black : AppTheme.white,
-            borderRadius: BorderRadius.circular(14.r),
-            border: Border.all(
-              width: 1.w,
-              color: provider.isDark
-                  ? AppTheme.white
-                  : AppTheme.backgroundColor.withOpacity(0.1),
-            ),
-          ),
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                AppImages.codeLogo,
-                width: 30.w,
-                height: 30.h,
-                color: AppTheme.boldGray,
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                'No results to display',
-                style: textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
-                  color: provider.isDark ? AppTheme.white : AppTheme.black,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 12.h),
-              Text(
-                'Execute a query to see results here',
-                style: textTheme.titleSmall!.copyWith(fontSize: 12.sp),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 24.h),
-            ],
-          ),
-        ),
-      ],
-    );
+ 
+ 
+ 
+ 
   }
 }

@@ -192,6 +192,8 @@ void initState() {
         UiUtils.showErrorMessage(context, state.message);
             }
           },
+         
+         
           builder: (context, state) {
             if (state is GetAllProjectsSuccess) {
         final projects = SearchingProject.filterProjects(

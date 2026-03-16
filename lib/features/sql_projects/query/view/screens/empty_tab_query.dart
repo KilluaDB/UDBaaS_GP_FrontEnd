@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
+import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +12,7 @@ class EmptyTabQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        AppLocalizations local = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
     final SettingsProvider provider = Provider.of<SettingsProvider>(context);
 
@@ -33,7 +35,7 @@ class EmptyTabQuery extends StatelessWidget {
           SvgPicture.asset(AppImages.codeLogo, width: 80.w, height: 90.h),
           SizedBox(height: 16.h),
           Text(
-            'No Tables Available',
+          local.noTablesAvailable ,
             style: textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20.sp,
