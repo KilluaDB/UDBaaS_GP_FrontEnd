@@ -23,6 +23,8 @@ class Data {
     role: json['role'] as String?,
     status: json['status'] as String?,
     createdAt: json['created_at'] as String?,
+    name: json['name'] as String?,
+    accessToken: json['accessToken'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -31,5 +33,7 @@ class Data {
     'role': role,
     'status': status,
     'created_at': createdAt,
+    'name': name,
+    'accessToken': accessToken,
   };
 }

@@ -13,13 +13,14 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  final userProvider = await UserProvider.init();
   final settingsProvider = await SettingsProvider.init();
+
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
         ChangeNotifierProvider<SettingsProvider>.value(value: settingsProvider),
       ],
       child: const DBaasApp(),
@@ -33,6 +34,7 @@ class DBaasApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<SettingsProvider>();
+    final userProvider = context.watch<UserProvider>();
 
     return ScreenUtilInit(
       designSize: const Size(1440, 1024),
@@ -50,7 +52,7 @@ class DBaasApp extends StatelessWidget {
             MainScreenNOSQL.routeName: (_) => MainScreenNOSQL(),
             MainScreenSQL.routeName: (_) => MainScreenSQL(),
           },
-          initialRoute: RegisterScreen.routeName,
+          initialRoute: userProvider.currentUser==null?RegisterScreen.routeName:HomeScreen.routeName,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: provider.currentMode,
