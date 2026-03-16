@@ -77,8 +77,8 @@ class ProjectView extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 56,
-                  height: 30,
+                  width: 56.w,
+                  height: 50.h,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.backgroundColor.withValues(alpha: 0.1),
