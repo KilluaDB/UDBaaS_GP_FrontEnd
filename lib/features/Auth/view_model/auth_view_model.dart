@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/models/user/data.dart';
 import 'package:dbaas_project/core/models/user/user.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dbaas_project/features/Auth/data/data_source/api_service.dart';
 import 'auth_states.dart';
@@ -10,7 +11,6 @@ class AuthViewModel extends Cubit<AuthState> {
   final UserProvider userProvider;
 
   AuthViewModel({required this.userProvider}) : super(AuthInit());
-
 
   Future<void> register(String email, String password) async {
     emit(RegisterLoading());
@@ -23,23 +23,21 @@ class AuthViewModel extends Cubit<AuthState> {
         data: Data(
           email: email,
           accessToken: response.data?.accessToken,
+          id: response.data?.user_id,
         ),
       );
 
       userProvider.setUser(user);
       emit(RegisterSuccess(response));
     } catch (e) {
-   
       emit(RegisterError(e.toString().replaceAll('Exception: ', '')));
     }
   }
-
 
   Future<void> login(String email, String password) async {
     emit(LoginLoading());
     try {
       final response = await dataSource.login(email, password);
-
 
       if (response.data != null) {
         User user = User(
@@ -48,17 +46,16 @@ class AuthViewModel extends Cubit<AuthState> {
           data: Data(
             email: email,
             accessToken: response.data?.accessToken,
-          
+            id: response.data?.user_id,
           ),
         );
-        
-         userProvider.setUser(user);
+
+        userProvider.setUser(user);
         emit(LoginSuccess(response));
       } else {
         emit(LoginError("Login failed: No data received"));
       }
     } catch (e) {
-     
       emit(LoginError(e.toString().replaceAll('Exception: ', '')));
     }
   }
