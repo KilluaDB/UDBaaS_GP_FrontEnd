@@ -22,7 +22,7 @@ class SettingsProvider with ChangeNotifier {
     if (theme == 'dark')
       provider.currentMode = ThemeMode.dark;
     else
-      provider.currentMode = ThemeMode.dark;
+      provider.currentMode = ThemeMode.light;
 
     provider.pushNotifications = prefs.getBool('Push Notification') ?? false;
     provider.queryAlerts = prefs.getBool('Query Notification') ?? true;

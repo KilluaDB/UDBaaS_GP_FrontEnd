@@ -27,8 +27,16 @@ class DeleteScreen extends StatelessWidget {
           UiUtils.showLoading(context);
         } else if (state is DeleteProjectSuccess) {
           UiUtils.hideLoading();
-          UiUtils.showSuccessMessage(context, "Project deleted successfully");
-          Navigator.pop(context); 
+    if (context.mounted) {
+     
+      context.read<ProjectCubit>().getAllProject();
+      
+      
+      UiUtils.showSuccessMessage(context, "Project deleted successfully");
+      
+  
+      Navigator.pop(context);
+    }
         } else if (state is DeleteProjectError) {
           UiUtils.hideLoading();
           UiUtils.showErrorMessage(context, state.message);

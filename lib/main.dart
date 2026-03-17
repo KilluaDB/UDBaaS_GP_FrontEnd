@@ -66,8 +66,8 @@ class DBaasApp extends StatelessWidget {
             MainScreenNOSQL.routeName: (_) => MainScreenNOSQL(),
             MainScreenSQL.routeName: (_) => MainScreenSQL(),
           },
-          initialRoute: MainScreenSQL.routeName,
-          // initialRoute: userProvider.currentUser==null?RegisterScreen.routeName:HomeScreen.routeName,
+          // initialRoute: MainScreenSQL.routeName,
+          initialRoute: userProvider.currentUser==null?RegisterScreen.routeName:HomeScreen.routeName,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
      

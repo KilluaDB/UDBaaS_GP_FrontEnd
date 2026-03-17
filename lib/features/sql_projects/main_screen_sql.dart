@@ -27,15 +27,15 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
   @override
   Widget build(BuildContext context) {
  
-    final project = ProjectModel(
-      dbType: 'sql',
-      id: '1',
-      name: 'test',
-      resourceTier: 'free',
-    );
-    // ProjectModel project =
+    // final project = ProjectModel(
+    //   dbType: 'sql',
+    //   id: '1',
+    //   name: 'test',
+    //   resourceTier: 'free',
+    // );
+    ProjectModel project =
 
-    //     ModalRoute.of(context)!.settings.arguments as ProjectModel;
+        ModalRoute.of(context)!.settings.arguments as ProjectModel;
   
     final List<Widget> tabs = [
       DashBoard(),

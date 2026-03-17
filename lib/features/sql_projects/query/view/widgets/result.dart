@@ -1,177 +1,134 @@
 import 'package:dbaas_project/core/app_theme.dart';
-import 'package:dbaas_project/core/constants/app_images.dart';
-import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/widgets/empty_result.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class ResultPart extends StatelessWidget {
+  const ResultPart({super.key});
+
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<SettingsProvider>(context);
-    textTheme = Theme.of(context).textTheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 0.09.sw, vertical: 0.06.sh),
+    final provider = Provider.of<SettingsProvider>(context);
+    final textTheme = Theme.of(context).textTheme;
 
-          decoration: BoxDecoration(
-            color: provider.isDark ? AppTheme.black : AppTheme.white,
-            borderRadius: BorderRadius.circular(14.r),
-            border: Border.all(
-              width: 1.w,
-              color: provider.isDark
-                  ? AppTheme.white
-                  : AppTheme.backgroundColor.withOpacity(0.1),
-            ),
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(top: 16.h),
+        padding: EdgeInsets.all(16.r),
+        decoration: BoxDecoration(
+          color: provider.isDark ? AppTheme.black : AppTheme.white,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(
+            width: 1.w,
+            color: provider.isDark ? Colors.white24 : Colors.black12,
           ),
-          child: BlocConsumer<QueryCubit, QueryStates>(
-            listener: (context, state) {
-              if (state is QueryExecutionLoading) {
-                UiUtils.showLoading(context);
-              } else {
-                UiUtils.hideLoading();
-              }
+        ),
+        child: BlocBuilder<QueryCubit, QueryStates>(
+          builder: (context, state) {
+            if (state is QueryExecutionSuccess) {
+              final response = state.executeQueryResponse;
+              final result = response.result;
+              final executionTime = response.executionTimeMs ?? 0;
 
-              if (state is QueryExecutionSuccess) {
-                UiUtils.showSuccessMessage(
-                  context,
-                  "Query is Executed Successfully!",
-                );
-              }
-
-              if (state is QueryExecutionError) {
-                UiUtils.showErrorMessage(context, state.message);
-              }
-            },
-
-            builder: (context, state) {
-              if (state is QueryExecutionError ||
-                  state is QueryExecutionLoading) {
-                return EmptyResult();
-              }
-              if (state is QueryExecutionSuccess) {
-                final executeTime = state.executeQueryResponse.executionTimeMs!;
-                final rowsCount = state.executeQueryResponse.result?.rowCount;
-                final result = state.executeQueryResponse.result;
-
-                if (result == null || result.columns.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "No data found or query executed successfully.",
-                    ),
-                  );
-                }
-
-                return Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: provider.isDark ? AppTheme.black : AppTheme.white,
-                    borderRadius: BorderRadius.circular(14.r),
-                    border: Border.all(
-                      width: 1.w,
-                      color: provider.isDark
-                          ? AppTheme.white
-                          : AppTheme.backgroundColor.withOpacity(0.15),
-                    ),
-                  ),
+              // حالة 1: تنفيذ استعلام INSERT/UPDATE/DELETE (صفوف متأثرة فقط)
+              if (result == null || (result.columns.isEmpty)) {
+                return Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.analytics_outlined,
-                            size: 24.sp,
-                            color: AppTheme.primary,
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            'Query Result',
-                            style: textTheme.titleMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 4.h),
+                      Icon(Icons.check_circle, color: Colors.green, size: 40.sp),
+                      SizedBox(height: 10.h),
                       Text(
-                        '$rowsCount rows returned • $executeTime ms',
-                        style: textTheme.bodySmall,
+                        "Query Executed Successfully",
+                        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 16.h),
-
-                      Container(
-                        height: 300.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.withOpacity(0.2),
-                          ),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Scrollbar(
-                          thumbVisibility: true,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: DataTable(
-                                headingRowColor: WidgetStateProperty.all(
-                                  AppTheme.primary.withOpacity(0.1),
-                                ),
-                                columnSpacing: 20.w,
-                                headingRowHeight: 40.h,
-                                dataRowMaxHeight: 50.h,
-                                columns: result.columns
-                                    .map(
-                                      (col) => DataColumn(
-                                        label: Text(
-                                          col,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                                rows: result.rows.map((row) {
-                                  return DataRow(
-                                    cells: result.columns
-                                        .map(
-                                          (col) => DataCell(
-                                            Text(
-                                              row[col]?.toString() ?? "NULL",
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ),
+                      Text(
+                        "${result?.rowCount ?? 0} rows affected • $executionTime ms",
+                        style: textTheme.bodySmall,
                       ),
                     ],
                   ),
                 );
               }
-              return EmptyResult();
-            },
-          ),
+
+              // حالة 2: تنفيذ استعلام SELECT (عرض جدول البيانات)
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.table_chart_outlined, size: 20.sp, color: AppTheme.primary),
+                      SizedBox(width: 8.w),
+                      Text("Query Result", style: textTheme.titleSmall),
+                      const Spacer(),
+                      Text("$executionTime ms", style: textTheme.bodySmall),
+                    ],
+                  ),
+                  const Divider(),
+                  Expanded(
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            headingRowColor: WidgetStateProperty.all(AppTheme.primary.withOpacity(0.1)),
+                            columns: result.columns
+                                .map<DataColumn>((col) => DataColumn(
+                                      label: Text(col.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    ))
+                                .toList(),
+                            rows: result.rows.map<DataRow>((row) {
+                              return DataRow(
+                                cells: result.columns
+                                    .map<DataCell>((col) => DataCell(
+                                          Text(row[col]?.toString() ?? "NULL"),
+                                        ))
+                                    .toList(),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            if (state is QueryExecutionError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.red, size: 40.sp),
+                    SizedBox(height: 10.h),
+                    Text("Execution Error", style: textTheme.titleSmall?.copyWith(color: Colors.red)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: Text(
+                        state.message,
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // الحالة الافتراضية قبل التنفيذ
+            return const EmptyResult();
+          },
         ),
-      ],
+      ),
     );
   }
 }
