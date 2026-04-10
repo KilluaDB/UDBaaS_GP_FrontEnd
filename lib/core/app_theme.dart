@@ -80,7 +80,8 @@ class AppTheme {
   );
 
   static ThemeData darkTheme = ThemeData(
-    drawerTheme: DrawerThemeData(backgroundColor: semiGray),
+    navigationDrawerTheme: NavigationDrawerThemeData(backgroundColor:backgroundColor ),
+    drawerTheme: DrawerThemeData(backgroundColor: const Color.fromARGB(255, 201, 201, 201)),
     scaffoldBackgroundColor: black,
     textTheme: TextTheme(
       headlineLarge: TextStyle(
@@ -91,12 +92,12 @@ class AppTheme {
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        color: boldGray,
+        color: white,
       ),
       titleSmall: TextStyle(
         fontSize: 15,
         fontWeight: FontWeight.w500,
-        color: white,
+        color: black,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
