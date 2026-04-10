@@ -1,3 +1,4 @@
+import 'package:dbaas_project/features/sql_projects/dash_board/view/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
 
 class DashBoard extends StatelessWidget {
@@ -5,6 +6,6 @@ class DashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("DashBoard");
+    return EmptyScreen();
   }
 }

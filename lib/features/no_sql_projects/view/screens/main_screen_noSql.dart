@@ -2,7 +2,7 @@ import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/no_sql_projects/view/screens/tabs/collection_editor.dart';
 import 'package:dbaas_project/features/no_sql_projects/view/screens/tabs/collections.dart';
 import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart';
-import 'package:dbaas_project/features/sql_projects/dash_board/dash_board.dart';
+import 'package:dbaas_project/features/sql_projects/dash_board/view/screens/dash_board.dart';
 import 'package:dbaas_project/features/projects/view/widgets/drawer/drawer.dart';
 import 'package:flutter/material.dart';
 
