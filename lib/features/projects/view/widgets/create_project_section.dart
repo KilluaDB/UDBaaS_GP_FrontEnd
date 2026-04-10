@@ -23,10 +23,9 @@ class _CreateProjectSectionState extends State<CreateProjectSection> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     SettingsProvider provider = Provider.of<SettingsProvider>(context);
-
     final horizontalPadding = screenWidth * 0.02;
     final verticalPadding = screenHeight * 0.03;
-
+    
     return Container(
       width: screenWidth * 0.4,
       padding: EdgeInsets.symmetric(

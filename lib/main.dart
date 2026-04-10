@@ -29,7 +29,7 @@ runApp(
       BlocProvider(
         create: (context) => ProjectCubit(
           userProvider: Provider.of<UserProvider>(context, listen: false),
-        ),
+        )..getAllProject(),
       ),
       BlocProvider(
         create: (context) => QueryCubit(
@@ -70,7 +70,7 @@ class DBaasApp extends StatelessWidget {
           initialRoute: userProvider.currentUser==null?RegisterScreen.routeName:HomeScreen.routeName,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-     
+
           themeMode: provider.currentMode,
         );
       },

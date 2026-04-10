@@ -21,22 +21,24 @@ class DeleteScreen extends StatelessWidget {
     final provider = Provider.of<SettingsProvider>(context);
     final isDark = provider.isDark;
 
-    return BlocListener<ProjectCubit, ProjectStates>(
-      listener: (context, state) {
+    return BlocListener<ProjectCubit, ProjectStates> (
+      listener: (context, state) async {
         if (state is DeleteProjectLoading) {
           UiUtils.showLoading(context);
-        } else if (state is DeleteProjectSuccess) {
+        } else if (state is DeleteProjectSuccess)  {
           UiUtils.hideLoading();
-    if (context.mounted) {
-     
-      context.read<ProjectCubit>().getAllProject();
-      
-      
-      UiUtils.showSuccessMessage(context, "Project deleted successfully");
+
+    
+    
       
   
-      Navigator.pop(context);
-    }
+                             if (context.mounted) {
+          await  context.read<ProjectCubit>().getAllProject(); 
+          }
+              Navigator.pop(context);
+      
+ 
+    
         } else if (state is DeleteProjectError) {
           UiUtils.hideLoading();
           UiUtils.showErrorMessage(context, state.message);

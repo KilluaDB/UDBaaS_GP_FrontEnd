@@ -42,7 +42,7 @@ class UiUtils {
       ),
     );
 
-    Overlay.of(context)?.insert(_loadingOverlay!);
+    Overlay.of(context).insert(_loadingOverlay!);
   }
 
   static void hideLoading() {

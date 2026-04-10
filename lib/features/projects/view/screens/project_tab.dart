@@ -207,20 +207,7 @@ void initState() {
         
         return Projects(projects: projects);
             }
-        
-            if (state is DeleteProjectLoading || state is DeleteProjectSuccess || state is GetAllProjectsLoading) {
-        if (state is GetAllProjectsSuccess) {
-           final projects = SearchingProject.filterProjects(
-            state.getProjectSuccessResponse.data ?? [],
-            searchQuery,
-          );
-          return projects.isEmpty ? EmptyProjects() : Projects(projects: projects);
-        }
-            }
-        
-            if (state is GetAllProjectsError) {
-        return EmptyProjects();
-            }
+  
         
             return const SizedBox();
           },

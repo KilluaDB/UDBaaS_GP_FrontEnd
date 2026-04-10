@@ -11,7 +11,7 @@ import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'dart:html' as html;
 
 class InputSection extends StatefulWidget {
   final ValueChanged<bool>? onFormChanged;
@@ -37,6 +37,9 @@ class _InputSectionState extends State<InputSection> {
   @override
   void initState() {
     super.initState();
+    html.document.querySelectorAll('input[type="file"]').forEach((element) {
+    (element as html.HtmlElement).style.display = 'none';
+  });
     projectNameController = TextEditingController();
   }
 
