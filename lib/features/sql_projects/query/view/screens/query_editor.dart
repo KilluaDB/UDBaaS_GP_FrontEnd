@@ -42,7 +42,7 @@ class _QueryEditorState extends State<QueryEditor> {
             style: textTheme.titleMedium!.copyWith(fontSize: 16.sp, color: provider.isDark ? AppTheme.white : AppTheme.black,),
           ),
           SizedBox(height: 24.h),
-          isEmpty ? EmptyTabQuery() : FullQueryTab(project: widget.project,),
+          Expanded(child: isEmpty ? EmptyTabQuery() : FullQueryTab(project: widget.project,)),
         ],
       ),
     );

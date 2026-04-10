@@ -18,14 +18,12 @@ class FullQueryTab extends StatelessWidget {
   Widget build(BuildContext context) {
     provider = Provider.of<SettingsProvider>(context);
     textTheme = Theme.of(context).textTheme;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          QueryPart(project:project),
-          SizedBox(height: 24.h),
-          ResultPart(),
-        ],
-      ),
+    return Column(
+      children: [
+        QueryPart(project:project),
+        SizedBox(height: 24.h),
+        ResultPart(),
+      ],
     );
   }
 }

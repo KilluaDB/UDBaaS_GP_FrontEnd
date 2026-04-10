@@ -20,4 +20,7 @@ class User {
     'message': message,
     'data': data?.toJson(),
   };
+    Map<String, dynamic> toJsonShowen() => {
+    'email': data?.email,
+  };
 }

@@ -66,5 +66,5 @@ class Tabs {
     },
   ];
 
-  static get tabsData => null;
+
 }

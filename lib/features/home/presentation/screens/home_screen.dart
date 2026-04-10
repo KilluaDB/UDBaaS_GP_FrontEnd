@@ -25,24 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ProjectCubit(
-        userProvider: context.read<UserProvider>(),
-      )..getAllProject(),
-      child: Scaffold(
-        body: Row(
-          children: [
-            HomeDrawer(
-              selectedIndex: selectedIndex,
-              onItemSelected: (index) {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-            ),
-            Expanded(child: tabs[selectedIndex]),
-          ],
-        ),
+    return Scaffold(
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          HomeDrawer(
+            selectedIndex: selectedIndex,
+            onItemSelected: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+          ),
+          Expanded(child: tabs[selectedIndex]),
+        ],
       ),
     );
   }

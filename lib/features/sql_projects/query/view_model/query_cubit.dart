@@ -7,25 +7,49 @@ class QueryCubit extends Cubit<QueryStates> {
   final QueryApiService _dataSource;
   final UserProvider userProvider;
 
-  QueryCubit( {required this.userProvider, QueryApiService? dataSource})
-    : _dataSource = dataSource ?? QueryApiService(),
-      super(QueryInit());
-  Future<void>executeQuery(String query,String projectId  ) async
-  {
- emit(QueryExecutionLoading());
-     try {
+  QueryCubit({required this.userProvider, QueryApiService? dataSource})
+      : _dataSource = dataSource ?? QueryApiService(),
+        super(QueryInit());
+
+  Future<void> executeQuery(String query, String? projectId) async {
+ 
+    if (query.trim().isEmpty) {
+      emit(QueryExecutionError("Please enter a SQL query first."));
+      return;
+    }
+
+    if (projectId == null || projectId.isEmpty) {
+      emit(QueryExecutionError("Invalid Project ID. Please try re-opening the project."));
+      return;
+    }
+
+    emit(QueryExecutionLoading());
+    
+    try {
       final accessToken = userProvider.currentUser?.data?.accessToken;
+      
       if (accessToken == null || accessToken.isEmpty) {
-        emit(QueryExecutionError("User not logged in"));
+        emit(QueryExecutionError("User session expired. Please login again."));
         return;
       }
 
-      final response =
-          await _dataSource.executeQuery(query: query,projectId: projectId,accessToken: accessToken);
+      // 2. إرسال الطلب للسيرفر
+      final response = await _dataSource.executeQuery(
+        query: query.trim(), 
+        projectId: projectId,
+        accessToken: accessToken,
+      );
 
-      emit(QueryExecutionSuccess(response)); 
+  
+      emit(QueryExecutionSuccess(response));
+      
     } catch (e) {
-      emit(QueryExecutionError(e.toString()));
+    
+      String errorMessage = e.toString();
+      if (errorMessage.contains("Exception:")) {
+        errorMessage = errorMessage.replaceAll("Exception:", "").trim();
+      }
+      emit(QueryExecutionError(errorMessage));
     }
   }
 }

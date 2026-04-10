@@ -1,4 +1,5 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/settings/view/widgets/profile_section/profile_actions.dart';
@@ -31,7 +32,21 @@ class _ProfileSectionState extends State<ProfileSection> {
       text: userProvider.currentUser?.data?.email ?? 'Guest@gmail.com',
     );
   }
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  final userProvider = context.watch<UserProvider>();
+  
 
+  if (nameController.text != userProvider.displayName) {
+    nameController.text = userProvider.displayName;
+  }
+  
+  String email = userProvider.currentUser?.data?.email ?? 'Guest@gmail.com';
+  if (emailController.text != email) {
+    emailController.text = email;
+  }
+}
   @override
   void dispose() {
     nameController.dispose();
@@ -83,6 +98,7 @@ class _ProfileSectionState extends State<ProfileSection> {
                 return;
 
               await userProvider.updateUserName(newName);
+              UiUtils.showSuccessMessage(context,"User Name is Updated");
             },
           ),
         ],

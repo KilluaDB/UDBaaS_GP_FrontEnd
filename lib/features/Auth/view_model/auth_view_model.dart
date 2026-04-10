@@ -53,7 +53,7 @@ class AuthViewModel extends Cubit<AuthState> {
         userProvider.setUser(user);
         emit(LoginSuccess(response));
       } else {
-        emit(LoginError("Login failed: No data received"));
+        emit(LoginError("Login failed: Please Check your email or password"));
       }
     } catch (e) {
       emit(LoginError(e.toString().replaceAll('Exception: ', '')));
