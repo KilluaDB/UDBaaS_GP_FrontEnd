@@ -1,6 +1,7 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/helper/pick_image.dart';
 import 'package:dbaas_project/core/helper/save_avatar.dart';
+import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +23,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<SettingsProvider>().loadSavedAvatar();
+      context.read<UserProvider>().loadAvatar();
     });
   }
 
@@ -36,14 +37,14 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
 
     if (kIsWeb) {
       avatarWidget = _buildAvatar(
-        settingsProvider.webAvatarBytes != null
-            ? Image.memory(settingsProvider.webAvatarBytes!, fit: BoxFit.cover)
+        userProvider.webAvatarBytes != null
+            ? Image.memory(userProvider.webAvatarBytes!, fit: BoxFit.cover)
             : _initials(userProvider.displayName, textTheme),
       );
     } else {
       avatarWidget = _buildAvatar(
-        settingsProvider.avatarFile != null
-            ? Image.file(settingsProvider.avatarFile!, fit: BoxFit.cover)
+        userProvider.avatarFile != null
+            ? Image.file(userProvider.avatarFile!, fit: BoxFit.cover)
             : _initials(userProvider.displayName, textTheme),
       );
     }
@@ -63,7 +64,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                   final result = await PickImage.pickImage();
                   if (result == null) return;
 
-                  context.read<SettingsProvider>().updateAvatar(
+                  context.read<UserProvider>().updateAvatar(
                     file: result.file,
                     bytes: result.bytes,
                   );
@@ -72,6 +73,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                     file: result.file,
                     bytes: result.bytes,
                   );
+                      UiUtils.showSuccessMessage(context,"Profile Photo is Updated");
                 },
                 icon: const Icon(Icons.upload_file, color: AppTheme.black),
                 label: Text(
