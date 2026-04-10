@@ -47,7 +47,7 @@ class _AuthSectionState extends State<AuthSection> {
 
   @override
   Widget build(BuildContext context) {
-        final settingsProvider = context.watch<SettingsProvider>();
+
     AppLocalizations local = AppLocalizations.of(context)!;
     TextTheme textTheme = Theme.of(context).textTheme;
     return Form(
@@ -87,6 +87,7 @@ class _AuthSectionState extends State<AuthSection> {
                     } else if (state is LoginSuccess) {
                       UiUtils.hideLoading();
                       UiUtils.showSuccessMessage(context,"Successfull Login !");
+                      
                       Navigator.of(
                         context,
                       ).pushReplacementNamed(HomeScreen.routeName);
@@ -140,9 +141,7 @@ class _AuthSectionState extends State<AuthSection> {
                     },
                     child: Text(
                       local.createAccount,
-                      style: textTheme.titleSmall!.copyWith(
-                        color: AppTheme.white,
-                      ),
+               
                     ),
                   ),
                 ),
@@ -157,9 +156,10 @@ class _AuthSectionState extends State<AuthSection> {
                 widget.isSignUp
                     ? local.alreadyHaveAccount
                     : local.dontHaveAccount,
-                style: textTheme.titleSmall!.copyWith(color:settingsProvider.isDark?AppTheme.black:AppTheme.white),
+                style: textTheme.titleSmall!.copyWith(color: AppTheme.black),
                 softWrap: true,
               ),
+              SizedBox(width: 12.w,),
               InkWell(
                 onTap: widget.onTap,
                 child: Text(

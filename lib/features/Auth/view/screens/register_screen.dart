@@ -25,9 +25,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
     AppLocalizations local = AppLocalizations.of(context)!;
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppTheme.white,
+    
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
