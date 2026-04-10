@@ -36,7 +36,6 @@ class ResultPart extends StatelessWidget {
               final result = response.result;
               final executionTime = response.executionTimeMs ?? 0;
 
-              // حالة 1: تنفيذ استعلام INSERT/UPDATE/DELETE (صفوف متأثرة فقط)
               if (result == null || (result.columns.isEmpty)) {
                 return Center(
                   child: Column(
@@ -57,7 +56,7 @@ class ResultPart extends StatelessWidget {
                 );
               }
 
-              // حالة 2: تنفيذ استعلام SELECT (عرض جدول البيانات)
+         
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -124,8 +123,7 @@ class ResultPart extends StatelessWidget {
               );
             }
 
-            // الحالة الافتراضية قبل التنفيذ
-            return const EmptyResult();
+            return  EmptyResult();
           },
         ),
       ),

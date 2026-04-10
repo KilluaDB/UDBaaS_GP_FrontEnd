@@ -75,16 +75,18 @@ class _QueryPartState extends State<QueryPart> {
             ),
           ),
           SizedBox(height: 16.h),
-          
+
           // Editor Container
           Container(
             width: double.infinity,
-            height: 150.h, // تقليل الارتفاع قليلاً ليعطي مساحة للجدول تحت
+            height: 150.h, 
             padding: EdgeInsets.symmetric(horizontal: 12.w),
             decoration: BoxDecoration(
               color: provider.isDark ? Colors.grey[900] : Colors.grey[50],
               borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: provider.isDark ? Colors.white10 : Colors.black12),
+              border: Border.all(
+                color: provider.isDark ? Colors.white10 : Colors.black12,
+              ),
             ),
             child: TextField(
               controller: _queryController,
@@ -112,17 +114,22 @@ class _QueryPartState extends State<QueryPart> {
                 backgroundColor: AppTheme.primary,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
               ),
               onPressed: () {
                 final query = _queryController.text.trim();
-                
+
                 if (query.isEmpty) {
-                  UiUtils.showErrorMessage(context, "Please write a query first");
+                  UiUtils.showErrorMessage(
+                    context,
+                    "Please write a query first",
+                  );
                   return;
                 }
 
-                // التأكد من وجود ID للمشروع
+               
                 if (widget.project.id == null) {
                   UiUtils.showErrorMessage(context, "Project ID is missing!");
                   return;
@@ -131,8 +138,11 @@ class _QueryPartState extends State<QueryPart> {
                 // التأكد من تسجيل الدخول
                 final userProvider = context.read<UserProvider>();
                 if (userProvider.currentUser != null) {
-                  // تنفيذ الاستعلام
-                  context.read<QueryCubit>().executeQuery(query, widget.project.id!);
+                  print("Project ID: ${widget.project.id}");
+                  context.read<QueryCubit>().executeQuery(
+                    query,
+                    widget.project.id!,
+                  );
                 } else {
                   UiUtils.showErrorMessage(context, "User not authenticated");
                 }
