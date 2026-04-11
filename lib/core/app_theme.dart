@@ -43,6 +43,11 @@ class AppTheme {
         fontWeight: FontWeight.w500,
         color: black,
       ),
+        bodySmall: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: black,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -100,6 +105,11 @@ class AppTheme {
         fontSize: 15,
         fontWeight: FontWeight.w500,
         color: black,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: white,
       ),
       titleLarge: TextStyle(
         fontSize: 20,

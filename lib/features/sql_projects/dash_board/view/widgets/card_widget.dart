@@ -1,6 +1,8 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/data/models/state_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart' show Provider;
 
 class CardWidget extends StatelessWidget {
   final StatCard state;
@@ -9,9 +11,9 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-
+ SettingsProvider provider = Provider.of<SettingsProvider>(context);
     return Card(
-      color: AppTheme.white,
+        color: provider.isDark ? AppTheme.black : AppTheme.white,
       elevation: 0.5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
@@ -26,7 +28,7 @@ class CardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(state.title, style: textTheme.titleSmall),
+                Text(state.title, style: textTheme.titleSmall!.copyWith(color: provider.isDark?AppTheme.white:AppTheme.black)),
             
                 Container(
                   padding: const EdgeInsets.all(8),
@@ -54,8 +56,7 @@ class CardWidget extends StatelessWidget {
               state.description,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.titleSmall,
-            ),
+              style: textTheme.titleSmall!.copyWith(color: provider.isDark?AppTheme.white:AppTheme.black))
           ],
         ),
       ),

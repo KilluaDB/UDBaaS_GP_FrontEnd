@@ -30,9 +30,9 @@ class QuerySection extends StatelessWidget {
               children: [
                 Icon(Icons.electric_bolt_sharp, color: AppTheme.primary),
                 SizedBox(width: 12.w),
-                const Text(
+                 Text(
                   'Query Performance',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: textTheme.titleMedium,
                 ),
               ],
             ),
@@ -87,7 +87,7 @@ Widget _buildQueryTile({
         Expanded(
           child: Text(
             text,
-            style:  textTheme.titleSmall!.copyWith(fontFamily: 'monospace',),
+            style:  textTheme.bodySmall!.copyWith(fontFamily: 'monospace',),
          
             overflow: TextOverflow.ellipsis,
           ),
