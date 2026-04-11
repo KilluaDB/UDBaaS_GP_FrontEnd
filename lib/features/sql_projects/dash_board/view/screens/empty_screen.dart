@@ -22,7 +22,7 @@ class EmptyScreen extends StatelessWidget {
           SizedBox(height: 64.h),
           Container(
             height: 325.h,
-            width: double.infinity,
+       
             decoration: BoxDecoration(
               color: settings.isDark
                   ? AppTheme.backgroundColor.withValues(alpha: 0.2)
