@@ -35,64 +35,77 @@ class ResultPart extends StatelessWidget {
               final response = state.executeQueryResponse;
               final result = response.result;
               final executionTime = response.executionTimeMs ?? 0;
+              final int displayCount;
+              final bool isSelection = result != null && result.columns.isNotEmpty;
 
-              if (result == null || (result.columns.isEmpty)) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.check_circle, color: Colors.green, size: 40.sp),
-                      SizedBox(height: 10.h),
-                      Text(
-                        "Query Executed Successfully",
-                        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "${result?.rowCount ?? 0} rows affected • $executionTime ms",
-                        style: textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                );
+              if (isSelection) {
+                displayCount = result.rows.length;
+              } else {
+                displayCount = result?.rowsAffected ?? 0;
               }
 
-         
+              if (!isSelection) {
+                return _buildSuccessMessage(textTheme, displayCount, executionTime, isSelection: false);
+              }
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.table_chart_outlined, size: 20.sp, color: AppTheme.primary),
-                      SizedBox(width: 8.w),
-                      Text("Query Result", style: textTheme.titleSmall),
-                      const Spacer(),
-                      Text("$executionTime ms", style: textTheme.bodySmall),
-                    ],
-                  ),
+                  _buildResultHeader(textTheme, executionTime, displayCount, provider),
                   const Divider(),
                   Expanded(
-                    child: Scrollbar(
-                      thumbVisibility: true,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        scrollbarTheme: ScrollbarThemeData(
+                          thumbColor: WidgetStateProperty.all(AppTheme.primary.withOpacity(0.5)),
+                        ),
+                      ),
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        trackVisibility: true,
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: DataTable(
-                            headingRowColor: WidgetStateProperty.all(AppTheme.primary.withOpacity(0.1)),
-                            columns: result.columns
-                                .map<DataColumn>((col) => DataColumn(
-                                      label: Text(col.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                    ))
-                                .toList(),
-                            rows: result.rows.map<DataRow>((row) {
-                              return DataRow(
-                                cells: result.columns
-                                    .map<DataCell>((col) => DataCell(
-                                          Text(row[col]?.toString() ?? "NULL"),
-                                        ))
-                                    .toList(),
-                              );
-                            }).toList(),
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                              headingRowColor: WidgetStateProperty.all(AppTheme.primary.withOpacity(0.05)),
+                              dataRowMinHeight: 48.h,
+                              columnSpacing: 24.w,
+                              horizontalMargin: 12.w,
+                              border: TableBorder.all(
+                                color: provider.isDark ? Colors.white10 : Colors.black12,
+                                width: 0.5,
+                              ),
+                              columns: result.columns.map<DataColumn>((col) {
+                                return DataColumn(
+                                  label: Text(
+                                    col.toString().toUpperCase(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.primary,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              rows: result.rows.map<DataRow>((row) {
+                                return DataRow(
+                                  cells: result.columns.map<DataCell>((col) {
+                                    final value = row[col];
+                                    return DataCell(
+                                      Text(
+                                        value?.toString() ?? "NULL",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: value == null ? Colors.grey : (provider.isDark ? Colors.white70 : Colors.black87),
+                                          fontFamily: 'monospace',
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ),
@@ -103,29 +116,80 @@ class ResultPart extends StatelessWidget {
             }
 
             if (state is QueryExecutionError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline, color: Colors.red, size: 40.sp),
-                    SizedBox(height: 10.h),
-                    Text("Execution Error", style: textTheme.titleSmall?.copyWith(color: Colors.red)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Text(
-                        state.message,
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return _buildErrorMessage(textTheme, state.message);
             }
 
-            return  EmptyResult();
+            return const EmptyResult();
           },
         ),
+      ),
+    );
+  }
+
+
+  Widget _buildResultHeader(TextTheme textTheme, int executionTime, int count, SettingsProvider provider) {
+    return Row(
+      children: [
+        Icon(Icons.table_chart_outlined, size: 20.sp, color: AppTheme.primary),
+        SizedBox(width: 8.w),
+        Text("Query Result ($count rows)", 
+          style: textTheme.titleSmall!.copyWith(
+            color: provider.isDark ? AppTheme.white : AppTheme.black
+          )
+        ),
+        const Spacer(),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+          decoration: BoxDecoration(
+            color: Colors.green.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(4.r),
+          ),
+          child: Text("$executionTime ms", 
+            style: textTheme.bodySmall?.copyWith(
+              color: Colors.green, 
+              fontWeight: FontWeight.bold
+            )
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSuccessMessage(TextTheme textTheme, int count, int time, {required bool isSelection}) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.check_circle, color: Colors.green, size: 48.sp),
+          SizedBox(height: 12.h),
+          Text("Query Executed Successfully", 
+            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          SizedBox(height: 4.h),
+          Text(
+            isSelection 
+              ? "$count rows retrieved • $time ms" 
+              : "$count rows affected • $time ms",
+            style: textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorMessage(TextTheme textTheme, String message) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
+          SizedBox(height: 12.h),
+          Text("Execution Error", 
+            style: textTheme.titleSmall?.copyWith(color: Colors.red, fontWeight: FontWeight.bold)),
+          Padding(
+            padding: EdgeInsets.all(20.r),
+            child: Text(message, textAlign: TextAlign.center, style: textTheme.bodySmall),
+          ),
+        ],
       ),
     );
   }
