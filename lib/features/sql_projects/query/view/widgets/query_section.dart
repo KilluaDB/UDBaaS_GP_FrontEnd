@@ -5,12 +5,12 @@ import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; // تأكد من وجود الـ Bloc
+import 'package:flutter_bloc/flutter_bloc.dart'; 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class QueryPart extends StatefulWidget {
-  final ProjectModel project; // يفضل استخدام final
+  final ProjectModel project; 
   const QueryPart({super.key, required this.project});
 
   @override
@@ -135,7 +135,7 @@ class _QueryPartState extends State<QueryPart> {
                   return;
                 }
 
-                // التأكد من تسجيل الدخول
+              
                 final userProvider = context.read<UserProvider>();
                 if (userProvider.currentUser != null) {
                   print("Project ID: ${widget.project.id}");
