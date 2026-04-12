@@ -7,7 +7,6 @@ import 'package:dbaas_project/features/home/presentation/screens/home_screen.dar
 import 'package:dbaas_project/features/no_sql_projects/view/screens/main_screen_noSql.dart';
 import 'package:dbaas_project/features/projects/view/screens/create_project_screen.dart';
 import 'package:dbaas_project/features/sql_projects/main_screen_sql.dart';
-import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,11 +30,7 @@ runApp(
           userProvider: Provider.of<UserProvider>(context, listen: false),
         )..getAllProject(),
       ),
-      BlocProvider(
-        create: (context) => QueryCubit(
-          userProvider: Provider.of<UserProvider>(context, listen: false),
-        ),
-      ),
+
     ],
     child: const DBaasApp(),
   ),
