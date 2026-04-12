@@ -31,6 +31,7 @@ class EmptyTabQuery extends StatelessWidget {
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset(AppImages.codeLogo, width: 80.w, height: 90.h),
           SizedBox(height: 16.h),

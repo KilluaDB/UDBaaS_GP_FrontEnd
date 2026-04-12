@@ -11,6 +11,7 @@ class EmptyResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
                       AppImages.codeLogo,

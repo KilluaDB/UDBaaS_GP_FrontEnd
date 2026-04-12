@@ -7,16 +7,17 @@ class QueryCubit extends Cubit<QueryStates> {
   final QueryApiService _dataSource;
   final UserProvider userProvider;
 
+
   QueryCubit({required this.userProvider, QueryApiService? dataSource})
       : _dataSource = dataSource ?? QueryApiService(),
         super(QueryInit());
 
   Future<void> executeQuery(String query, String? projectId) async {
- 
     if (query.trim().isEmpty) {
       emit(QueryExecutionError("Please enter a SQL query first."));
       return;
     }
+
 
     if (projectId == null || projectId.isEmpty) {
       emit(QueryExecutionError("Invalid Project ID. Please try re-opening the project."));
@@ -33,18 +34,17 @@ class QueryCubit extends Cubit<QueryStates> {
         return;
       }
 
-      // 2. إرسال الطلب للسيرفر
       final response = await _dataSource.executeQuery(
         query: query.trim(), 
         projectId: projectId,
         accessToken: accessToken,
       );
 
-  
       emit(QueryExecutionSuccess(response));
       
     } catch (e) {
-    
+
+      
       String errorMessage = e.toString();
       if (errorMessage.contains("Exception:")) {
         errorMessage = errorMessage.replaceAll("Exception:", "").trim();
@@ -52,4 +52,6 @@ class QueryCubit extends Cubit<QueryStates> {
       emit(QueryExecutionError(errorMessage));
     }
   }
+
+
 }

@@ -16,10 +16,11 @@ class QueryEditor extends StatefulWidget {
 }
 
 class _QueryEditorState extends State<QueryEditor> {
-  bool isEmpty = false;
+
 
   @override
   Widget build(BuildContext context) {
+      bool isEmpty = false;
     final textTheme = Theme.of(context).textTheme;
     final SettingsProvider provider = Provider.of<SettingsProvider>(context);
  AppLocalizations local = AppLocalizations.of(context)!;
@@ -42,7 +43,7 @@ class _QueryEditorState extends State<QueryEditor> {
             style: textTheme.titleMedium!.copyWith(fontSize: 16.sp, color: provider.isDark ? AppTheme.white : AppTheme.black,),
           ),
           SizedBox(height: 24.h),
-          Expanded(child: isEmpty ? EmptyTabQuery() : FullQueryTab(project: widget.project,)),
+          isEmpty ? EmptyTabQuery() : Expanded(child: FullQueryTab(project: widget.project,)),
         ],
       ),
     );
