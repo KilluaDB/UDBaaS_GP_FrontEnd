@@ -1,5 +1,4 @@
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
-import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/query/data/data_source/query_api_service.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,6 +50,47 @@ class QueryCubit extends Cubit<QueryStates> {
         errorMessage = errorMessage.replaceAll("Exception:", "").trim();
       }
       emit(QueryExecutionError(errorMessage));
+    }
+  }
+
+  Future<void> executeTextToSQL(String question, String? projectId) async {
+    if (question.trim().isEmpty) {
+      emit(TextToSQLExecutionError("Please enter a question first."));
+      return;
+    }
+
+
+    if (projectId == null || projectId.isEmpty) {
+      emit(TextToSQLExecutionError("Invalid Project ID. Please try re-opening the project."));
+      return;
+    }
+
+    emit(TextToSQLExecutionLoading());
+    
+    try {
+      final accessToken = userProvider.currentUser?.data?.accessToken;
+      
+      if (accessToken == null || accessToken.isEmpty) {
+        emit(TextToSQLExecutionError("User session expired. Please login again."));
+        return;
+      }
+
+      final response = await _dataSource.executetextToSQL(
+        question: question.trim(), 
+        projectId: projectId,
+        accessToken: accessToken,
+      );
+
+      emit(TextToSQLExecutionSuccess(response));
+      
+    } catch (e) {
+
+      
+      String errorMessage = e.toString();
+      if (errorMessage.contains("Exception:")) {
+        errorMessage = errorMessage.replaceAll("Exception:", "").trim();
+      }
+      emit(TextToSQLExecutionError(errorMessage));
     }
   }
 

@@ -52,29 +52,31 @@ class _QueryEditorState extends State<QueryEditor> {
 
           Expanded(
             child: BlocConsumer<PostgresTablesCubit, PostgresTablesStates>(
-         listener: (context, state) {
-  if (state is GetAllTablesLoading) {
-    UiUtils.showLoading(context);
-  } else {
-    UiUtils.hideLoading();
-  }
+              listener: (context, state) {
+                if (state is GetAllTablesLoading) {
+                  UiUtils.showLoading(context);
+                } else {
+                  UiUtils.hideLoading();
+                }
 
-  if (state is GetAllTablesError) {
-    bool isNewProjectSchemaError = state.message.contains('Invalid project ID') || 
-                                   state.message.contains('schema name');
+                if (state is GetAllTablesError) {
+                  bool isNewProjectSchemaError =
+                      state.message.contains('Invalid project ID') ||
+                      state.message.contains('schema name');
 
-    if (!isNewProjectSchemaError) {
-      UiUtils.showErrorMessage(context, state.message);
-    }
-  }
-},
+                  if (!isNewProjectSchemaError) {
+                    UiUtils.showErrorMessage(context, state.message);
+                  }
+                }
+              },
               builder: (context, state) {
                 if (state is GetAllTablesLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
                 if (state is GetAllTablesSuccess) {
-                  final tablesList = (state.getTablesSuccessResponse.data as List?) ?? [];
+                  final tablesList =
+                      (state.getTablesSuccessResponse.data as List?) ?? [];
 
                   if (tablesList.isEmpty) {
                     return const EmptyTabQuery();
