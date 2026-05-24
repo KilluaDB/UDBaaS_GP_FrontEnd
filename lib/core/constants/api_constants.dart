@@ -7,4 +7,5 @@ class ApiConstants {
   static const String usersEndPoint = '/api/v1/users/me';
   static const String allProjectsEndPoint = '/api/v1/projects';
   static const String projectEndPoint = '/api/v1/projects/';
+  static const String textToSQLEndPoint = '/api/v1/projects/';
 }
