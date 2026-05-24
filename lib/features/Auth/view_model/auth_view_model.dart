@@ -1,8 +1,8 @@
+import 'package:flutter/foundation.dart'; // لـ debugPrint
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dbaas_project/core/models/user/data.dart';
 import 'package:dbaas_project/core/models/user/user.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dbaas_project/features/Auth/data/data_source/api_service.dart';
 import 'auth_states.dart';
 
@@ -30,7 +30,8 @@ class AuthViewModel extends Cubit<AuthState> {
       userProvider.setUser(user);
       emit(RegisterSuccess(response));
     } catch (e) {
-      emit(RegisterError(e.toString().replaceAll('Exception: ', '')));
+      String errorMessage = e.toString().replaceFirst(RegExp(r'^Exception: '), '');
+      emit(RegisterError(errorMessage));
     }
   }
 
@@ -53,10 +54,13 @@ class AuthViewModel extends Cubit<AuthState> {
         userProvider.setUser(user);
         emit(LoginSuccess(response));
       } else {
-        emit(LoginError("Login failed: Please Check your email or password"));
+        emit(LoginError("Login failed: Unexpected server response"));
       }
     } catch (e) {
-      emit(LoginError(e.toString().replaceAll('Exception: ', '')));
+      debugPrint("Login failed error: $e");
+      
+      String errorMessage = e.toString().replaceFirst(RegExp(r'^Exception: '), '');
+      emit(LoginError(errorMessage));
     }
   }
 }

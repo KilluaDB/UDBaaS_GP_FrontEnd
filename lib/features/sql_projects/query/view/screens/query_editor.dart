@@ -1,29 +1,32 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
+import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
+import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/empty_tab_query.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class QueryEditor extends StatefulWidget {
-    ProjectModel project;
-   QueryEditor({required this.project});
+  final ProjectModel project;
+  const QueryEditor({super.key, required this.project});
+
   @override
   State<QueryEditor> createState() => _QueryEditorState();
 }
 
 class _QueryEditorState extends State<QueryEditor> {
-
-
   @override
   Widget build(BuildContext context) {
-      bool isEmpty = false;
     final textTheme = Theme.of(context).textTheme;
     final SettingsProvider provider = Provider.of<SettingsProvider>(context);
- AppLocalizations local = AppLocalizations.of(context)!;
+    AppLocalizations local = AppLocalizations.of(context)!;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 0.05.sw),
       child: Column(
@@ -40,10 +43,50 @@ class _QueryEditorState extends State<QueryEditor> {
           SizedBox(height: 4.h),
           Text(
             'Write and execute database queries',
-            style: textTheme.titleMedium!.copyWith(fontSize: 16.sp, color: provider.isDark ? AppTheme.white : AppTheme.black,),
+            style: textTheme.titleMedium!.copyWith(
+              fontSize: 16.sp,
+              color: provider.isDark ? AppTheme.white : AppTheme.black,
+            ),
           ),
           SizedBox(height: 24.h),
-          isEmpty ? EmptyTabQuery() : Expanded(child: FullQueryTab(project: widget.project,)),
+
+          Expanded(
+            child: BlocConsumer<PostgresTablesCubit, PostgresTablesStates>(
+         listener: (context, state) {
+  if (state is GetAllTablesLoading) {
+    UiUtils.showLoading(context);
+  } else {
+    UiUtils.hideLoading();
+  }
+
+  if (state is GetAllTablesError) {
+    bool isNewProjectSchemaError = state.message.contains('Invalid project ID') || 
+                                   state.message.contains('schema name');
+
+    if (!isNewProjectSchemaError) {
+      UiUtils.showErrorMessage(context, state.message);
+    }
+  }
+},
+              builder: (context, state) {
+                if (state is GetAllTablesLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state is GetAllTablesSuccess) {
+                  final tablesList = (state.getTablesSuccessResponse.data as List?) ?? [];
+
+                  if (tablesList.isEmpty) {
+                    return const EmptyTabQuery();
+                  } else {
+                    return FullQueryTab(project: widget.project);
+                  }
+                }
+
+                return const EmptyTabQuery();
+              },
+            ),
+          ),
         ],
       ),
     );

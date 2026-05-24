@@ -1,4 +1,5 @@
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
+import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/query/data/data_source/query_api_service.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

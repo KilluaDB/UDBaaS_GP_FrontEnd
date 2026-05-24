@@ -71,7 +71,8 @@ class _AuthSectionState extends State<AuthSection> {
           CustomTextFormField(
             controller: passwordController,
             validator: (value) {
-              return Validator.validatePassword(value);
+              return  widget.isSignUp == true?
+               Validator.validatePassword(value): null;
             },
             hintText: 'Enter your password',
             isPassword: true,
