@@ -61,4 +61,5 @@ class AppImages {
   static const String notificationLogo = 'assets/images/icons/notification.svg';
   static const String codeLogo = 'assets/images/icons/codeLogo.svg';
   static const String infoLogo = 'assets/images/icons/info_logo.svg';
+  static const String schemaLogo = 'assets/images/icons/schema.svg';
 }
