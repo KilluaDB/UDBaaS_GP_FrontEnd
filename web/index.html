@@ -1,37 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="dbaas_project">
-  <link rel="apple-touch-icon" href="favicon.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="description" content="DBaaS Platform">
 
   <title>UDBaaS Platform</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- svg-pan-zoom -->
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "default",
+      securityLevel: "loose"
+    });
+
+    window.panZoomInstance = null;
+
+function renderMermaid(containerId, code) {
+  const element = document.getElementById(containerId);
+  if (!element) return;
+
+  // reset
+  element.innerHTML = "";
+
+  // IMPORTANT: force full size container
+  element.style.width = "100%";
+  element.style.height = "100%";
+  element.style.backgroundColor = "#eef4fb";
+  element.style.overflow = "hidden";
+  element.style.position = "relative";
+
+  const id = "mmd_" + Date.now();
+
+  mermaid.render(id, code)
+    .then(({ svg }) => {
+      element.innerHTML = svg;
+
+      setTimeout(() => {
+        const svgElement = element.querySelector("svg");
+        if (!svgElement) return;
+
+        // IMPORTANT: make SVG fill parent properly
+        svgElement.style.width = "100%";
+        svgElement.style.height = "100%";
+        svgElement.style.display = "block";
+        svgElement.style.maxWidth = "none";
+        svgElement.style.maxHeight = "none";
+
+        svgElement.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+        // destroy previous instance safely
+        if (window.panZoomInstance) {
+          window.panZoomInstance.destroy();
+          window.panZoomInstance = null;
+        }
+
+        // create new instance
+        window.panZoomInstance = svgPanZoom(svgElement, {
+          zoomEnabled: true,
+          panEnabled: true,
+          controlIconsEnabled: false,
+          fit: true,
+          center: true,
+          minZoom: 0.1,
+          maxZoom: 10,
+        });
+
+      }, 50); // 👈 مهم: 0 أحيانًا بتكون بدري زيادة
+    })
+    .catch((err) => {
+      console.error("MERMAID ERROR:", err);
+      element.innerHTML = "<div style='color:gray'>Error rendering diagram</div>";
+    });
+}function zoomIn() {
+  if (!window.panZoomInstance) return;
+  window.panZoomInstance.zoomIn();
+}
+
+function zoomOut() {
+  if (!window.panZoomInstance) return;
+  window.panZoomInstance.zoomOut();
+}
+
+function resetZoom() {
+  if (!window.panZoomInstance) return;
+  window.panZoomInstance.resetZoom();
+  window.panZoomInstance.center();
+  window.panZoomInstance.fit();
+}
+  </script>
 </head>
+
 <body>
   <script src="flutter_bootstrap.js" async></script>
 </body>
