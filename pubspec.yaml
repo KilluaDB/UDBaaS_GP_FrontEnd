@@ -48,6 +48,8 @@ dependencies:
   fluttertoast: ^8.2.12
   jwt_decoder: ^2.0.1
   fl_chart: ^0.70.0
+
+  
   
 
 dev_dependencies:

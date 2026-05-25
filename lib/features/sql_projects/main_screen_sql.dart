@@ -6,8 +6,9 @@ import 'package:dbaas_project/features/sql_projects/dash_board/view/screens/dash
 import 'package:dbaas_project/features/sql_projects/end_darwer.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/query_editor.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
-import 'package:dbaas_project/features/sql_projects/schema_visulization/schema_visualizer.dart';
+import 'package:dbaas_project/features/sql_projects/schema_visulization/view/presentation/schema_visualizer.dart';
 import 'package:dbaas_project/features/sql_projects/schema_generation/view/screens/scheme_generator.dart';
+import 'package:dbaas_project/features/sql_projects/schema_visulization/view_model/schema_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/table_editor.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view/screens/database_tab.dart';
 import 'package:dbaas_project/features/projects/view/widgets/drawer/drawer.dart';
@@ -37,6 +38,9 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
         BlocProvider<QueryCubit>(
           create: (context) => QueryCubit(userProvider: userProvider),
         ),
+               BlocProvider<SchemaCubit>(
+          create: (context) => SchemaCubit(userProvider: userProvider),
+        ),
         BlocProvider<PostgresTablesCubit>(
           create: (context) => PostgresTablesCubit(userProvider: userProvider)
             ..getAllTables(project.id!), 
@@ -60,7 +64,7 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
               tableName: selectedTableName,
             ),
             QueryEditor(project: project), 
-            const SchemaVisualizer(),
+             SchemaVisualizer(project: project),
             const SchemeGenerator(),
             DeleteScreen(project: project),
           ];
@@ -82,6 +86,12 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
     context.read<PostgresTablesCubit>()
         .getAllTables(project.id!, isSilentRefresh: false);
   }
+                         if (index == 4) {
+    context.read<SchemaCubit>()
+        .visualizeSchema(projectId: project.id!,accessToken:userProvider.currentUser!.data!.accessToken! );
+  }
+    
+    
                   },
                 ),
                 Expanded(
