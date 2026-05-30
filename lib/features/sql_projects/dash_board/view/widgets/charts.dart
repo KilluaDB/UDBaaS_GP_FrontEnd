@@ -1,15 +1,21 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/features/sql_projects/dash_board/data/models/query_history.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class DashboardCharts extends StatelessWidget {
-  const DashboardCharts({super.key});
+  final List<QueryHistoryItem> queries;
+
+  const DashboardCharts({
+    super.key,
+    required this.queries,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-     
+        // Bar Chart
         Expanded(
           flex: 1,
           child: _buildChartCard(
@@ -17,52 +23,76 @@ class DashboardCharts extends StatelessWidget {
             subtitle: 'Last 5 queries performance',
             child: BarChart(
               BarChartData(
-                maxY: 1200, 
+                maxY: _getMaxY(),
                 gridData: FlGridData(
                   show: true,
                   drawVerticalLine: false,
                   getDrawingHorizontalLine: (value) => FlLine(
                     color: Colors.grey,
                     strokeWidth: 1,
-                    dashArray: [5, 5]
+                    dashArray: [5, 5],
                   ),
                 ),
                 titlesData: FlTitlesData(
                   show: true,
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
-                        const titles = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'];
+                        final titles = List.generate(
+                          queries.length.clamp(0, 5),
+                          (i) => 'Q${i + 1}',
+                        );
+
+                        if (value.toInt() >= titles.length) {
+                          return const SizedBox();
+                        }
+
                         return Padding(
                           padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(titles[value.toInt()],
-                              style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                          child: Text(
+                            titles[value.toInt()],
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                          ),
                         );
                       },
                     ),
                   ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 40,
-                      getTitlesWidget: (value, meta) {
-                        if (value % 300 == 0) { // إظهار قيم 0, 300, 600, 900, 1200
-                          return Text('${value.toInt()}',
-                              style: const TextStyle(color: Colors.grey, fontSize: 12));
-                        }
-                        return Container();
-                      },
-                    ),
-                  ),
+          // في جزء الـ leftTitles
+leftTitles: AxisTitles(
+  sideTitles: SideTitles(
+    showTitles: true,
+    reservedSize: 40,
+    interval: _getMaxY() / 4, // بيقسم الـ maxY لأربع مسافات متساوية
+    getTitlesWidget: (value, meta) {
+      // إظهار القيم كأرقام صحيحة
+      return Text(
+        '${value.toInt()}',
+        style: const TextStyle(color: Colors.grey, fontSize: 10),
+      );
+    },
+  ),
+),
+               
                 ),
                 borderData: FlBorderData(
                   show: true,
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
-                    left: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1),
+                    bottom: BorderSide(
+                      color: Colors.grey.withOpacity(0.5),
+                    ),
+                    left: BorderSide(
+                      color: Colors.grey.withOpacity(0.5),
+                    ),
                   ),
                 ),
                 barGroups: _getBarGroups(),
@@ -70,26 +100,36 @@ class DashboardCharts extends StatelessWidget {
             ),
           ),
         ),
+
         const SizedBox(width: 16),
-        
-        // 2. Query Status Distribution (Donut Chart)
+
+        // Pie Chart
         Expanded(
           flex: 1,
           child: _buildChartCard(
-            title: 'Query Status Distribution',
-            subtitle: 'Success vs Failed queries',
-            child: Stack( // عشان نعمل الـ Labels اللي في الجنب زي الصورة
+            title: 'Query Speed Distribution',
+            subtitle: 'Fast vs Slow queries',
+            child: Stack(
               children: [
                 PieChart(
                   PieChartData(
                     sectionsSpace: 4,
-                    centerSpaceRadius: 60, // فراغ أكبر في النص عشان تبقى Donut
+                    centerSpaceRadius: 60,
                     sections: _getPieSections(),
                   ),
                 ),
-                // إضافة نصوص التوضيح (Success: 23, Failed: 1)
-                PositionPointer(label: "Success: 23", color: AppTheme.green, alignment: Alignment.centerLeft),
-                PositionPointer(label: "Failed: 1", color: Colors.red, alignment: Alignment.centerRight),
+                PositionPointer(
+                  label:
+                      "Fast: ${_fastQueriesCount()}",
+                  color: AppTheme.green,
+                  alignment: Alignment.centerLeft,
+                ),
+                PositionPointer(
+                  label:
+                      "Slow: ${_slowQueriesCount()}",
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                ),
               ],
             ),
           ),
@@ -98,21 +138,41 @@ class DashboardCharts extends StatelessWidget {
     );
   }
 
-  Widget _buildChartCard({required String title, required String subtitle, required Widget child}) {
+  // ---------------- CARD UI ----------------
+
+  Widget _buildChartCard({
+    required String title,
+    required String subtitle,
+    required Widget child,
+  }) {
     return Card(
       color: AppTheme.white,
       elevation: 0.5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16), // حواف أنعم شوية
-        side: BorderSide(color: AppTheme.gray.withOpacity(0.1)),
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: AppTheme.gray.withOpacity(0.1),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            Text(subtitle, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              subtitle,
+              style: TextStyle(
+                color: Colors.grey.shade500,
+                fontSize: 12,
+              ),
+            ),
             const SizedBox(height: 30),
             SizedBox(height: 220, child: child),
           ],
@@ -121,48 +181,94 @@ class DashboardCharts extends StatelessWidget {
     );
   }
 
-  List<BarChartGroupData> _getBarGroups() {
-    // القيم التقريبية من الصورة
-    final data = [500.0, 600.0, 320.0, 80.0, 1150.0];
-    return List.generate(data.length, (i) {
-      return BarChartGroupData(
-        x: i,
-        barRods: [
-          BarChartRodData(
-            toY: data[i],
-            color: const Color(0xFF3B82F6), // اللون الأزرق الموجود في الصورة
-            width: 35, // عرض العمود
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-          ),
-        ],
-      );
-    });
+  // ---------------- BAR CHART ----------------
+List<BarChartGroupData> _getBarGroups() {
+  final data = queries.take(5).map((q) => q.meanTimeMs).toList();
+
+  while (data.length < 5) {
+    data.add(0);
   }
 
-  List<PieChartSectionData> _getPieSections() {
+  return List.generate(data.length, (i) {
+    return BarChartGroupData(
+      x: i,
+      barRods: [
+        BarChartRodData(
+          toY: data[i],
+          color: const Color(0xFF3B82F6),
+          width: 35,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(6),
+          ),
+        ),
+      ],
+    );
+  });
+}
+double _getMaxY() {
+  if (queries.isEmpty) return 100; // قيمة افتراضية لو مفيش داتا
+
+  final values = queries.map((q) => q.meanTimeMs).toList();
+  final maxVal = values.reduce((a, b) => a > b ? a : b);
+
+  // لو القيم صغيرة جداً (مثلاً تحت 50ms) نخلي الـ maxY هو 100
+  // لو القيم كبيرة، نخلي الـ maxY هو القيمة القصوى + 20% للراحة
+  return maxVal < 100 ? 5 : (maxVal * 1.2);
+}
+  // ---------------- PIE CHART ----------------
+
+List<PieChartSectionData> _getPieSections() {
+  final slow = _slowQueriesCount();
+  final fast = _fastQueriesCount();
+
+  if (queries.isEmpty) {
     return [
       PieChartSectionData(
-        color: AppTheme.green, // اللون الأخضر للـ Success
-        value: 23,
-        showTitle: false, // لا نريد أرقام داخل الرسمة
-        radius: 20,
-      ),
-      PieChartSectionData(
-        color: Colors.red.shade400, // اللون الأحمر للـ Failed
+        color: Colors.grey.shade300,
         value: 1,
         showTitle: false,
         radius: 20,
       ),
     ];
   }
+
+  return [
+    PieChartSectionData(
+      color: AppTheme.green,
+      value: fast.toDouble(),
+      showTitle: false,
+      radius: 20,
+    ),
+    PieChartSectionData(
+      color: Colors.red.shade400,
+      value: slow.toDouble(),
+      showTitle: false,
+      radius: 20,
+    ),
+  ];
 }
+  int _slowQueriesCount() {
+    return queries.where((q) => q.meanTimeMs > 1000).length;
+  }
+
+  int _fastQueriesCount() {
+    return queries.where((q) => q.meanTimeMs <= 1000).length;
+  }
+}
+
+// ---------------- LABEL ----------------
 
 class PositionPointer extends StatelessWidget {
   final String label;
   final Color color;
   final Alignment alignment;
 
-  const PositionPointer({super.key, required this.label, required this.color, required this.alignment});
+  const PositionPointer({
+    super.key,
+    required this.label,
+    required this.color,
+    required this.alignment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -171,12 +277,18 @@ class PositionPointer extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (alignment == Alignment.centerRight) Container(width: 15, height: 1, color: Colors.grey.shade300),
+          if (alignment == Alignment.centerRight)
+            Container(width: 15, height: 1, color: Colors.grey.shade300),
           Text(
             label,
-            style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 14),
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
           ),
-          if (alignment == Alignment.centerLeft) Container(width: 15, height: 1, color: Colors.grey.shade300),
+          if (alignment == Alignment.centerLeft)
+            Container(width: 15, height: 1, color: Colors.grey.shade300),
         ],
       ),
     );
