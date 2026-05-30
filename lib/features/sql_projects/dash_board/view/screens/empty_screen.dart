@@ -17,6 +17,7 @@ class EmptyScreen extends StatelessWidget {
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+   
         children: [
           Text('Dashboard', style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.bold)),
           SizedBox(height: 64.h),
