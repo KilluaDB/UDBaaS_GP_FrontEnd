@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DataBaseTab extends StatelessWidget {
+class DataBaseTab extends StatefulWidget {
   final ProjectModel project;
 
   final Function(String tableName, int index) onNavigate;
@@ -19,6 +19,17 @@ class DataBaseTab extends StatelessWidget {
     required this.onNavigate,
   });
 
+  @override
+  State<DataBaseTab> createState() => _DataBaseTabState();
+}
+
+class _DataBaseTabState extends State<DataBaseTab> {
+@override
+  void initState() {
+    super.initState();
+ 
+    context.read<PostgresTablesCubit>().getAllTables(widget.project.id!);
+  }
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -75,9 +86,9 @@ class DataBaseTab extends StatelessWidget {
                   }
 
                   return FullDatabaseScreen(
-                    projectId: project.id!,
+                    projectId: widget.project.id!,
                     onTableSelected: (tableName) {
-                      onNavigate(tableName, 2);
+                      widget.onNavigate(tableName, 2);
                     },
                   );
                 }
@@ -90,9 +101,9 @@ class DataBaseTab extends StatelessWidget {
                   }
 
                   return FullDatabaseScreen(
-                    projectId: project.id!,
+                    projectId: widget.project.id!,
                     onTableSelected: (tableName) {
-                      onNavigate(tableName, 2);
+                      widget.onNavigate(tableName, 2);
                     },
                   );
                 }

@@ -3,6 +3,7 @@ import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart'
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view/screens/dash_board.dart';
+import 'package:dbaas_project/features/sql_projects/dash_board/view_model/dash_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/end_darwer.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/query_editor.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
@@ -30,7 +31,7 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
 
   @override
   Widget build(BuildContext context) {
-    final project = ModalRoute.of(context)!.settings.arguments as ProjectModel;
+    ProjectModel project = ModalRoute.of(context)!.settings.arguments as ProjectModel;
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return MultiBlocProvider(
@@ -41,6 +42,9 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
                BlocProvider<SchemaCubit>(
           create: (context) => SchemaCubit(userProvider: userProvider),
         ),
+                     BlocProvider<DashCubit>(
+          create: (context) => DashCubit(userProvider: userProvider),
+        ),
         BlocProvider<PostgresTablesCubit>(
           create: (context) => PostgresTablesCubit(userProvider: userProvider)
             ..getAllTables(project.id!), 
@@ -49,7 +53,7 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
       child: Builder(
         builder: (context) {
           final List<Widget> tabs = [
-            const DashBoard(),
+             DashBoard(project:project,),
             DataBaseTab(
               project: project,
               onNavigate: (tableName, index) {
@@ -82,14 +86,8 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
                       selectedIndex = index;
 
                     });
-                     if (index == 1) {
-    context.read<PostgresTablesCubit>()
-        .getAllTables(project.id!, isSilentRefresh: false);
-  }
-                         if (index == 4) {
-    context.read<SchemaCubit>()
-        .visualizeSchema(projectId: project.id!,accessToken:userProvider.currentUser!.data!.accessToken! );
-  }
+
+
     
     
                   },
