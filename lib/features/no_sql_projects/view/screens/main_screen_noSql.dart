@@ -22,7 +22,7 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
     ProjectModel project =
 
         ModalRoute.of(context)!.settings.arguments as ProjectModel;
-  final List<Widget> tabs = [DashBoard(), CollectionEditor(), Collections(),DeleteScreen(project: project)];
+  final List<Widget> tabs = [      DashBoard(project:project,), CollectionEditor(), Collections(),DeleteScreen(project: project)];
     return Scaffold(
       body: Row(
         children: [
