@@ -44,7 +44,7 @@ class _SchemaVisualizerState extends State<FullScreenTab> {
 
     context.read<SchemaCubit>().visualizeSchema(
           projectId: widget.project.id!,
-          accessToken: userProvider.currentUser!.data!.accessToken!,
+    
         );
   }
 
