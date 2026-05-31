@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String baseURL =
-      'https://coverage-latino-communist-disable.trycloudflare.com';
+      'https://due-jake-retired-plants.trycloudflare.com';
   static const String registerEndPoint = '/api/v1/auth/register';
   static const String loginEndPoint = '/api/v1/auth/login';
   static const String logoutEndPoint = '/api/v1/auth/logout';
