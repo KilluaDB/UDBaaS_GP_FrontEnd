@@ -42,9 +42,11 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
         ),
                BlocProvider<SchemaCubit>(
           create: (context) => SchemaCubit(userProvider: userProvider),
+         
         ),
                      BlocProvider<DashCubit>(
           create: (context) => DashCubit(userProvider: userProvider),
+          
         ),
         BlocProvider<PostgresTablesCubit>(
           create: (context) => PostgresTablesCubit(userProvider: userProvider)
@@ -53,6 +55,7 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
         BlocProvider<PostgresTableEditorCubit>(
           create: (context) => PostgresTableEditorCubit(userProvider: userProvider)
         ),
+
       ],
       child: Builder(
         builder: (context) {
@@ -96,7 +99,11 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
 
                     });
 
-    
+                             if (index == 4) {
+    context.read<SchemaCubit>()
+        .visualizeSchema(projectId: project.id! );
+  }
+
     
                   },
                 ),
