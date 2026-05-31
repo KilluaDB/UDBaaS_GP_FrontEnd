@@ -6,6 +6,7 @@ class ProjectModel {
   String? dbType;
   String? resourceTier;
   String? createdAt;
+  String? password;
 
   ProjectModel({
     this.id,
@@ -15,6 +16,7 @@ class ProjectModel {
     this.dbType,
     this.resourceTier,
     this.createdAt,
+    this.password
   });
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
@@ -25,6 +27,7 @@ class ProjectModel {
     dbType: json['db_type'] as String?,
     resourceTier: json['resource_tier'] as String?,
     createdAt: json['created_at'] as String?,
+    password: json['password'] as String?
   );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +38,6 @@ class ProjectModel {
     'db_type': dbType,
     'resource_tier': resourceTier,
     'created_at': createdAt,
+    'password':password
   };
 }

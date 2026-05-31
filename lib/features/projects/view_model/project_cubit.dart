@@ -8,12 +8,14 @@ class ProjectCubit extends Cubit<ProjectStates> {
   final UserProvider userProvider;
 
   ProjectCubit({required this.userProvider, ProjectApiService? dataSource})
-      : _dataSource = dataSource ?? ProjectApiService(),
-        super(ProjectInit());
-
+    : _dataSource = dataSource ?? ProjectApiService(),
+      super(ProjectInit());
 
   Future<void> createProject(
-      String name, String dbType) async {
+    String name,
+    String dbType,
+    String password,
+  ) async {
     emit(CreateProjectLoading());
     try {
       final accessToken = userProvider.currentUser?.data?.accessToken;
@@ -22,15 +24,18 @@ class ProjectCubit extends Cubit<ProjectStates> {
         return;
       }
 
-      final response =
-          await _dataSource.createProject(accessToken, name, dbType);
-
-      emit(CreateProjectSuccess(response)); 
+      final response = await _dataSource.createProject(
+        accessToken,
+        name,
+        dbType,
+        password,
+      );
+   
+      emit(CreateProjectSuccess(response));
     } catch (e) {
       emit(CreateProjectError(e.toString()));
     }
   }
-
 
   Future<void> getAllProject() async {
     emit(GetAllProjectsLoading());
@@ -43,12 +48,11 @@ class ProjectCubit extends Cubit<ProjectStates> {
 
       final response = await _dataSource.getAllProjects(accessToken);
 
-      emit(GetAllProjectsSuccess(response)); 
+      emit(GetAllProjectsSuccess(response));
     } catch (e) {
       emit(GetAllProjectsError(e.toString()));
     }
   }
-
 
   Future<void> getProject(String projectId) async {
     emit(GetProjectLoading());
@@ -61,12 +65,11 @@ class ProjectCubit extends Cubit<ProjectStates> {
 
       final response = await _dataSource.getProject(accessToken, projectId);
 
-      emit(GetProjectSuccess(response)); 
+      emit(GetProjectSuccess(response));
     } catch (e) {
       emit(GetProjectError(e.toString()));
     }
   }
-
 
   Future<void> deleteProject(String projectId) async {
     emit(DeleteProjectLoading());
@@ -79,7 +82,7 @@ class ProjectCubit extends Cubit<ProjectStates> {
 
       final response = await _dataSource.deleteProject(accessToken, projectId);
 
-      emit(DeleteProjectSuccess(response)); 
+      emit(DeleteProjectSuccess(response));
     } catch (e) {
       emit(DeleteProjectError(e.toString()));
     }
