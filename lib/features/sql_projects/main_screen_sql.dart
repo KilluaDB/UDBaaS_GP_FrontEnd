@@ -10,9 +10,10 @@ import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit
 import 'package:dbaas_project/features/sql_projects/schema_visulization/view/presentation/schema_visualizer.dart';
 import 'package:dbaas_project/features/sql_projects/schema_generation/view/screens/scheme_generator.dart';
 import 'package:dbaas_project/features/sql_projects/schema_visulization/view_model/schema_cubit.dart';
-import 'package:dbaas_project/features/sql_projects/table_editor/table_editor.dart';
+import 'package:dbaas_project/features/sql_projects/table_editor/view/screens/table_editor.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view/screens/database_tab.dart';
 import 'package:dbaas_project/features/projects/view/widgets/drawer/drawer.dart';
+import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,9 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
           create: (context) => PostgresTablesCubit(userProvider: userProvider)
             ..getAllTables(project.id!), 
         ),
+        BlocProvider<PostgresTableEditorCubit>(
+          create: (context) => PostgresTableEditorCubit(userProvider: userProvider)
+        ),
       ],
       child: Builder(
         builder: (context) {
@@ -61,11 +65,16 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
                   selectedIndex = index;
                   selectedTableName = tableName;
                 });
+                  context.read<PostgresTableEditorCubit>().getAllRows(
+    projectId: project.id!,
+    tableName: tableName,
+  );
               },
             ),
             TableEditor(
               key: ValueKey(selectedTableName), 
               tableName: selectedTableName,
+              projectId:project.id!
             ),
             QueryEditor(project: project), 
              SchemaVisualizer(project: project),
