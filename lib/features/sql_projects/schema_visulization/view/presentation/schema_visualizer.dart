@@ -2,10 +2,12 @@ import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/schema_visulization/view/presentation/empty_tab.dart';
 import 'package:dbaas_project/features/sql_projects/schema_visulization/view/presentation/full_screen_tab.dart';
+import 'package:dbaas_project/features/sql_projects/schema_visulization/view_model/schema_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,10 +18,27 @@ class SchemaVisualizer extends StatefulWidget {
    SchemaVisualizer({super.key, required this.project});
 
   @override
-  State<SchemaVisualizer> createState() => _QueryEditorState();
+  State<SchemaVisualizer> createState() => _SchemaVisualizerState();
 }
 
-class _QueryEditorState extends State<SchemaVisualizer> {
+class _SchemaVisualizerState extends State<SchemaVisualizer> {
+
+    
+    @override
+@override
+void initState() {
+  super.initState();
+  context.read<SchemaCubit>().visualizeSchema(
+    projectId: widget.project.id!,
+  );
+  
+ 
+  context.read<PostgresTablesCubit>().getAllTables(
+   widget.project.id!, 
+    isSilentRefresh: false
+  );
+}
+  
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

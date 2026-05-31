@@ -95,14 +95,6 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
                       selectedIndex = index;
 
                     });
-                    if (index == 1) {
-    context.read<PostgresTablesCubit>()
-        .getAllTables(project.id!, isSilentRefresh: false);
-  }
-                         if (index == 4) {
-    context.read<SchemaCubit>()
-        .visualizeSchema(projectId: project.id!,accessToken:userProvider.currentUser!.data!.accessToken! );
-  }
 
     
     

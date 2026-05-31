@@ -16,12 +16,17 @@ String fixMermaid(String input) {
 
   Future<void> visualizeSchema({
     required String projectId,
-    required String accessToken,
     String schema = "public",
   }) async {
     emit(PostgresSchemaVisualizationLoading());
 
     try {
+          final accessToken = userProvider.currentUser?.data?.accessToken;
+      
+      if (accessToken == null || accessToken.isEmpty) {
+        emit(PostgresSchemaVisualizationError("User session expired. Please login again."));
+        return;
+      }
       final response = await _dataSource. visualizePostgresSchema(
         projectId: projectId,
         accessToken: accessToken,
