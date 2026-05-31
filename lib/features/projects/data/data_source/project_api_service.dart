@@ -10,6 +10,7 @@ class ProjectApiService {
     String accessToken,
     String name,
     String dbType,
+    String password
 
   ) async {
     final uri = Uri.parse(
@@ -25,10 +26,11 @@ class ProjectApiService {
         body: jsonEncode({
           'name': name,
           'db_type': dbType,
+          'password':password
         
         }),
       );
-
+   print(response.body);
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
         return ProjectCreateResponse.fromJson(json);
