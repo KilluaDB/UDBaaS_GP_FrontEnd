@@ -52,4 +52,30 @@ static String? validatePassword(String? val) {
       return null;
     }
   }
+  static String? validateColumnName(String? val) {
+  final RegExp columnRegex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_$]*$');
+
+  if (val == null || val.trim().isEmpty) {
+    return 'Column name is required';
+  }
+
+  if (!columnRegex.hasMatch(val.trim())) {
+    return 'Must start with letter/_ and contain only letters, numbers, _ or \$';
+  }
+
+  return null;
+}
+static String? validateTableName(String? val) {
+  final RegExp tableRegex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_$]*$');
+
+  if (val == null || val.trim().isEmpty) {
+    return 'Table name is required';
+  }
+
+  if (!tableRegex.hasMatch(val.trim())) {
+    return 'Must start with letter/_ and contain only letters, numbers, _ or \$';
+  }
+
+  return null;
+}
 }
