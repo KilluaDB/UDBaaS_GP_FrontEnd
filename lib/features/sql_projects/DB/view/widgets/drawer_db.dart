@@ -141,7 +141,7 @@ class _DrawerDBState extends State<DrawerDB> {
                         SizedBox(height: 8.h),
                         CustomTextFormField(
                           controller: tableNameController,
-                          validator: Validator.validateProjectName,
+                          validator: Validator.validateTableName,
                           hintText: 'e.g. users',
                         ),
                         SizedBox(height: 4.h),
@@ -321,6 +321,10 @@ availableTables =
                     ),
                   ],
                 ),
+             
+             
+             
+             
               ],
             ),
           ),
@@ -615,7 +619,7 @@ _buildLabelAndDropdown(
                     CustomTextFormField(
                       controller: columns[index]['name'],
                       hintText: 'column_name',
-                      validator: Validator.validateProjectName,
+                      validator: Validator.validateColumnName,
                     ),
                   ],
                 ),
