@@ -12,67 +12,71 @@ class EditorApiService {
       };
 
   String _basePath(String projectId, String tableName) {
+    final encodedTable = Uri.encodeComponent(tableName);
+
     return '${ApiConstants.baseURL}'
         '${ApiConstants.projectEndPoint}'
-        '$projectId/postgres/tables/$tableName/rows';
+        '$projectId/postgres/tables/$encodedTable/rows';
   }
-String _columnsPath(String projectId, String tableName) {
-  return '${ApiConstants.baseURL}'
-      '${ApiConstants.projectEndPoint}'
-      '$projectId/postgres/tables/$tableName/columns';
-}
-Future<GetRowsResponse> getListPostgresRows(
-  String accessToken,
-  String projectId,
-  String tableName, {
-  int limit = 50,
-  int offset = 0,
-}) async {
-  final uri = Uri.parse(
-    '${_basePath(projectId, tableName)}'
-    '?limit=$limit&offset=$offset',
-  );
 
-  final response = await http.get(
-    uri,
-    headers: _headers(accessToken),
-  );
+  String _columnsPath(String projectId, String tableName) {
+    final encodedTable = Uri.encodeComponent(tableName);
 
-  final json = jsonDecode(response.body);
+    return '${ApiConstants.baseURL}'
+        '${ApiConstants.projectEndPoint}'
+        '$projectId/postgres/tables/$encodedTable/columns';
+  }
 
-  switch (response.statusCode) {
-    case 200:
+  dynamic _decodeBody(http.Response response) {
+    if (response.body.isEmpty) return null;
+    return jsonDecode(response.body);
+  }
+
+
+  Future<GetRowsResponse> getListPostgresRows(
+    String accessToken,
+    String projectId,
+    String tableName, {
+    int limit = 50,
+    int offset = 0,
+    String schema = 'public',
+  }) async {
+    final uri = Uri.parse(_basePath(projectId, tableName)).replace(
+      queryParameters: {
+        'limit': '$limit',
+        'offset': '$offset',
+        'schema': schema,
+      },
+    );
+
+    final response = await http.get(
+      uri,
+      headers: _headers(accessToken),
+    );
+
+    final json = _decodeBody(response);
+
+    if (response.statusCode == 200) {
       return GetRowsResponse.fromJson(json['data']);
+    }
 
-    case 400:
-      throw ApiException(
-        'Invalid project ID, table name, limit, or offset',
-        statusCode: 400,
-      );
-
-    case 401:
-      throw ApiException('Unauthorized', statusCode: 401);
-
-    case 404:
-      throw ApiException(
-        'Project not accessible or DB not ready',
-        statusCode: 404,
-      );
-
-    default:
-      throw ApiException(
-        'Unexpected error: ${response.body}',
-        statusCode: response.statusCode,
-      );
+    throw ApiException(
+      json?['message'] ?? 'Failed to fetch rows',
+      statusCode: response.statusCode,
+    );
   }
-}
+
+
   Future<InsertRowResponse> insertRow(
     String accessToken,
     String projectId,
     String tableName,
-    InsertRowRequest request,
-  ) async {
-    final uri = Uri.parse(_basePath(projectId, tableName));
+    InsertRowRequest request, {
+    String schema = 'public',
+  }) async {
+    final uri = Uri.parse(_basePath(projectId, tableName)).replace(
+      queryParameters: {'schema': schema},
+    );
 
     final response = await http.post(
       uri,
@@ -80,14 +84,14 @@ Future<GetRowsResponse> getListPostgresRows(
       body: jsonEncode(request.toJson()),
     );
 
-    final json = jsonDecode(response.body);
+    final json = _decodeBody(response);
 
     if (response.statusCode == 201) {
       return InsertRowResponse.fromJson(json['data']);
     }
 
     throw ApiException(
-      json['message'] ?? 'Insert failed',
+      json?['message'] ?? 'Insert failed',
       statusCode: response.statusCode,
     );
   }
@@ -97,9 +101,12 @@ Future<GetRowsResponse> getListPostgresRows(
     String accessToken,
     String projectId,
     String tableName,
-    UpdateRowsRequest request,
-  ) async {
-    final uri = Uri.parse(_basePath(projectId, tableName));
+    UpdateRowsRequest request, {
+    String schema = 'public',
+  }) async {
+    final uri = Uri.parse(_basePath(projectId, tableName)).replace(
+      queryParameters: {'schema': schema},
+    );
 
     final response = await http.patch(
       uri,
@@ -108,23 +115,26 @@ Future<GetRowsResponse> getListPostgresRows(
     );
 
     if (response.statusCode != 200) {
-      final json = jsonDecode(response.body);
+      final json = _decodeBody(response);
 
       throw ApiException(
-        json['message'] ?? 'Update failed',
+        json?['message'] ?? 'Update failed',
         statusCode: response.statusCode,
       );
     }
   }
 
- 
+
   Future<void> deleteRows(
     String accessToken,
     String projectId,
     String tableName, {
     Map<String, dynamic>? filter,
+    String schema = 'public',
   }) async {
-    final uri = Uri.parse(_basePath(projectId, tableName));
+    final uri = Uri.parse(_basePath(projectId, tableName)).replace(
+      queryParameters: {'schema': schema},
+    );
 
     final response = await http.delete(
       uri,
@@ -135,61 +145,73 @@ Future<GetRowsResponse> getListPostgresRows(
     );
 
     if (response.statusCode != 204) {
-      final json = jsonDecode(response.body);
+      final json = _decodeBody(response);
 
       throw ApiException(
-        json['message'] ?? 'Delete failed',
+        json?['message'] ?? 'Delete failed',
         statusCode: response.statusCode,
       );
     }
   }
+
+
   Future<InsertColumnResponse> addColumn(
-  String accessToken,
-  String projectId,
-  String tableName,
-  InsertColumnRequest request,
-) async {
-  final uri = Uri.parse(_columnsPath(projectId, tableName));
+    String accessToken,
+    String projectId,
+    String tableName,
+    InsertColumnRequest request, {
+    String schema = 'public',
+  }) async {
+    final uri = Uri.parse(_columnsPath(projectId, tableName)).replace(
+      queryParameters: {'schema': schema},
+    );
 
-  final response = await http.post(
-    uri,
-    headers: _headers(accessToken),
-    body: jsonEncode(request.toJson()),
-  );
+    final response = await http.post(
+      uri,
+      headers: _headers(accessToken),
+      body: jsonEncode(request.toJson()),
+    );
 
-  final json = jsonDecode(response.body);
+    final json = _decodeBody(response);
 
-  if (response.statusCode == 200) {
-    return InsertColumnResponse.fromJson(json['data']);
-  }
-
-  throw ApiException(
-    json['message'] ?? 'Add column failed',
-    statusCode: response.statusCode,
-  );
-}
-Future<void> deleteColumn(
-  String accessToken,
-  String projectId,
-  String tableName,
-  String columnName,
-) async {
-  final uri = Uri.parse(
-    '${_columnsPath(projectId, tableName)}/$columnName',
-  );
-
-  final response = await http.delete(
-    uri,
-    headers: _headers(accessToken),
-  );
-
-  if (response.statusCode != 204) {
-    final json = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return InsertColumnResponse.fromJson(json['data']);
+    }
 
     throw ApiException(
-      json['message'] ?? 'Delete column failed',
+      json?['message'] ?? 'Add column failed',
       statusCode: response.statusCode,
     );
   }
-}
+
+
+  Future<void> deleteColumn(
+    String accessToken,
+    String projectId,
+    String tableName,
+    String columnName, {
+    String schema = 'public',
+  }) async {
+    final encodedColumn = Uri.encodeComponent(columnName);
+
+    final uri = Uri.parse(
+      '${_columnsPath(projectId, tableName)}/$encodedColumn',
+    ).replace(
+      queryParameters: {'schema': schema},
+    );
+
+    final response = await http.delete(
+      uri,
+      headers: _headers(accessToken),
+    );
+
+    if (response.statusCode != 204) {
+      final json = _decodeBody(response);
+
+      throw ApiException(
+        json?['message'] ?? 'Delete column failed',
+        statusCode: response.statusCode,
+      );
+    }
+  }
 }
