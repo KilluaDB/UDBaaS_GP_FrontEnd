@@ -113,6 +113,9 @@ class ResultPart extends StatelessWidget {
                   ),
                 ],
               );
+            
+            
+            
             }
 
             if (state is QueryExecutionError) {

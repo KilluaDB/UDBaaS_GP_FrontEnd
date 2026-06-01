@@ -26,13 +26,7 @@ class _FullDatabaseScreenState extends State<FullDatabaseScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PostgresTablesCubit>().getAllTables(widget.projectId);
-    });
-  }
+
 
   @override
   void dispose() {
@@ -46,10 +40,11 @@ class _FullDatabaseScreenState extends State<FullDatabaseScreen> {
 
     return BlocConsumer<PostgresTablesCubit, PostgresTablesStates>(
      listener: (context, state) {
-  if (state is CreateTableSuccess) {
-    context.read<PostgresTablesCubit>()
-        .getAllTables(widget.projectId);
-  }
+  if (state is CreateTableSuccess || state is DeleteTableSuccess) {
+context.read<PostgresTablesCubit>().getAllTables(
+  widget.projectId,
+  isSilentRefresh: true,
+);  }
 },
       builder: (context, state) {
         final cubit = context.watch<PostgresTablesCubit>();
@@ -107,6 +102,10 @@ class _FullDatabaseScreenState extends State<FullDatabaseScreen> {
           onTap: () {
             widget.onTableSelected(tableName);
           },
+          onDelete: () {
+            context.read<PostgresTablesCubit>().deleteTable(projectId:widget.projectId,tableName: tableName);
+          },
+
         );
       },
     );
@@ -169,12 +168,14 @@ class TableItem extends StatelessWidget {
   final String tableName;
   final int columnsCount;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   const TableItem({
     super.key,
     required this.tableName,
     required this.columnsCount,
     required this.onTap,
+    required this.onDelete,
   });
 
   @override
@@ -216,6 +217,40 @@ class TableItem extends StatelessWidget {
               ),
             ),
             Icon(Icons.arrow_forward_ios, size: 14.sp),
+            SizedBox(width:10.w),
+            IconButton(
+onPressed: () async {
+  final confirm = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Delete Table'),
+      content: Text(
+        'Are you sure you want to delete "$tableName"? This action cannot be undone.',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: AppTheme.red, // Using your theme's red color
+          ),
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text('Delete'),
+        ),
+      ],
+    ),
+  );
+
+  if (confirm == true) {
+    onDelete();
+  }
+},
+
+ icon:  Icon(Icons.delete_outline_rounded, color: AppTheme.red,))
+           
           ],
         ),
       ),
