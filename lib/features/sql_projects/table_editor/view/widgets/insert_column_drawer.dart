@@ -3,6 +3,7 @@ import 'package:dbaas_project/core/util/validator.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
 import 'package:dbaas_project/features/sql_projects/DB/data/models/foreign_key_ref_request.dart';
 import 'package:dbaas_project/features/sql_projects/DB/data/models/postgres_foreign_key_request.dart';
+import 'package:dbaas_project/features/sql_projects/table_editor/data/models/table_editor_models.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_states.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
@@ -58,10 +59,11 @@ class _InsertColumnDrawerState extends State<InsertColumnDrawer> {
     }
 
     final editor = context.read<PostgresTableEditorCubit>();
-    List<ForeignKey> fks = foreignKeysList.map((fkMap) {
-      return ForeignKey(
+  final List<ForeignKeyColumn> fks = foreignKeysList.map((fkMap) {
+      return ForeignKeyColumn(
         table: fkMap['refTable'],
-        references: [ForeignKeyRef(localColumn: _name.text.trim(), foreignColumn: fkMap['refColumn'])]
+        localColumn: _name.text.trim(),
+        foreignColumn: fkMap['refColumn'],
       );
     }).toList();
 
@@ -77,6 +79,10 @@ class _InsertColumnDrawerState extends State<InsertColumnDrawer> {
       nullable: _nullable,
       foreignKeys: fks.isNotEmpty ? fks : null,
     );
+    print("COLUMN NAME => ${_name.text.trim()}");
+print("FKS => $foreignKeysList");
+print("REF TABLE => ${foreignKeysList.first['refTable']}");
+print("REF COLUMN => ${foreignKeysList.first['refColumn']}");
   }
 
   @override
