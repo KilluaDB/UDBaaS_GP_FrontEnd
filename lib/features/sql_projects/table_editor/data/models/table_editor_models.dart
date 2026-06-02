@@ -1,4 +1,3 @@
-import 'package:dbaas_project/features/sql_projects/DB/data/models/postgres_foreign_key_request.dart';
 
 class GetRowsResponse {
   final List<Map<String, dynamic>> rows;
@@ -90,6 +89,47 @@ class InsertColumnResponse {
   }
 }
 
+
+
+class ForeignKeyColumn {
+  final String schema;
+  final String table;
+  final String localColumn;
+  final String foreignColumn;
+  final String? onUpdate;
+  final String? onDelete;
+
+  ForeignKeyColumn({
+    this.schema = 'public',
+    required this.table,
+    required this.localColumn,
+    required this.foreignColumn,
+    this.onUpdate,
+    this.onDelete,
+  });
+
+  factory ForeignKeyColumn.fromJson(Map<String, dynamic> json) {
+    return ForeignKeyColumn(
+      schema: json['schema'] ?? 'public',
+      table: json['table'],
+      localColumn: json['local_column'],
+      foreignColumn: json['foreign_column'],
+      onUpdate: json['on_update'],
+      onDelete: json['on_delete'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'schema': schema,
+      'table': table,
+      'local_column': localColumn,
+      'foreign_column': foreignColumn,
+      'on_update': onUpdate,
+      'on_delete': onDelete,
+    };
+  }
+}
 class InsertColumnRequest {
   final String name;
   final String type;
@@ -98,7 +138,7 @@ class InsertColumnRequest {
   final bool isUnique;
   final bool isIdentity;
   final bool nullable;
-  final List<ForeignKey>? foreignKeys;
+  final List<ForeignKeyColumn>? foreignKeys;
 
   InsertColumnRequest({
     required this.name,

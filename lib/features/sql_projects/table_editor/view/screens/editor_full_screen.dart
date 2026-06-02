@@ -27,25 +27,27 @@ class EditorFullScreen extends StatefulWidget {
 class _EditorFullScreenState extends State<EditorFullScreen> {
   late final PostgresTableEditorCubit editorCubit;
 
-@override
-void initState() {
-  super.initState();
-  editorCubit = context.read<PostgresTableEditorCubit>();
+  @override
+  void initState() {
+    super.initState();
+    editorCubit = context.read<PostgresTableEditorCubit>();
 
-  editorCubit.getAllRows(
-    projectId: widget.projectId,
-    tableName: widget.tableName,
-    showLoading: true,
-  );
-}
-final Map<String, TextEditingController> _controllers = {};
-@override
-void dispose() {
-  for (final controller in _controllers.values) {
-    controller.dispose();
+    editorCubit.getAllRows(
+      projectId: widget.projectId,
+      tableName: widget.tableName,
+      showLoading: true,
+    );
   }
-  super.dispose();
-}
+
+  final Map<String, TextEditingController> _controllers = {};
+  @override
+  void dispose() {
+    for (final controller in _controllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final tableData = context
@@ -103,8 +105,7 @@ void dispose() {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (index != 0)
-                          _buildColumnOptionsMenu(column.name ),
+                        if (index != 0) _buildColumnOptionsMenu(column.name),
                       ],
                     ),
                   ),
@@ -115,223 +116,254 @@ void dispose() {
           ),
         ),
 
-Expanded(
-  child: BlocListener<PostgresTableEditorCubit, PostgresTableEditorStates>(
-    listener: (context, state) {
-      if (state is UpdateRowsSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Row updated successfully"),
-            backgroundColor: AppTheme.green,
-          ),
-        );
-      }
-
-      if (state is UpdateRowsError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.message),
-            backgroundColor: AppTheme.red,
-          ),
-        );
-      }
-
-      if (state is DeleteRowsSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Row deleted successfully"),
-            backgroundColor: AppTheme.green,
-          ),
-        );
-      }
-
-      if (state is DeleteRowsError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.message),
-            backgroundColor: AppTheme.red,
-          ),
-        );
-      }
-
-      if (state is DeleteColumnSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Column deleted successfully"),
-            backgroundColor: AppTheme.green,
-          ),
-        );
-      }
-
-      if (state is DeleteColumnError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.message),
-            backgroundColor: AppTheme.red,
-          ),
-        );
-      }
-    },
-    child: BlocBuilder<PostgresTableEditorCubit, PostgresTableEditorStates>(
-            builder: (context, state) {
-              if (state is GetAllRowsLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-final rows = (state is GetAllRowsSuccess)
-    ? state.getRowsResponse.rows
-    : editorCubit.cachedRows?.rows ?? [];
-              if (rows.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.storage,
-                        size: 64.sp,
-                        color: AppTheme.boldGray.withValues(alpha: 0.5),
+        Expanded(
+          child:
+              BlocListener<PostgresTableEditorCubit, PostgresTableEditorStates>(
+                listener: (context, state) {
+                  if (state is UpdateRowsSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Row updated successfully"),
+                        backgroundColor: AppTheme.green,
                       ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        "No rows in this table",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'Click "Insert" to add your first row',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                );
-              }
+                    );
+                  }
 
-              return ListView.builder(
-                itemCount: rows.length,
-                itemBuilder: (context, rowIndex) {
-                  final row = rows[rowIndex];
-                  return Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 6.w,
-                      vertical: 4.h,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6.w,
-                      vertical: 4.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                        color: AppTheme.boldGray.withValues(alpha: 0.15),
+                  if (state is UpdateRowsError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: AppTheme.red,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.03),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        ...List.generate(columns.length, (colIndex) {
-                          final colName = columns[colIndex].name ;
+                    );
+                  }
 
-                          final text = row[colName]?.toString() ?? "";
+                  if (state is DeleteRowsSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Row deleted successfully"),
+                        backgroundColor: AppTheme.green,
+                      ),
+                    );
+                  }
 
-                          return Flexible(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  right: colIndex != columns.length - 1
-                                      ? BorderSide(
-                                          color: AppTheme.boldGray.withValues(
-                                            alpha: 0.1,
-                                          ),
-                                        )
-                                      : BorderSide.none,
+                  if (state is DeleteRowsError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: AppTheme.red,
+                      ),
+                    );
+                  }
+
+                  if (state is DeleteColumnSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Column deleted successfully"),
+                        backgroundColor: AppTheme.green,
+                      ),
+                    );
+                  }
+
+                  if (state is DeleteColumnError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: AppTheme.red,
+                      ),
+                    );
+                  }
+                },
+                child:
+                    BlocBuilder<
+                      PostgresTableEditorCubit,
+                      PostgresTableEditorStates
+                    >(
+                      builder: (context, state) {
+                        if (state is GetAllRowsLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        final rows = (state is GetAllRowsSuccess)
+                            ? state.getRowsResponse.rows
+                            : editorCubit.cachedRows?.rows ?? [];
+                        if (rows.isEmpty) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.storage,
+                                  size: 64.sp,
+                                  color: AppTheme.boldGray.withValues(
+                                    alpha: 0.5,
+                                  ),
                                 ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  "No rows in this table",
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  'Click "Insert" to add your first row',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          itemCount: rows.length,
+                          itemBuilder: (context, rowIndex) {
+                            final row = rows[rowIndex];
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 6.w,
+                                vertical: 4.h,
                               ),
                               padding: EdgeInsets.symmetric(
                                 horizontal: 6.w,
                                 vertical: 4.h,
                               ),
-                              child:
-Focus(
-  onFocusChange: (hasFocus) async {
-    if (hasFocus) return;
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                  color: AppTheme.boldGray.withValues(
+                                    alpha: 0.15,
+                                  ),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.03),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  ...List.generate(columns.length, (colIndex) {
+                                    final colName = columns[colIndex].name;
+                                    final text = row[colName]?.toString() ?? "";
+                                    final controllerKey =
+                                        '${row["id"]}_$colName';
 
-    if (columns[colIndex].isIdentity ?? false) return;
+                                    if (_controllers.containsKey(
+                                          controllerKey,
+                                        ) &&
+                                        _controllers[controllerKey]!.text !=
+                                            text) {
+                                      _controllers[controllerKey]!.text = text;
+                                    }
+                                    return Flexible(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            right:
+                                                colIndex != columns.length - 1
+                                                ? BorderSide(
+                                                    color: AppTheme.boldGray
+                                                        .withValues(alpha: 0.1),
+                                                  )
+                                                : BorderSide.none,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 6.w,
+                                          vertical: 4.h,
+                                        ),
+                                        child: Focus(
+                                          onFocusChange: (hasFocus) async {
+                                            if (hasFocus) return;
 
-    if (_controllers['${row["id"]}_$colName']!.text != text) {
-      await editorCubit.updateRows(
-        projectId: widget.projectId,
-        tableName: widget.tableName,
-        filter: {"id": row["id"]},
-        update: {
-          colName: _controllers['${row["id"]}_$colName']!.text,
-        },
-      );
-    }
-  },
-  child: TextFormField(
-    controller: _controllers.putIfAbsent(
-      '${row["id"]}_$colName',
-      () => TextEditingController(text: text),
-    ),
-    enabled: !(columns[colIndex].isIdentity ?? false),
-    style: TextStyle(fontSize: 13.sp),
-    decoration: InputDecoration(
-      isDense: true,
-      border: InputBorder.none,
-      filled: (columns[colIndex].isIdentity ?? false),
-      fillColor: (columns[colIndex].isIdentity ?? false)
-          ? Colors.grey.shade100
-          : Colors.transparent,
-    ),
-  ),
-),                 
-                            
-                            ),
-                          );
-                        }),
+                                            if (columns[colIndex].isIdentity ??
+                                                false)
+                                              return;
 
-                        SizedBox(
-                          width: 40.w,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: AppTheme.red,
-                              size: 18.sp,
-                            ),
-                            onPressed: () async {
-                              await editorCubit.deleteRows(
-                                projectId: widget.projectId,
-                                tableName: widget.tableName,
-                                filter: {"id": row["id"]},
-                              );
-                                                        await editorCubit.getAllRows(
-        projectId:widget. projectId,
-        tableName: widget. tableName,
-      
-        showLoading: false,
-      );
-                            },
-                          ),
-                        ),
-                      ],
+                                            if (_controllers[controllerKey]!
+                                                    .text !=
+                                                text) {
+                                              await editorCubit.updateRows(
+                                                projectId: widget.projectId,
+                                                tableName: widget.tableName,
+                                                filter: {"id": row["id"]},
+                                                update: {
+                                                  colName:
+                                                      _controllers[controllerKey]!
+                                                          .text,
+                                                },
+                                              );
+                                            }
+                                          },
+                                          child: TextFormField(
+                                            controller: _controllers
+                                                .putIfAbsent(
+                                                  controllerKey,
+                                                  () => TextEditingController(
+                                                    text: text,
+                                                  ),
+                                                ),
+                                            enabled:
+                                                !(columns[colIndex]
+                                                        .isIdentity ??
+                                                    false),
+                                            style: TextStyle(fontSize: 13.sp),
+                                            decoration: InputDecoration(
+                                              isDense: true,
+                                              border: InputBorder.none,
+                                              filled:
+                                                  (columns[colIndex]
+                                                      .isIdentity ??
+                                                  false),
+                                              fillColor:
+                                                  (columns[colIndex]
+                                                          .isIdentity ??
+                                                      false)
+                                                  ? Colors.grey.shade100
+                                                  : Colors.transparent,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+
+                                  SizedBox(
+                                    width: 40.w,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: AppTheme.red,
+                                        size: 18.sp,
+                                      ),
+                                      onPressed: () async {
+                                        await editorCubit.deleteRows(
+                                          projectId: widget.projectId,
+                                          tableName: widget.tableName,
+                                          filter: {"id": row["id"]},
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
-                  );
-                },
-              );
-            },
-          ),
-        ),)
+              ),
+        ),
       ],
     );
   }
-
 
   Widget _buildInsertButton(BuildContext context) {
     return PopupMenuButton<String>(
@@ -406,7 +438,6 @@ Focus(
     );
   }
 
-
   Widget _buildColumnOptionsMenu(String columnName) {
     return PopupMenuButton<String>(
       color: AppTheme.white,
@@ -423,16 +454,9 @@ Focus(
             columnName: columnName,
           );
 
-                                   await editorCubit.getAllRows(
-        projectId:widget. projectId,
-        tableName: widget. tableName,
-      
-        showLoading: false,
-      );
-
           await context.read<PostgresTablesCubit>().getAllTables(
             widget.projectId,
-            isSilentRefresh: true
+            isSilentRefresh: true,
           );
         }
       },

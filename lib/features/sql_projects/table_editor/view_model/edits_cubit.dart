@@ -156,7 +156,7 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
     bool isUnique = false,
     bool isIdentity = false,
     bool nullable = true,
-    List<ForeignKey>? foreignKeys,
+    List<ForeignKeyColumn>? foreignKeys,
     String schema = 'public',
   }) async {
     try {
@@ -183,7 +183,7 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
         ),
         schema: schema,
       );
-      print(response.columnId);
+    
       emit(InsertColumnSuccess(response));
 
       await _refreshRows(projectId, tableName, schema);
