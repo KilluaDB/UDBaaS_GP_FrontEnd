@@ -1,13 +1,14 @@
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
+import 'package:dbaas_project/features/sql_projects/DB/view/widgets/drawer_db.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view/screens/dash_board.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view_model/dash_cubit.dart';
-import 'package:dbaas_project/features/sql_projects/end_darwer.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/query_editor.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
+import 'package:dbaas_project/features/sql_projects/schema_generation/view_model/generation_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/schema_visulization/view/presentation/schema_visualizer.dart';
 import 'package:dbaas_project/features/sql_projects/schema_generation/view/screens/scheme_generator.dart';
 import 'package:dbaas_project/features/sql_projects/schema_visulization/view_model/schema_cubit.dart';
@@ -66,6 +67,11 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
         BlocProvider<SchemaCubit>(
           create: (context) => SchemaCubit(userProvider: userProvider),
         ),
+        BlocProvider<SchemaGenerationCubit>(
+  create: (context) => SchemaGenerationCubit(
+    userProvider: userProvider,
+  ),
+),
       ],
 
       child: Builder(
@@ -99,16 +105,13 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
 
             SchemaVisualizer(project: project),
 
-            SchemeGenerator(),
+            SchemeGenerator(project: project),
 
             DeleteScreen(project: project),
           ];
 
           return Scaffold(
-            endDrawer: EndDarwer(
-              selectedIndex: selectedIndex,
-              project: project,
-            ),
+            endDrawer:selectedIndex==1?  DrawerDB(projectId: project.id!,):null,
 
             body: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

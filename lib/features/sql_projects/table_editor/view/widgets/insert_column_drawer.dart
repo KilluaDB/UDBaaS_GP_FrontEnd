@@ -3,6 +3,7 @@ import 'package:dbaas_project/core/util/validator.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
 import 'package:dbaas_project/features/sql_projects/DB/data/models/foreign_key_ref_request.dart';
 import 'package:dbaas_project/features/sql_projects/DB/data/models/postgres_foreign_key_request.dart';
+import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/data/models/table_editor_models.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_states.dart';
@@ -183,7 +184,7 @@ print("REF COLUMN => ${foreignKeysList.first['refColumn']}");
 
   Widget _buildLabel(String text) => Padding(padding: EdgeInsets.only(bottom: 8.h), child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)));
   Widget _buildSectionHeader(String title, IconData icon, String desc) => Row(children: [Icon(icon, size: 18, color: AppTheme.primary), SizedBox(width: 8.w), Text(title, style: const TextStyle(fontWeight: FontWeight.bold))]);
-  Widget _buildTypeDropdown() => Container(padding: EdgeInsets.symmetric(horizontal: 12.w), decoration: BoxDecoration(border: Border.all(color: Colors.black12), borderRadius: BorderRadius.circular(8.r)), child: DropdownButtonHideUnderline(child: DropdownButton<String>(value: _type, isExpanded: true, items: types.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(), onChanged: (v) => setState(() => _type = v!))));
+  Widget _buildTypeDropdown() => Container(padding: EdgeInsets.symmetric(horizontal: 12.w), decoration: BoxDecoration(border: Border.all(color: Colors.black12), color:provider.isDark? AppTheme.black:AppTheme.white, borderRadius: BorderRadius.circular(8.r)), child: DropdownButtonHideUnderline(child: DropdownButton<String>(dropdownColor: provider.isDark? AppTheme.black:AppTheme.white,value: _type, isExpanded: true, items: types.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(), onChanged: (v) => setState(() => _type = v!))));
   Widget _buildLabelAndDropdown(String label, String? value, List<String> items, Function(String?) onChanged) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)), SizedBox(height: 8.h), Container(padding: EdgeInsets.symmetric(horizontal: 12.w), decoration: BoxDecoration(border: Border.all(color: Colors.black12), borderRadius: BorderRadius.circular(8.r)), child: DropdownButtonHideUnderline(child: DropdownButton<String>(isExpanded: true, value: items.contains(value) ? value : null, items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(), onChanged: onChanged)))]);
   Widget _buildCheckbox(String label, bool value, Function(bool) onChanged) => Row(mainAxisSize: MainAxisSize.min, children: [Checkbox(value: value, onChanged: (v) => onChanged(v!), activeColor: AppTheme.primary), Text(label, style: const TextStyle(fontSize: 12))]);
 }
