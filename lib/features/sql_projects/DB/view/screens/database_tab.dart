@@ -1,5 +1,7 @@
+import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view/screens/empty_database_screen.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view/screens/full_database_screen.dart';
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
@@ -7,8 +9,9 @@ import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
-class DataBaseTab extends StatefulWidget {
+class DataBaseTab extends StatelessWidget {
   final ProjectModel project;
 
   final Function(String tableName, int index) onNavigate;
@@ -20,19 +23,9 @@ class DataBaseTab extends StatefulWidget {
   });
 
   @override
-  State<DataBaseTab> createState() => _DataBaseTabState();
-}
-
-class _DataBaseTabState extends State<DataBaseTab> {
-@override
-  void initState() {
-    super.initState();
- 
-    context.read<PostgresTablesCubit>().getAllTables(widget.project.id!);
-  }
-  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final SettingsProvider provider = Provider.of<SettingsProvider>(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
@@ -41,7 +34,11 @@ class _DataBaseTabState extends State<DataBaseTab> {
         children: [
           Text(
             'Database Tables',
-            style: textTheme.headlineSmall,
+               style: textTheme.headlineSmall!.copyWith(
+              color: provider.isDark ? AppTheme.white : AppTheme.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22.sp,
+            ),
           ),
           SizedBox(height: 4.h),
           Text(
@@ -86,9 +83,9 @@ class _DataBaseTabState extends State<DataBaseTab> {
                   }
 
                   return FullDatabaseScreen(
-                    projectId: widget.project.id!,
+                    projectId: project.id!,
                     onTableSelected: (tableName) {
-                      widget.onNavigate(tableName, 2);
+                      onNavigate(tableName, 2);
                     },
                   );
                 }
@@ -101,9 +98,9 @@ class _DataBaseTabState extends State<DataBaseTab> {
                   }
 
                   return FullDatabaseScreen(
-                    projectId: widget.project.id!,
+                    projectId: project.id!,
                     onTableSelected: (tableName) {
-                      widget.onNavigate(tableName, 2);
+                      onNavigate(tableName, 2);
                     },
                   );
                 }

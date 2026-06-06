@@ -206,14 +206,13 @@ List<BarChartGroupData> _getBarGroups() {
   });
 }
 double _getMaxY() {
-  if (queries.isEmpty) return 100; // قيمة افتراضية لو مفيش داتا
+  if (queries.isEmpty) return 100; 
 
   final values = queries.map((q) => q.meanTimeMs).toList();
   final maxVal = values.reduce((a, b) => a > b ? a : b);
 
-  // لو القيم صغيرة جداً (مثلاً تحت 50ms) نخلي الـ maxY هو 100
-  // لو القيم كبيرة، نخلي الـ maxY هو القيمة القصوى + 20% للراحة
-  return maxVal < 100 ? 5 : (maxVal * 1.2);
+ 
+  return  (maxVal * 1.2);
 }
   // ---------------- PIE CHART ----------------
 

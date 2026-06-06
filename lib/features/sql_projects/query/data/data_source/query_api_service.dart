@@ -6,50 +6,47 @@ import 'package:dbaas_project/features/sql_projects/query/data/models/execute_qu
 import 'package:dbaas_project/features/sql_projects/query/data/models/text_to_sql_response.dart';
 import 'package:http/http.dart' as http;
 class QueryApiService {
-  Future<ExecuteQueryResponse> executeQuery({
-    required String query,
-    required String projectId,
-    required String accessToken,
-  }) async {
-   
-    final uri = Uri.parse(
-      '${ApiConstants.baseURL}${ApiConstants.projectEndPoint}$projectId/postgres/query/execute',
-    );
+Future<ExecuteQueryResponse> executeQuery({
+  required String query,
+  required String projectId,
+  required String accessToken,
+}) async {
+  final uri = Uri.parse(
+    '${ApiConstants.baseURL}${ApiConstants.projectEndPoint}$projectId/postgres/query/execute',
+  );
 
-    try {
-      final response = await http.post(
-        uri,
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json', 
-        },
-        body: jsonEncode({
-          'query': query,
-          'projectId': projectId, 
-        }),
-      );
+  final response = await http.post(
+    uri,
+    headers: {
+      'Authorization': 'Bearer $accessToken',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: jsonEncode({
+      'query': query,
+      'projectId': projectId,
+    }),
+  );
 
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
+  if (response.statusCode == 200) {
+    final json = jsonDecode(response.body);
+    return ExecuteQueryResponse.fromJson(json);
+  }
 
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.body);
-        return ExecuteQueryResponse.fromJson(json);
-  
-} else {
   try {
     final errorJson = jsonDecode(response.body);
-    String message = errorJson['message'] ?? 'Error: ${response.statusCode}';
-    throw Exception(message);
+    throw ApiException(
+      errorJson['message'] ?? 'Error ${response.statusCode}: Failed to execute query.',
+      statusCode: response.statusCode,
+    );
   } catch (e) {
-    throw Exception('Server returned non-JSON response: ${response.body}');
+    throw ApiException(
+      'Server error: Unable to process the request. Please try again later.',
+      statusCode: response.statusCode,
+    );
   }
 }
-    } catch (e) {
-      throw Exception('$e');
-    }
-  }
+
 Future<TextToSQLResponse> executetextToSQL({
   required String question,
   required String projectId,
@@ -93,4 +90,9 @@ print("BODY: ${response.body}");
     );
   }
 }
-    }
+
+}
+    
+    
+    
+    

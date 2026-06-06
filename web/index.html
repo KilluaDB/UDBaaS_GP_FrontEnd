@@ -29,10 +29,9 @@ function renderMermaid(containerId, code) {
   const element = document.getElementById(containerId);
   if (!element) return;
 
-  // reset
+
   element.innerHTML = "";
 
-  // IMPORTANT: force full size container
   element.style.width = "100%";
   element.style.height = "100%";
   element.style.backgroundColor = "#eef4fb";
@@ -49,7 +48,7 @@ function renderMermaid(containerId, code) {
         const svgElement = element.querySelector("svg");
         if (!svgElement) return;
 
-        // IMPORTANT: make SVG fill parent properly
+        
         svgElement.style.width = "100%";
         svgElement.style.height = "100%";
         svgElement.style.display = "block";
@@ -75,7 +74,7 @@ function renderMermaid(containerId, code) {
           maxZoom: 10,
         });
 
-      }, 50); // 👈 مهم: 0 أحيانًا بتكون بدري زيادة
+      }, 50); 
     })
     .catch((err) => {
       console.error("MERMAID ERROR:", err);

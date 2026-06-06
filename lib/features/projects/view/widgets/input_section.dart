@@ -23,16 +23,12 @@ class InputSection extends StatefulWidget {
 
 class _InputSectionState extends State<InputSection> {
   final List<String> dataBase = ["SQL", "NoSQL"];
-  final List<String> cloudProviders = [
-    "AWS",
-    "Firebase",
-    "Supabase",
-    "Mongo Atlas"
-  ];
+
 
   String? selectedDatabase;
-  String? selectedCloudProvider;
+
   late TextEditingController projectNameController;
+  late TextEditingController passwordController;
 
   @override
   void initState() {
@@ -41,18 +37,20 @@ class _InputSectionState extends State<InputSection> {
     (element as html.HtmlElement).style.display = 'none';
   });
     projectNameController = TextEditingController();
+    passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
     projectNameController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
   bool get isFormValid {
     return projectNameController.text.isNotEmpty &&
         selectedDatabase != null &&
-        selectedCloudProvider != null;
+        passwordController != null;
   }
 
   void notifyParent() {
@@ -130,22 +128,20 @@ class _InputSectionState extends State<InputSection> {
             SizedBox(height: 24.h),
 
             Text(
-              local.cloudProvider,
+             "Database password",
               style: textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
-            _buildDropdown(
-              context,
-              value: selectedCloudProvider,
-              hint: "Select Cloud Provider",
-              items: cloudProviders,
-              onChanged: (value) {
-                setState(() => selectedCloudProvider = value);
-                notifyParent();
-              },
-              settingsProvider: settingsProvider,
-              textTheme: textTheme,
-            ),
+             CustomTextFormField(
+            controller: passwordController,
+            validator: (value) {
+              return 
+               Validator.validatePassword(value);
+            },
+            hintText: 'Type in a strong password',
+            isPassword: true,
+            prefixIconName: AppImages.passwordIcon,
+          ),
 
             SizedBox(height: 24.h),
 
@@ -172,9 +168,10 @@ class _InputSectionState extends State<InputSection> {
       ? () {
           final name = projectNameController.text.trim();
           final db = selectedDatabase!;
+          final password = passwordController.text.trim();
        
 
-          context.read<ProjectCubit>().createProject(name, db);
+          context.read<ProjectCubit>().createProject(name, db,password);
         }
       : (){},
                   ),

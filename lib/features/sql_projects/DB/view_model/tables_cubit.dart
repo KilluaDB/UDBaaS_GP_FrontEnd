@@ -86,11 +86,11 @@ class PostgresTablesCubit extends Cubit<PostgresTablesStates> {
         foreignKeys: foreignKeys,
       );
 
+      await Future.delayed(const Duration(milliseconds: 500)); 
       final response = await _dataSource.createPostgresTable(token, projectId, request);
       
       emit(CreateTableSuccess(response));
 
-      await Future.delayed(const Duration(milliseconds: 1000)); 
 
       await getAllTables(
         projectId,
@@ -146,7 +146,7 @@ Future<void> updateTable({
   }
 }
     
-    Future<void> deleteTable({
+Future<void> deleteTable({
     required String projectId,
     required String tableName,
     String schema = 'public',
