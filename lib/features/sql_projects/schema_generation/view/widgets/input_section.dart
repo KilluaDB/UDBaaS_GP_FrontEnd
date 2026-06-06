@@ -1,152 +1,199 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
-import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
+import 'package:dbaas_project/features/projects/data/models/project_model.dart';
+import 'package:dbaas_project/features/sql_projects/schema_generation/view_model/geneartion_states.dart';
+import 'package:dbaas_project/features/sql_projects/schema_generation/view_model/generation_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 
-class InputSection extends StatelessWidget {
-  const InputSection({super.key});
+class InputSection extends StatefulWidget {
+  final ProjectModel project;
+
+  const InputSection({super.key, required this.project});
+
+  @override
+  State<InputSection> createState() => _InputSectionState();
+}
+
+class _InputSectionState extends State<InputSection> {
+  late TextEditingController _promptController;
+
+  @override
+  void initState() {
+    super.initState();
+    _promptController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _promptController.dispose();
+    super.dispose();
+  }
+
+  void _generateSchema() {
+    final text = _promptController.text.trim();
+    if (text.isEmpty) return;
+
+    context.read<SchemaGenerationCubit>().generateSchema(
+          projectId: widget.project.id!,
+          requirementText: text,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-    SettingsProvider settings = Provider.of<SettingsProvider>(context);
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      decoration: BoxDecoration(
-        border: BoxBorder.all(width: 0.5, color: AppTheme.boldGray),
-        borderRadius: BorderRadius.circular(14),
-        color: settings.isDark ? AppTheme.black : AppTheme.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.file_upload_outlined,
-                color: AppTheme.primary,
-                size: 20,
-              ),
-              SizedBox(width: 8.w),
-              Text(
-                "Input Method",
-                style: textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-                  color: settings.isDark ? AppTheme.white : AppTheme.black,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height:14.h),
+    final textTheme = Theme.of(context).textTheme;
+    final settings = Provider.of<SettingsProvider>(context);
 
-          Row(
+    return BlocBuilder<SchemaGenerationCubit, SchemaGenerationStates>(
+      builder: (context, state) {
+        final isLoading = state is GenerateSchemaLoading;
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: settings.isDark ? AppTheme.black : AppTheme.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppTheme.boldGray.withValues(alpha: 0.15),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 1,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primary,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.file_present_outlined,
-                        color: AppTheme.white,
-                        size: 16,
+          
+              Row(
+                children: [
+                  Icon(Icons.psychology_alt_outlined,
+                      color: AppTheme.primary, size: 20),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      "Schema Requirements",
+                      style: textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: settings.isDark
+                            ? AppTheme.white
+                            : AppTheme.black,
                       ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        'File Upload',
-                        style: textTheme.titleSmall!.copyWith(
-                          color: AppTheme.white,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  onPressed: () {},
+                ],
+              ),
+
+              SizedBox(height: 8.h),
+
+              Text(
+                "Describe your system and AI will generate a full database schema (ERD + SQL + Indexes).",
+                style: textTheme.titleSmall!.copyWith(
+                  color:
+                      settings.isDark ? Colors.white70 : Colors.black54,
                 ),
               ),
-              SizedBox(width: 8.w),
-              Expanded(
-                flex: 1,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: settings.isDark
-                        ? AppTheme.black
-                        : AppTheme.white,
+
+              SizedBox(height: 16.h),
+
+              Container(
+                height: 200.h,
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                decoration: BoxDecoration(
+                  color: settings.isDark
+                      ? Colors.grey[900]
+                      : Colors.grey[50],
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppTheme.boldGray.withValues(alpha: 0.15),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.face_retouching_natural_sharp,
-                        color: AppTheme.black,
-                        size: 16,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        'NLP Chat',
-                        style: textTheme.titleSmall!.copyWith(
+                ),
+                child: TextField(
+                  controller: _promptController,
+                  maxLines: null,
+                  expands: true,
+                  keyboardType: TextInputType.multiline,
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: settings.isDark
+                        ? AppTheme.white
+                        : AppTheme.black,
+                  ),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText:
+                        "Example:\nUniversity system with Students, Courses, Enrollments...\nMany-to-many + inheritance + constraints...",
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 14.h),
+
+            
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline,
+                        size: 16, color: AppTheme.primary),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Text(
+                        "AI generates ERD diagram, SQL DDL, indexes & optimization report.",
+                        style: textTheme.bodySmall!.copyWith(
                           color: settings.isDark
-                              ? AppTheme.white
-                              : AppTheme.black,
+                              ? Colors.white70
+                              : Colors.black87,
                         ),
                       ),
-                    ],
-                  ),
-                  onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 16.h),
+
+            
+              SizedBox(
+                width: double.infinity,
+                child: CustomElevatedButton(
+                  onTap: isLoading ? null : _generateSchema,
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.auto_fix_high,
+                                size: 16, color: Colors.white),
+                            SizedBox(width: 6.w),
+                            Text(
+                              "Generate Schema",
+                              style: textTheme.titleSmall!.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 16.h),
-          Icon(Icons.file_upload_outlined, size: 32, color: AppTheme.gray),
-          SizedBox(height: 8.h),
-          Text(
-            "Drag and drop JSON or CSV files",
-            style: textTheme.titleSmall!.copyWith(
-              color: settings.isDark ? AppTheme.white : AppTheme.black,
-            ),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              backgroundColor: settings.isDark
-                  ? AppTheme.black
-                  : AppTheme.white,
-            ),
-            child: Text(
-              'Choose Files',
-              style: textTheme.titleSmall!.copyWith(
-                color: settings.isDark ? AppTheme.white : AppTheme.black,
-              ),
-            ),
-            onPressed: () {},
-          ),
-          SizedBox(height: 16.h),
-          CustomElevatedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.generating_tokens_outlined,
-                  color: AppTheme.white,
-                  size: 16,
-                ),
-                SizedBox(width: 4.w),
-                Text(
-                  'Generate Schema',
-                  style: textTheme.titleSmall!.copyWith(color: AppTheme.white),
-                ),
-              ],
-            ),
-            onTap: () {},
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
