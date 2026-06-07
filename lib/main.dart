@@ -4,7 +4,7 @@ import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/Auth/view/screens/register_screen.dart';
 import 'package:dbaas_project/features/home/presentation/screens/home_screen.dart';
-import 'package:dbaas_project/features/no_sql_projects/view/screens/main_screen_noSql.dart';
+import 'package:dbaas_project/features/no_sql_projects/main_screen_noSql.dart';
 import 'package:dbaas_project/features/projects/view/screens/create_project_screen.dart';
 import 'package:dbaas_project/features/sql_projects/main_screen_sql.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view/screens/table_editor.dart';

@@ -1,0 +1,118 @@
+import 'dart:convert';
+import 'package:dbaas_project/features/no_sql_projects/collections/data/models/mongo_collection_model.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:dbaas_project/core/constants/api_constants.dart';
+
+
+class MongoCollectionsApiService {
+
+  Future<List<MongoCollectionModel>> getCollections({
+    required String projectId,
+    required String accessToken,
+  }) async {
+    final uri = Uri.parse(
+      '${ApiConstants.baseURL}'
+      '${ApiConstants.projectEndPoint}'
+      '$projectId/mongodb/collections',
+    );
+
+    try {
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      print("GET Collections Status: ${response.statusCode}");
+      print("GET Collections Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        final List data = json['data'];
+
+        return data
+            .map((e) => MongoCollectionModel.fromJson(e))
+            .toList();
+      } else {
+        final errorJson = jsonDecode(response.body);
+        throw Exception(errorJson['message'] ?? 'Failed to load collections');
+      }
+    } catch (e) {
+      throw Exception('Get Collections Error: $e');
+    }
+  }
+
+
+  Future<MongoCollectionModel> createCollection({
+    required String projectId,
+    required String accessToken,
+    required CreateMongoCollectionRequest request,
+  }) async {
+    final uri = Uri.parse(
+      '${ApiConstants.baseURL}'
+      '${ApiConstants.projectEndPoint}'
+      '$projectId/mongodb/collections',
+    );
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(request.toJson()),
+      );
+
+      print("CREATE Status: ${response.statusCode}");
+      print("CREATE Body: ${response.body}");
+
+      if (response.statusCode == 201) {
+        final json = jsonDecode(response.body);
+        return MongoCollectionModel.fromJson(json['data']);
+      } else {
+        final errorJson = jsonDecode(response.body);
+        throw Exception(errorJson['message'] ?? 'Failed to create collection');
+      }
+    } catch (e) {
+      throw Exception('Create Collection Error: $e');
+    }
+  }
+
+  Future<MongoCollectionModel> deleteCollection({
+    required String projectId,
+    required String accessToken,
+    required String collectionName,
+  }) async {
+    final uri = Uri.parse(
+      '${ApiConstants.baseURL}'
+      '${ApiConstants.projectEndPoint}'
+      '$projectId/mongodb/collections/$collectionName',
+    );
+
+    try {
+      final response = await http.delete(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      print("DELETE Status: ${response.statusCode}");
+      print("DELETE Body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+        return MongoCollectionModel.fromJson(json['data']);
+      } else {
+        final errorJson = jsonDecode(response.body);
+        throw Exception(errorJson['message'] ?? 'Failed to delete collection');
+      }
+    } catch (e) {
+      throw Exception('Delete Collection Error: $e');
+    }
+  }
+}

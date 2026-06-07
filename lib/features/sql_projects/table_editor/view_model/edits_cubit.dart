@@ -3,7 +3,6 @@ import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_states.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/data/data_source/editor_api_service.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/data/models/table_editor_models.dart';
-import 'package:dbaas_project/features/sql_projects/DB/data/models/postgres_foreign_key_request.dart';
 
 class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
   final EditorApiService _dataSource;
