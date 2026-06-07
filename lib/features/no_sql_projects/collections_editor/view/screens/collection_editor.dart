@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Collections extends StatelessWidget {
-  const Collections({super.key});
+class CollectionEditor extends StatelessWidget {
+  const CollectionEditor({super.key});
 
   @override
   Widget build(BuildContext context) {
