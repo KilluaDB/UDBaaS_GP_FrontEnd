@@ -58,6 +58,11 @@ class Tabs {
       'selected': AppImages.editorIconSelected,
       'unselected': AppImages.editorIcon,
     },
+     {
+      'name': 'Query Document',
+      'selected': AppImages.editorIconSelected,
+      'unselected': AppImages.editorIcon,
+    },
     {
       'name': 'Delete Project',
 
