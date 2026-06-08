@@ -1,9 +1,9 @@
+import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view/widgets/create_colletion_sheet.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_cubit.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_states.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/view_model/mongo_editor_cubit.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,17 +27,17 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
+
+
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
-  late  TextTheme textTheme;
   @override
   Widget build(BuildContext context) {
     final isDark = Provider.of<SettingsProvider>(context).isDark;
-    textTheme = Theme.of(context).textTheme;
 
     return BlocConsumer<MongoCollectionsCubit, MongoCollectionsStates>(
       listener: (context, state) {
@@ -47,9 +47,9 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
             state is DeleteMongoCollectionSuccess ||
             state is GetMongoCollectionsError) {
           context.read<MongoCollectionsCubit>().getCollections(
-            widget.projectId,
-            isSilentRefresh: true,
-          );
+                widget.projectId,
+                isSilentRefresh: true,
+              );
         }
       },
       builder: (context, state) {
@@ -57,13 +57,13 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
         final collections = cubit.cachedCollections;
 
         final filtered = collections
-            .where(
-              (c) => c.name.toLowerCase().contains(_searchQuery.toLowerCase()),
-            )
+            .where((c) => c.name
+                .toLowerCase()
+                .contains(_searchQuery.toLowerCase()))
             .toList();
 
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
           child: Container(
             decoration: BoxDecoration(
               color: isDark ? Colors.grey.shade900 : Colors.white,
@@ -71,20 +71,22 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
             ),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: _buildHeader(isDark, filtered.length)),
-                    const SizedBox(width: 16),
-                    _buildAddButton(context),
-                  ],
-                ),
+                 Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: _buildHeader(isDark, filtered.length),
+                          ),
+                          const SizedBox(width: 16),
+                          _buildAddButton(context),
+                        ],
+                      ),
+                   
 
                 const SizedBox(height: 12),
 
                 Expanded(
-                  child:
-                      (state is GetMongoCollectionsLoading &&
+                  child: (state is GetMongoCollectionsLoading &&
                           collections.isEmpty)
                       ? const Center(child: CircularProgressIndicator())
                       : _buildGrid(filtered),
@@ -97,16 +99,21 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
     );
   }
 
+
+
   Widget _buildGrid(List collections) {
+
+
     return GridView.builder(
-      padding: const EdgeInsets.all(8),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 2.2,
-      ),
-      itemCount: collections.length,
+                        padding: const EdgeInsets.all(8),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 2.2,  
+                        ),
+                        itemCount: collections.length,
       itemBuilder: (context, index) {
         final collection = collections[index];
 
@@ -117,9 +124,9 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
           },
           onDelete: () {
             context.read<MongoCollectionsCubit>().deleteCollection(
-              projectId: widget.projectId,
-              collectionName: collection.name,
-            );
+                  projectId: widget.projectId,
+                  collectionName: collection.name,
+                );
           },
         );
       },
@@ -164,13 +171,17 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
 
   Widget _buildAddButton(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16 ),
       child: SizedBox(
-        width: 180,
+        width: 180 ,
         child: ElevatedButton.icon(
           onPressed: () {
             final cubit = context.read<MongoCollectionsCubit>();
-            showCreateCollectionSheet(context, widget.projectId, cubit);
+            showCreateCollectionSheet(
+              context,
+              widget.projectId,
+              cubit,
+            );
           },
           icon: const Icon(Icons.add),
           label: const Text('Add Collection'),
@@ -207,16 +218,18 @@ class _CollectionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+          
             Row(
               children: [
-                const Icon(Icons.folder_outlined, color: Colors.blue, size: 26),
+                const Icon(Icons.folder_outlined,
+                    color: Colors.blue, size: 26),
                 const SizedBox(width: 8),
 
                 Expanded(
                   child: Text(
                     name,
                     style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -225,23 +238,24 @@ class _CollectionCard extends StatelessWidget {
 
                 IconButton(
                   onPressed: onDelete,
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Colors.red,
-                    size: 20,
-                  ),
+                  icon: const Icon(Icons.delete_outline,
+                      color: Colors.red, size: 20),
                 ),
               ],
             ),
 
             const SizedBox(height: 16),
 
-            _row(
-              "Documents",
-              "${context.watch<MongoEditorCubit>().documentsCount}",
-            ),
+           
+            _row("Documents", "${context.watch<MongoEditorCubit>().documentsCount}"),
 
             const SizedBox(height: 6),
+
+     
+         
+
+
+      
           ],
         ),
       ),
@@ -254,15 +268,27 @@ class _CollectionCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          style: TextStyle(
+            fontSize: 17,
+            color: AppTheme.gray,
+          ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 3,
+          ),
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Text(value, style: textTheme.bodySmall),
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ],
     );
