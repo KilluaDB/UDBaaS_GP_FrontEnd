@@ -1,14 +1,13 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/util/ui_utils.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view/screens/empty_collection_screen.dart';
+import 'package:dbaas_project/features/no_sql_projects/collections/view/screens/full_collection_screen.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_cubit.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_states.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
-import 'package:dbaas_project/features/sql_projects/DB/view/screens/empty_database_screen.dart';
-import 'package:dbaas_project/features/sql_projects/DB/view/screens/full_database_screen.dart';
-import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.dart';
-import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +16,7 @@ import 'package:provider/provider.dart';
 class Collections extends StatelessWidget {
   final ProjectModel project;
 
-  final Function(String tableName, int index) onNavigate;
+  final Function(String collectionName, int index) onNavigate;
 
   const Collections({
     super.key,
@@ -78,13 +77,13 @@ class Collections extends StatelessWidget {
                   final collectionList = state.collections;
 
                   if (collectionList.isEmpty) {
-                    return const EmptyCollectionScreen();
+                    return  EmptyCollectionScreen(projectId: project.id!,);
                   }
 
-                  return FullDatabaseScreen(
+                  return FullCollectionScreen(
                     projectId: project.id!,
-                    onTableSelected: (tableName) {
-                      onNavigate(tableName, 2);
+                    onCollectionSelected: (collectionName) {
+                      onNavigate(collectionName, 2);
                     },
                   );
                 }
@@ -93,19 +92,20 @@ class Collections extends StatelessWidget {
                   final collectionList = cubit.cachedCollections ;
 
                   if (collectionList.isEmpty) {
-                    return const EmptyCollectionScreen();
-                  }
+return  EmptyCollectionScreen(projectId: project.id!,);                  }
 
-                  return FullDatabaseScreen(
+                  return FullCollectionScreen(
                     projectId: project.id!,
-                    onTableSelected: (tableName) {
-                      onNavigate(tableName, 2);
+                   onCollectionSelected: (collectionName) {
+                      onNavigate(collectionName, 2);
                     },
                   );
                 }
 
-                return const EmptyDatabaseScreen();
-              },
+return  EmptyCollectionScreen(projectId: project.id!,);              },
+           
+           
+           
             ),
           ),
         ],

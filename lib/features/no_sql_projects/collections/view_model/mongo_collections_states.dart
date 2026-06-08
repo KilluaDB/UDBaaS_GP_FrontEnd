@@ -2,10 +2,9 @@ import '../data/models/mongo_collection_model.dart';
 
 abstract class MongoCollectionsStates {}
 
-/// INIT
+
 class MongoCollectionsInit extends MongoCollectionsStates {}
 
-/// GET ALL COLLECTIONS
 class GetMongoCollectionsLoading extends MongoCollectionsStates {}
 
 class GetMongoCollectionsSuccess extends MongoCollectionsStates {
@@ -20,7 +19,7 @@ class GetMongoCollectionsError extends MongoCollectionsStates {
   GetMongoCollectionsError(this.message);
 }
 
-/// CREATE COLLECTION
+
 class CreateMongoCollectionLoading extends MongoCollectionsStates {}
 
 class CreateMongoCollectionSuccess extends MongoCollectionsStates {
@@ -35,7 +34,7 @@ class CreateMongoCollectionError extends MongoCollectionsStates {
   CreateMongoCollectionError(this.message);
 }
 
-/// DELETE COLLECTION
+
 class DeleteMongoCollectionLoading extends MongoCollectionsStates {}
 
 class DeleteMongoCollectionSuccess extends MongoCollectionsStates {

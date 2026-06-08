@@ -11,7 +11,6 @@ class MongoCollectionsCubit extends Cubit<MongoCollectionsStates> {
   final UserProvider userProvider;
 
   List<MongoCollectionModel> cachedCollections = [];
-  Map<String, MongoCollectionModel> cachedCollectionsMap = {};
 
   MongoCollectionsCubit({
     required this.userProvider,
@@ -23,8 +22,7 @@ class MongoCollectionsCubit extends Cubit<MongoCollectionsStates> {
     return userProvider.currentUser?.data?.accessToken;
   }
 
-  /// GET ALL COLLECTIONS
-  Future getCollections(
+  Future<void> getCollections(
     String? projectId, {
     bool isSilentRefresh = false,
   }) async {
@@ -51,41 +49,29 @@ class MongoCollectionsCubit extends Cubit<MongoCollectionsStates> {
       );
 
       cachedCollections = response;
-      cachedCollectionsMap.clear();
-
-      for (final col in response) {
-        cachedCollectionsMap[col.name] = col;
-      }
 
       emit(GetMongoCollectionsSuccess(response));
     } catch (e) {
-      String errorMessage = e.toString();
-
-      if (errorMessage.contains("Exception:")) {
-        errorMessage = errorMessage.replaceAll("Exception:", "").trim();
-      }
-
-      emit(GetMongoCollectionsError(errorMessage));
+      _handleError(e);
     }
   }
 
-  /// CREATE COLLECTION
-  Future createCollection({
+  Future<void> createCollection({
     required String? projectId,
     required String name,
   }) async {
     if (projectId == null || projectId.isEmpty) {
-      emit(GetMongoCollectionsError("Invalid Project ID"));
+      emit(CreateMongoCollectionError("Invalid Project ID"));
       return;
     }
 
-    emit(GetMongoCollectionsLoading());
+    emit(CreateMongoCollectionLoading());
 
     try {
       final token = _getAccessToken();
 
       if (token == null || token.isEmpty) {
-        emit(GetMongoCollectionsError("User session expired. Please login again."));
+        emit(CreateMongoCollectionError("User session expired. Please login again."));
         return;
       }
 
@@ -98,42 +84,31 @@ class MongoCollectionsCubit extends Cubit<MongoCollectionsStates> {
       );
 
       cachedCollections.add(response);
-      cachedCollectionsMap[response.name] = response;
 
-      emit(GetMongoCollectionsSuccess(cachedCollections));
+      emit(CreateMongoCollectionSuccess(response));
 
-      await getCollections(
-        projectId,
-        isSilentRefresh: true,
-      );
+      await getCollections(projectId, isSilentRefresh: true);
     } catch (e) {
-      String errorMessage = e.toString();
-
-      if (errorMessage.contains("Exception:")) {
-        errorMessage = errorMessage.replaceAll("Exception:", "").trim();
-      }
-
-      emit(GetMongoCollectionsError(errorMessage));
+      _handleCreateError(e);
     }
   }
 
-  /// DELETE COLLECTION
-  Future deleteCollection({
+  Future<void> deleteCollection({
     required String? projectId,
     required String collectionName,
   }) async {
     if (projectId == null || projectId.isEmpty) {
-      emit(GetMongoCollectionsError("Invalid Project ID"));
+      emit(DeleteMongoCollectionError("Invalid Project ID"));
       return;
     }
 
-    emit(GetMongoCollectionsLoading());
+    emit(DeleteMongoCollectionLoading());
 
     try {
       final token = _getAccessToken();
 
       if (token == null || token.isEmpty) {
-        emit(GetMongoCollectionsError("User session expired. Please login again."));
+        emit(DeleteMongoCollectionError("User session expired. Please login again."));
         return;
       }
 
@@ -143,23 +118,45 @@ class MongoCollectionsCubit extends Cubit<MongoCollectionsStates> {
         collectionName: collectionName,
       );
 
-      cachedCollections.removeWhere((c) => c.name == response.name);
-      cachedCollectionsMap.remove(response.name);
-
-      emit(GetMongoCollectionsSuccess(cachedCollections));
-
-      await getCollections(
-        projectId,
-        isSilentRefresh: true,
+      cachedCollections.removeWhere(
+        (c) => c.name == response.name,
       );
+
+      emit(DeleteMongoCollectionSuccess(response));
+
+      await getCollections(projectId, isSilentRefresh: true);
     } catch (e) {
-      String errorMessage = e.toString();
-
-      if (errorMessage.contains("Exception:")) {
-        errorMessage = errorMessage.replaceAll("Exception:", "").trim();
-      }
-
-      emit(GetMongoCollectionsError(errorMessage));
+      _handleDeleteError(e);
     }
+  }
+
+  void _handleError(Object e) {
+    String message = e.toString();
+
+    if (message.contains("Exception:")) {
+      message = message.replaceAll("Exception:", "").trim();
+    }
+
+    emit(GetMongoCollectionsError(message));
+  }
+
+  void _handleCreateError(Object e) {
+    String message = e.toString();
+
+    if (message.contains("Exception:")) {
+      message = message.replaceAll("Exception:", "").trim();
+    }
+
+    emit(CreateMongoCollectionError(message));
+  }
+
+  void _handleDeleteError(Object e) {
+    String message = e.toString();
+
+    if (message.contains("Exception:")) {
+      message = message.replaceAll("Exception:", "").trim();
+    }
+
+    emit(DeleteMongoCollectionError(message));
   }
 }

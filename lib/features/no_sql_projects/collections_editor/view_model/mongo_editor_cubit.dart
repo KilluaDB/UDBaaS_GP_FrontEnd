@@ -17,7 +17,8 @@ class MongoEditorCubit extends Cubit<MongoEditorState> {
         super(MongoEditorInit());
 
   String? get _token => userProvider.currentUser?.data?.accessToken;
-
+int get documentsCount =>
+    cachedDocuments?.documents.length ?? 0;
   Future getDocuments({
     required String projectId,
     required String collection,
