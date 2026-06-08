@@ -1,12 +1,15 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/features/no_sql_projects/collections/view/widgets/create_colletion_sheet.dart';
+import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_cubit.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class EmptyCollectionScreen extends StatelessWidget {
-  const EmptyCollectionScreen({super.key});
+  String projectId;
+   EmptyCollectionScreen({required this.projectId});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +23,11 @@ class EmptyCollectionScreen extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14.r),
         border: Border.all(width: 1, color: AppTheme.boldGray),
-        color: provider.isDark ? AppTheme.gray : AppTheme.white, 
+        color: provider.isDark ? AppTheme.gray : AppTheme.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-       
           Row(
             children: [
               Icon(Icons.grid_on_rounded, color: AppTheme.primary, size: 20.sp),
@@ -33,12 +35,12 @@ class EmptyCollectionScreen extends StatelessWidget {
               Text('Collections', style: textTheme.titleMedium),
             ],
           ),
-          
+
           Expanded(
             child: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, 
-                         
+                mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
                   Image.asset(
                     AppImages.emptyProjectsLogo,
@@ -49,12 +51,15 @@ class EmptyCollectionScreen extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     'No Collections Available',
-                    style: textTheme.titleSmall!.copyWith(fontSize: 18.sp,color: provider.isDark?AppTheme.white:AppTheme.black),
+                    style: textTheme.titleSmall!.copyWith(
+                      fontSize: 18.sp,
+                      color: provider.isDark ? AppTheme.white : AppTheme.black,
+                    ),
                   ),
                   SizedBox(height: 8.h),
                   Text(
                     'Get started by creating your first Collection ',
-                    textAlign: TextAlign.center, 
+                    textAlign: TextAlign.center,
                     style: textTheme.titleMedium!.copyWith(fontSize: 14.sp),
                   ),
                   SizedBox(height: 20.h),
@@ -62,8 +67,9 @@ class EmptyCollectionScreen extends StatelessWidget {
                     builder: (btnContext) {
                       return ElevatedButton(
                         onPressed: () {
-                          Scaffold.of(btnContext).openEndDrawer();
-                        },
+ final cubit = context.read<MongoCollectionsCubit>();
+  showCreateCollectionSheet(context, projectId, cubit);
+                     },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -71,12 +77,15 @@ class EmptyCollectionScreen extends StatelessWidget {
                             SizedBox(width: 8.w),
                             Text(
                               'Add Collection',
-                              style: textTheme.titleSmall!.copyWith(fontSize: 14.sp,color: AppTheme.white),
+                              style: textTheme.titleSmall!.copyWith(
+                                fontSize: 14.sp,
+                                color: AppTheme.white,
+                              ),
                             ),
                           ],
                         ),
                       );
-                    }
+                    },
                   ),
                 ],
               ),
