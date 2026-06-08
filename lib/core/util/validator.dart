@@ -69,7 +69,7 @@ static String? validateTableName(String? val) {
   final RegExp tableRegex = RegExp(r'^[a-zA-Z_][a-zA-Z0-9_$]*$');
 
   if (val == null || val.trim().isEmpty) {
-    return 'Table name is required';
+    return 'Name is required';
   }
 
   if (!tableRegex.hasMatch(val.trim())) {
