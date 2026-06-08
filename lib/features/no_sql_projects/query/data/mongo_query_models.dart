@@ -20,15 +20,22 @@ class MongoQueryDocumentsRequest {
     };
   }
 
-  factory MongoQueryDocumentsRequest.fromJson(Map<String, dynamic> json) {
+  factory MongoQueryDocumentsRequest.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return MongoQueryDocumentsRequest(
-      filter: json["filter"],
-      sort: json["sort"],
+      filter: json["filter"] != null
+          ? Map<String, dynamic>.from(json["filter"])
+          : null,
+      sort: json["sort"] != null
+          ? Map<String, dynamic>.from(json["sort"])
+          : null,
       page: json["page"],
       limit: json["limit"],
     );
   }
 }
+
 class MongoQueryDocumentsResult {
   final List<Map<String, dynamic>> documents;
   final int total;
@@ -42,11 +49,13 @@ class MongoQueryDocumentsResult {
     required this.limit,
   });
 
-  factory MongoQueryDocumentsResult.fromJson(Map<String, dynamic> json) {
+  factory MongoQueryDocumentsResult.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return MongoQueryDocumentsResult(
-      documents: List<Map<String, dynamic>>.from(
-        json["documents"] ?? [],
-      ),
+      documents: (json["documents"] as List? ?? [])
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList(),
       total: json["total"] ?? 0,
       page: json["page"] ?? 1,
       limit: json["limit"] ?? 10,

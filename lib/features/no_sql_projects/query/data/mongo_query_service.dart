@@ -1,21 +1,25 @@
 import 'dart:convert';
-import 'package:dbaas_project/core/models/API/api_response.dart';
-import 'package:dbaas_project/features/no_sql_projects/query/data/mongo_query_models.dart';
+
 import 'package:http/http.dart' as http;
 
+import 'package:dbaas_project/core/constants/api_constants.dart';
+import 'package:dbaas_project/core/models/API/api_response.dart';
+import 'package:dbaas_project/features/no_sql_projects/query/data/mongo_query_models.dart';
+
 class MongoQueryApiService {
-  final String baseUrl;
-
-  MongoQueryApiService({required this.baseUrl});
-
   Future<MongoQueryDocumentsResult> queryMongoDocuments({
     required String projectId,
     required String collection,
     required String accessToken,
     required MongoQueryDocumentsRequest request,
   }) async {
+    final encodedCollection = Uri.encodeComponent(collection);
+
     final uri = Uri.parse(
-      '$baseUrl/api/v1/projects/$projectId/mongodb/collections/$collection/documents/query',
+      '${ApiConstants.baseURL}'
+      '${ApiConstants.projectEndPoint}'
+      '$projectId/mongodb/collections/'
+      '$encodedCollection/documents/query',
     );
 
     try {
@@ -28,25 +32,42 @@ class MongoQueryApiService {
         body: jsonEncode(request.toJson()),
       );
 
-      print("Status Code: ${response.statusCode}");
-      print("Body: ${response.body}");
+      print('Status Code: ${response.statusCode}');
+      print('Body: ${response.body}');
 
-      final json = jsonDecode(response.body);
+      Map<String, dynamic> json;
+
+      try {
+        json = jsonDecode(response.body);
+      } catch (_) {
+        throw Exception(
+          'Invalid server response: ${response.body}',
+        );
+      }
 
       if (response.statusCode == 200) {
-        final result = APIResponse<MongoQueryDocumentsResult>.fromJson(
+        final result =
+            APIResponse<MongoQueryDocumentsResult>.fromJson(
           json,
           (data) => MongoQueryDocumentsResult.fromJson(data),
         );
 
-        return result.data!;
-      } else {
-        String message = json['message'] ?? 'Unknown error';
+        if (result.data == null) {
+          throw Exception('No data returned from server');
+        }
 
-        throw Exception(message);
+        return result.data!;
       }
+
+      throw Exception(
+        json['message'] ??
+            json['error'] ??
+            'Unknown error occurred',
+      );
     } catch (e) {
-      throw Exception("Query Mongo Documents failed: $e");
+      throw Exception(
+        'Query Mongo Documents failed: $e',
+      );
     }
   }
 }
