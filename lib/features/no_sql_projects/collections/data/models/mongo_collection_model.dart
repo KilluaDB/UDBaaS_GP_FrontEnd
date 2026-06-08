@@ -1,3 +1,18 @@
+class MongoCollectionsResponse {
+  final List<MongoCollectionModel> collections;
+
+  const MongoCollectionsResponse({
+    required this.collections,
+  });
+
+  factory MongoCollectionsResponse.fromJson(Map<String, dynamic> json) {
+    return MongoCollectionsResponse(
+      collections: (json['data']['collections'] as List<dynamic>)
+          .map((e) => MongoCollectionModel.fromJson(e))
+          .toList(),
+    );
+  }
+}
 class MongoCollectionModel {
   final String name;
 
@@ -5,16 +20,14 @@ class MongoCollectionModel {
     required this.name,
   });
 
-  factory MongoCollectionModel.fromJson(Map<String, dynamic> json) {
+  factory MongoCollectionModel.fromJson(dynamic json) {
     return MongoCollectionModel(
-      name: json['name'] ?? '',
+      name: json.toString(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-    };
+    return {'name': name};
   }
 }
 class CreateMongoCollectionRequest {

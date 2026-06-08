@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'package:dbaas_project/features/no_sql_projects/collections/data/models/mongo_collection_model.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:dbaas_project/core/constants/api_constants.dart';
-
+import 'package:dbaas_project/features/no_sql_projects/collections/data/models/mongo_collection_model.dart';
 
 class MongoCollectionsApiService {
-
   Future<List<MongoCollectionModel>> getCollections({
     required String projectId,
     required String accessToken,
@@ -31,20 +29,22 @@ class MongoCollectionsApiService {
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
-        final List data = json['data'];
+        final List<dynamic> collectionsList =
+            json['data']['collections'] ?? [];
 
-        return data
+        return collectionsList
             .map((e) => MongoCollectionModel.fromJson(e))
             .toList();
       } else {
         final errorJson = jsonDecode(response.body);
-        throw Exception(errorJson['message'] ?? 'Failed to load collections');
+        throw Exception(
+          errorJson['message'] ?? 'Failed to load collections',
+        );
       }
     } catch (e) {
       throw Exception('Get Collections Error: $e');
     }
   }
-
 
   Future<MongoCollectionModel> createCollection({
     required String projectId,
@@ -72,10 +72,15 @@ class MongoCollectionsApiService {
 
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
-        return MongoCollectionModel.fromJson(json['data']);
+
+        return MongoCollectionModel.fromJson(
+          json['data'],
+        );
       } else {
         final errorJson = jsonDecode(response.body);
-        throw Exception(errorJson['message'] ?? 'Failed to create collection');
+        throw Exception(
+          errorJson['message'] ?? 'Failed to create collection',
+        );
       }
     } catch (e) {
       throw Exception('Create Collection Error: $e');
@@ -106,10 +111,15 @@ class MongoCollectionsApiService {
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
-        return MongoCollectionModel.fromJson(json['data']);
+
+        return MongoCollectionModel.fromJson(
+          json['data'],
+        );
       } else {
         final errorJson = jsonDecode(response.body);
-        throw Exception(errorJson['message'] ?? 'Failed to delete collection');
+        throw Exception(
+          errorJson['message'] ?? 'Failed to delete collection',
+        );
       }
     } catch (e) {
       throw Exception('Delete Collection Error: $e');
