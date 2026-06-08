@@ -14,7 +14,7 @@ class MongoQueryCubit extends Cubit<MongoQueryState> {
   MongoQueryCubit({
     required this.userProvider,
     MongoQueryApiService? apiService,
-  })  : _apiService = apiService ?? MongoQueryApiService(baseUrl: ""),
+  })  : _apiService = apiService ?? MongoQueryApiService(),
         super(MongoQueryInitial());
 
   Future<void> queryDocuments({

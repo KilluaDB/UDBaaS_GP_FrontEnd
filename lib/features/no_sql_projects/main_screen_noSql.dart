@@ -5,6 +5,7 @@ import 'package:dbaas_project/features/no_sql_projects/collections_editor/view/s
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/view_model/mongo_editor_cubit.dart';
 import 'package:dbaas_project/features/no_sql_projects/dash_board/view/screens/dash_board.dart';
 import 'package:dbaas_project/features/no_sql_projects/dash_board/view_model/mongo_dashboard_cubit.dart';
+import 'package:dbaas_project/features/no_sql_projects/query/view/screens/query_editor.dart';
 import 'package:dbaas_project/features/no_sql_projects/query/view_model/query_mongo_cubit.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view/screens/collections.dart';
@@ -80,13 +81,11 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
               // tableName: selectedCollectionName,
               // project: project,
             ),
-
+            QueryMongoEditor(project: project),
             DeleteScreen(project: project),
           ];
 
           return Scaffold(
-         
-
             body: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,13 +104,13 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
                       );
                     }
 
-                    // if (index == 2 && selectedCollectionName.isNotEmpty) {
-                    //   context.read<PostgresTableEditorCubit>().getAllRows(
-                    //         projectId: project.id!,
-                    //         tableName: selectedTableName,
-                    //         showLoading: false
-                    //       );
-                    // }
+                    if (index == 2 && selectedCollectionName.isNotEmpty) {
+                      context.read<MongoEditorCubit>().getDocuments(
+                        projectId: project.id!,
+                        collection: selectedCollectionName,
+                        showLoading: false,
+                      );
+                    }
                   },
                 ),
 
