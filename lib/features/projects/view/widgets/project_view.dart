@@ -11,11 +11,15 @@ import 'package:provider/provider.dart';
 class ProjectView extends StatelessWidget {
   final ProjectModel project;
   final VoidCallback onDelete;
+  final VoidCallback onExport;
+  final VoidCallback onImport;
 
   const ProjectView({
     super.key,
     required this.project,
     required this.onDelete,
+    required this.onExport,
+    required this.onImport,
   });
 
   @override
@@ -45,6 +49,7 @@ class ProjectView extends StatelessWidget {
         }
       },
       child: Container(
+        
         padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding,
           vertical: verticalPadding,
@@ -63,47 +68,74 @@ class ProjectView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset('assets/images/icons/logo.svg'),
+            Row(
+              children: [
+                   SvgPicture.asset('assets/images/icons/logo.svg'),
+                   Spacer(),
+                           IconButton(
+                             onPressed: onDelete,
+                             icon: const Icon(
+                               Icons.delete_forever_rounded,
+                               color: AppTheme.red,
+                               size: 25,
+                             ),
+                           ),
+                           SizedBox(width: 10.w,),
+                              IconButton(
+                                tooltip: 'Import Project',
+                             onPressed: onImport,
+                             icon: const Icon(
+                               Icons.upload_rounded,
+                               color: AppTheme.black,
+                               size: 25,
+                             ),
+                           ),
+                                 SizedBox(width: 10.w,),
+                              IconButton(
+                             onPressed: onExport,
+                              tooltip: 'Export Project',
+                             icon: const Icon(
+                               Icons.download,
+                               color: AppTheme.black,
+                               size: 25,
+                             ),
+                           ),
+            
+            
+              ]
+            
+            
+            
+          ),
             SizedBox(height: 12.h),
             Text(
               project.name!,
-              style: textTheme.titleMedium!.copyWith(
+              style: textTheme.titleLarge!.copyWith(
                 color: settingsProvider.isDark
                     ? AppTheme.white
                     : AppTheme.black,
+                  
               ),
             ),
-            SizedBox(height: 4.h),
-            Row(
-              children: [
-                Container(
-                  width: 56.w,
-                  height: 50.h,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.backgroundColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    project.dbType!,
-                    style: textTheme.titleMedium!.copyWith(
-                      fontSize: 12,
-                      color: AppTheme.backgroundColor,
-                    ),
-                  ),
+            SizedBox(height: 14.h),
+            Container(
+              width: 56.w,
+              height: 50.h,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppTheme.backgroundColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                project.dbType!,
+                style: textTheme.titleMedium!.copyWith(
+                  fontSize: 12,
+                  color: AppTheme.backgroundColor,
                 ),
-                const Spacer(),
-                IconButton(
-                  onPressed: onDelete,
-                  icon: const Icon(
-                    Icons.delete_forever_rounded,
-                    color: AppTheme.red,
-                    size: 25,
-                  ),
-                ),
-              ],
+              ),
             ),
-            SizedBox(height: 4.h),
+       
+            SizedBox(height: 14.h),
             Text(project.resourceTier!, style: textTheme.titleMedium),
           ],
         ),

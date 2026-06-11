@@ -1,3 +1,4 @@
+import 'package:dbaas_project/features/backup/view_model/backup_cubit.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/projects/view/widgets/project_view.dart';
 import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
@@ -19,7 +20,7 @@ class Projects extends StatelessWidget {
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
 
-        childAspectRatio: 313 / 230,
+        childAspectRatio: 363 / 210,
       ),
       itemCount: projects.length,
       itemBuilder: (context, index) {
@@ -30,6 +31,16 @@ class Projects extends StatelessWidget {
               context.read<ProjectCubit>().deleteProject(projects[index].id!);
             }
           },
+          onExport: () {
+            if (projects[index].id != null) {
+              context.read<BackupCubit>().exportProject(projectId:  projects[index].id!);
+            }
+          },
+       onImport: () async {
+  await context.read<BackupCubit>().importProjectFromPicker(
+    projectId: projects[index].id!,
+  );
+}
         );
       },
     );
