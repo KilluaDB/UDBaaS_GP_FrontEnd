@@ -15,7 +15,9 @@ class ProjectCubit extends Cubit<ProjectStates> {
     String name,
     String dbType,
     String password,
+
   ) async {
+     
     emit(CreateProjectLoading());
     try {
       final accessToken = userProvider.currentUser?.data?.accessToken;
@@ -30,15 +32,18 @@ class ProjectCubit extends Cubit<ProjectStates> {
         dbType,
         password,
       );
-   
+         await Future.delayed(const Duration(seconds: 1));
+
       emit(CreateProjectSuccess(response));
+
     } catch (e) {
       emit(CreateProjectError(e.toString()));
     }
   }
 
-  Future<void> getAllProject() async {
-    emit(GetAllProjectsLoading());
+  Future<void> getAllProject(    {bool isSilentRefresh = false}) async {
+      if (!isSilentRefresh)   emit(GetAllProjectsLoading());
+  
     try {
       final accessToken = userProvider.currentUser?.data?.accessToken;
       if (accessToken == null || accessToken.isEmpty) {
