@@ -1,3 +1,4 @@
+import 'package:dbaas_project/features/project_info/presentation/widgets/project_access.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,7 +112,8 @@ class _MongoDashboardFullScreenState extends State<MongoDashboardFullScreen> {
                 itemBuilder: (context, index) => bottomCards[index],
               ),
 
-              const SizedBox(height: 32),
+              // const SizedBox(height: 32),
+              // // const ProjectAccessSection(),
             ],
           ),
         );

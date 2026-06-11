@@ -1,3 +1,4 @@
+import 'package:dbaas_project/features/project_info/view_model/project_info_cubit.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
@@ -49,6 +50,14 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
               project.id!,
               isSilentRefresh: false,
             ),
+        ),
+            BlocProvider<ProjectAccessCubit>(
+          create: (context) => ProjectAccessCubit(
+            userProvider: userProvider,
+          )..getProjectAccess(
+  projectId: project.id!,
+  isSilentRefresh: false,
+)
         ),
 
         BlocProvider<DashCubit>(

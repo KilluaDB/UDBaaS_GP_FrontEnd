@@ -36,6 +36,7 @@ class PostgresTablesCubit extends Cubit<PostgresTablesStates> {
     if (!isSilentRefresh) emit(GetAllTablesLoading());
 
     try {
+
       final token = _getAccessToken();
       if (token == null) return;
 
@@ -78,6 +79,7 @@ class PostgresTablesCubit extends Cubit<PostgresTablesStates> {
         emit(CreateTableError("User not logged in"));
         return;
       }
+            await Future.delayed(const Duration(seconds: 1));
 
       final request = CreateTableRequestBody(
         schema: schema ?? 'public',
@@ -86,7 +88,6 @@ class PostgresTablesCubit extends Cubit<PostgresTablesStates> {
         foreignKeys: foreignKeys,
       );
 
-      await Future.delayed(const Duration(milliseconds: 500)); 
       final response = await _dataSource.createPostgresTable(token, projectId, request);
       
       emit(CreateTableSuccess(response));
