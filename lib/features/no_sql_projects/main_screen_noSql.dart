@@ -7,6 +7,7 @@ import 'package:dbaas_project/features/no_sql_projects/dash_board/view/screens/d
 import 'package:dbaas_project/features/no_sql_projects/dash_board/view_model/mongo_dashboard_cubit.dart';
 import 'package:dbaas_project/features/no_sql_projects/query/view/screens/query_editor.dart';
 import 'package:dbaas_project/features/no_sql_projects/query/view_model/query_mongo_cubit.dart';
+import 'package:dbaas_project/features/project_info/view_model/project_info_cubit.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view/screens/collections.dart';
 import 'package:dbaas_project/features/projects/view/screens/delete_screen.dart';
@@ -36,6 +37,14 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
 
     return MultiBlocProvider(
       providers: [
+                              BlocProvider<ProjectAccessCubit>(
+          create: (context) => ProjectAccessCubit(
+            userProvider: userProvider,
+          )..getProjectAccess(
+  projectId: project.id!,
+  isSilentRefresh: false,
+)
+        ),
         BlocProvider<MongoCollectionsCubit>(
           create: (context) =>
               MongoCollectionsCubit(userProvider: userProvider)
@@ -75,6 +84,7 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
                 );
               },
             ),
+  
 
             CollectionEditor(
               // key: ValueKey(selectedCollectionName),
