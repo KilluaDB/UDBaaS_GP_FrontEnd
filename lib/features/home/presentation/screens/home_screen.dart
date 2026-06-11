@@ -1,11 +1,8 @@
 import 'package:dbaas_project/features/cloud/view/screens/cloud_tab.dart';
 import 'package:dbaas_project/features/home/presentation/screens/drawer.dart';
 import 'package:dbaas_project/features/projects/view/screens/project_tab.dart';
-import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
 import 'package:dbaas_project/features/settings/view/presentation/settings_screen.dart';
-import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';

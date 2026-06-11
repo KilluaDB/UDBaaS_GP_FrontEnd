@@ -62,7 +62,7 @@ class _SchemaPreviewState extends State<SchemaPreview> {
     final textTheme = Theme.of(context).textTheme;
 
     return BlocListener<SchemaGenerationCubit, SchemaGenerationStates>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is GenerateSchemaSuccess) {
           final mermaid = state.response.data.mermaid;
 
@@ -74,18 +74,19 @@ class _SchemaPreviewState extends State<SchemaPreview> {
           }
         }
 
-        if (state is ApproveSchemaSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Schema approved successfully "),
-              backgroundColor: Colors.green,
-            ),
-          );
-                    context.read<PostgresTablesCubit>().getAllTables(
-     widget. project.id!,
-      isSilentRefresh: true,
-    );
-        }
+if (state is ApproveSchemaSuccess) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text("Schema approved successfully"),
+      backgroundColor: Colors.green,
+    ),
+  );
+
+  await context.read<PostgresTablesCubit>().getAllTables(
+    widget.project.id!,
+    isSilentRefresh: true,
+  );
+}
 
         if (state is ApproveSchemaError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -102,7 +103,7 @@ class _SchemaPreviewState extends State<SchemaPreview> {
 
           Widget content;
 
-          if (state is GenerateSchemaLoading) {
+          if (state is GenerateSchemaLoading|| state is ApproveSchemaLoading)  {
             content = const Center(child: CircularProgressIndicator());
           } else if (state is GenerateSchemaSuccess) {
             content = Column(

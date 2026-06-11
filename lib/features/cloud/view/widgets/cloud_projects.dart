@@ -1,5 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/constants/app_images.dart';
+import 'package:dbaas_project/features/backup/view_model/backup_cubit.dart';
 import 'package:dbaas_project/features/projects/data/models/project_model.dart';
 import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
@@ -95,13 +96,23 @@ class CloudProjects extends StatelessWidget {
                     itemCount: projectsOfType.length,
                     itemBuilder: (context, index) {
                       return ProjectView(
-                        project: projectsOfType[index],
-                        onDelete: () {
-                          context
-                              .read<ProjectCubit>()
-                              .deleteProject(projectsOfType[index].id!);
-                        },
-                      );
+          project: projects[index],
+          onDelete: () {
+            if (projects[index].id != null) {
+              context.read<ProjectCubit>().deleteProject(projects[index].id!);
+            }
+          },
+          onExport: () {
+            if (projects[index].id != null) {
+              context.read<BackupCubit>().exportProject(projectId:  projects[index].id!);
+            }
+          },
+       onImport: () async {
+  await context.read<BackupCubit>().importProjectFromPicker(
+    projectId: projects[index].id!,
+  );
+}
+        );
                     },
                   ),
 

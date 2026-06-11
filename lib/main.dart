@@ -1,4 +1,5 @@
 import 'package:dbaas_project/core/app_theme.dart';
+import 'package:dbaas_project/features/backup/view_model/backup_cubit.dart';
 import 'package:dbaas_project/features/projects/view_model/project_cubit.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
@@ -32,6 +33,10 @@ runApp(
         )..getAllProject(),
       ),
 
+
+      BlocProvider(
+        create: (context) => BackupCubit( userProvider: Provider.of<UserProvider>(context, listen: false),)
+      ),
     ],
     child: const DBaasApp(),
   ),
