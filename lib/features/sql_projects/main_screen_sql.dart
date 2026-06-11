@@ -139,7 +139,7 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
                           );
                     }
 
-                    if (index == 1) {
+                    if (index == 1 ) {
                       context.read<PostgresTablesCubit>().getAllTables(
                             project.id!,
                             isSilentRefresh: true,
