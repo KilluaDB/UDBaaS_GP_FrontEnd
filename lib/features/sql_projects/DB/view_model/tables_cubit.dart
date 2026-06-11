@@ -79,6 +79,7 @@ class PostgresTablesCubit extends Cubit<PostgresTablesStates> {
         emit(CreateTableError("User not logged in"));
         return;
       }
+            await Future.delayed(const Duration(seconds: 1));
 
       final request = CreateTableRequestBody(
         schema: schema ?? 'public',

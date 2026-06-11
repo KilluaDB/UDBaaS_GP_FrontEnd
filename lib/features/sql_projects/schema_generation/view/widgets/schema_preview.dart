@@ -103,7 +103,7 @@ if (state is ApproveSchemaSuccess) {
 
           Widget content;
 
-          if (state is GenerateSchemaLoading) {
+          if (state is GenerateSchemaLoading|| state is ApproveSchemaLoading)  {
             content = const Center(child: CircularProgressIndicator());
           } else if (state is GenerateSchemaSuccess) {
             content = Column(
