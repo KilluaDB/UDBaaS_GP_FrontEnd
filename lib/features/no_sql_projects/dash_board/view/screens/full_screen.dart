@@ -112,8 +112,11 @@ class _MongoDashboardFullScreenState extends State<MongoDashboardFullScreen> {
                 itemBuilder: (context, index) => bottomCards[index],
               ),
 
-              // const SizedBox(height: 32),
-              // // const ProjectAccessSection(),
+
+
+
+              const SizedBox(height: 32),
+              const ProjectAccessSection(),
             ],
           ),
         );

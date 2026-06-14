@@ -174,7 +174,7 @@ if (state is ApproveSchemaSuccess) {
               ],
             );
           } else if (state is GenerateSchemaError) {
-            content = Center(child: Text(state.message));
+            content = Center(child: Text(state.message,style: TextStyle(color: AppTheme.red),));
           } else {
             content = _emptyState(textTheme, settings);
           }

@@ -20,7 +20,7 @@ class Projects extends StatelessWidget {
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
 
-        childAspectRatio: 363 / 210,
+        childAspectRatio: 363 / 250,
       ),
       itemCount: projects.length,
       itemBuilder: (context, index) {
@@ -33,14 +33,16 @@ class Projects extends StatelessWidget {
           },
           onExport: () {
             if (projects[index].id != null) {
-              context.read<BackupCubit>().exportProject(projectId:  projects[index].id!);
+              context.read<BackupCubit>().exportProject(
+                projectId: projects[index].id!,
+              );
             }
           },
-       onImport: () async {
-  await context.read<BackupCubit>().importProjectFromPicker(
-    projectId: projects[index].id!,
-  );
-}
+          onImport: () async {
+            await context.read<BackupCubit>().importProjectFromPicker(
+              projectId: projects[index].id!,
+            );
+          },
         );
       },
     );
