@@ -235,12 +235,42 @@ class _CollectionCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+            IconButton(
+onPressed: () async {
+  final confirm = await showDialog<bool>(
+    
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: AppTheme.white,
+      title: const Text('Delete Table'),
+      content: Text(
+        'Are you sure you want to delete  ? This action cannot be undone. ',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+     child: const Text('Cancel',style: TextStyle(color: AppTheme.black),),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: AppTheme.red, 
+          ),
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text('Delete'),
+        ),
+      ],
+    ),
+  );
 
-                IconButton(
-                  onPressed: onDelete,
-                  icon: const Icon(Icons.delete_outline,
-                      color: Colors.red, size: 20),
-                ),
+  if (confirm == true) {
+    onDelete();
+  }
+},
+
+ icon:  Icon(Icons.delete_outline_rounded, color: AppTheme.red,))
+           
+        ,   
               ],
             ),
 

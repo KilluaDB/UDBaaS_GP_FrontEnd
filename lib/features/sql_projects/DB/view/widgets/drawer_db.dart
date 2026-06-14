@@ -87,7 +87,7 @@ class _DrawerDBState extends State<DrawerDB> {
     return Drawer(
          backgroundColor: AppTheme.white,
 
-      width: MediaQuery.of(context).size.width * 0.45,
+      width: MediaQuery.of(context).size.width * 0.35,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       child: SafeArea(
         child: Padding(
@@ -611,7 +611,7 @@ _buildLabelAndDropdown(
           Row(
             children: [
               Expanded(
-                flex: 2,
+                flex: 5,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -626,7 +626,7 @@ _buildLabelAndDropdown(
               ),
               SizedBox(width: 12.w),
               Expanded(
-                flex: 1,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -638,53 +638,70 @@ _buildLabelAndDropdown(
             ],
           ),
           SizedBox(height: 16.h),
-   if (columns[index]['type'] != 'SERIAL') ...[
-  Text(
-    "Default Value (optional)",
-    style: textTheme.bodySmall!.copyWith(color: AppTheme.black),
-  ),
+Row(
+  crossAxisAlignment: CrossAxisAlignment.end,
+  children: [
+    if (columns[index]['type'] != 'SERIAL')
+      Expanded(
+        flex: 1,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Default Value (optional)",
+              style: textTheme.bodySmall!
+                  .copyWith(color: AppTheme.black),
+            ),
+            SizedBox(height: 8.h),
+            CustomTextFormField(
+              controller: columns[index]['defaultValue'],
+              hintText: 'NULL',
+            ),
+          ],
+        ),
+      ),
 
-  SizedBox(height: 8.h),
+    if (columns[index]['type'] != 'SERIAL')
+      SizedBox(width: 20.w),
 
-  CustomTextFormField(
-    controller: columns[index]['defaultValue'],
-    hintText: 'NULL',
-  ),
-
-  SizedBox(height: 12.h),
-],
-          SizedBox(height: 12.h),
-          Wrap(
-            spacing: 16.w,
-            children: [
-              _buildCheckbox(
-                "Nullable",
-                columns[index]['isNullable'] ?? false,
-                (v) => setState(() => columns[index]['isNullable'] = v),
-              ),
-              _buildCheckbox(
-                "Unique",
-                columns[index]['isUnique'] ?? false,
-                (v) => setState(() => columns[index]['isUnique'] = v),
-              ),
-              _buildCheckbox(
-                "Primary Key",
-                columns[index]['isPrimary'] ?? false,
-     (v) {
-setState(() {
-  for (var i = 0; i < columns.length; i++) {
-    if (i != index) {
-      columns[i]['isPrimary'] = false;
-    }
-  }
-
-  columns[index]['isPrimary'] = v;
-  columns[index]['isNullable'] = false;
-});
-},
-              ),
-            ],
+    // Checkboxes section
+    Expanded(
+      flex: 2,
+      child: Wrap(
+        spacing: 16.w,
+        runSpacing: 8.h,
+        children: [
+          _buildCheckbox(
+            "Nullable",
+            columns[index]['isNullable'] ?? false,
+            (v) => setState(() => columns[index]['isNullable'] = v),
           ),
+          _buildCheckbox(
+            "Unique",
+            columns[index]['isUnique'] ?? false,
+            (v) => setState(() => columns[index]['isUnique'] = v),
+          ),
+          _buildCheckbox(
+            "Primary Key",
+            columns[index]['isPrimary'] ?? false,
+            (v) {
+              setState(() {
+                for (var i = 0; i < columns.length; i++) {
+                  if (i != index) {
+                    columns[i]['isPrimary'] = false;
+                  }
+                }
+                columns[index]['isPrimary'] = v;
+                columns[index]['isNullable'] = false;
+              });
+            },
+          ),
+        ],
+      ),
+    ),
+  ],
+)
+        
         ],
       ),
     );

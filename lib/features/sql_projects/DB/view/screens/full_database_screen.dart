@@ -221,8 +221,10 @@ class TableItem extends StatelessWidget {
             IconButton(
 onPressed: () async {
   final confirm = await showDialog<bool>(
+    
     context: context,
     builder: (context) => AlertDialog(
+      backgroundColor: AppTheme.white,
       title: const Text('Delete Table'),
       content: Text(
         'Are you sure you want to delete "$tableName"? This action cannot be undone.',
@@ -231,7 +233,7 @@ onPressed: () async {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('Cancel'),
+          child: const Text('Cancel',style: TextStyle(color: AppTheme.black),),
         ),
         FilledButton(
           style: FilledButton.styleFrom(

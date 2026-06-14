@@ -22,6 +22,8 @@ class SchemaGenerationCubit extends Cubit<SchemaGenerationStates> {
 
   String? get _token => userProvider.currentUser?.data?.accessToken;
 
+String _currentPrompt = "";
+String get currentPrompt => _currentPrompt;
 
   Future<void> generateSchema({
     required String projectId,
@@ -29,8 +31,8 @@ class SchemaGenerationCubit extends Cubit<SchemaGenerationStates> {
     String? databaseName,
     String modelName = "deepseek",
   }) async {
+    _currentPrompt = requirementText;
     emit(GenerateSchemaLoading());
-
     try {
       if (_token == null) {
         emit(
@@ -102,9 +104,13 @@ class SchemaGenerationCubit extends Cubit<SchemaGenerationStates> {
     }
   }
 
-
-  void clearGeneratedSchema() {
-    generatedSchema = null;
-    emit(SchemaGenerationInit());
-  }
+void setPromptForEdit(String prompt) {
+  _currentPrompt = prompt;
+  emit(SchemaPromptUpdated(prompt));
+}
+void clearGeneratedSchema() {
+  generatedSchema = null;
+  _currentPrompt = "";
+  emit(SchemaGenerationInit());
+}
 }
