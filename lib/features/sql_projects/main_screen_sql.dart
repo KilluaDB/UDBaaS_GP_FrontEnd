@@ -7,6 +7,10 @@ import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.d
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view/screens/dash_board.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view_model/dash_cubit.dart';
+import 'package:dbaas_project/features/sql_projects/index_tab/data/api_service/index_api_service.dart';
+import 'package:dbaas_project/features/sql_projects/index_tab/view/screens/Index_tab.dart';
+import 'package:dbaas_project/features/sql_projects/index_tab/view/widgets/index_drawer.dart';
+import 'package:dbaas_project/features/sql_projects/index_tab/view_model/index_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/query_editor.dart';
 import 'package:dbaas_project/features/sql_projects/query/view_model/query_cubit.dart';
 import 'package:dbaas_project/features/sql_projects/schema_generation/view_model/generation_cubit.dart';
@@ -44,22 +48,14 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PostgresTablesCubit>(
-          create: (context) => PostgresTablesCubit(
-            userProvider: userProvider,
-          )..getAllTables(
-              project.id!,
-              isSilentRefresh: false,
-            ),
+          create: (context) =>
+              PostgresTablesCubit(userProvider: userProvider)
+                ..getAllTables(project.id!, isSilentRefresh: false),
         ),
-            BlocProvider<ProjectAccessCubit>(
-          create: (context) => ProjectAccessCubit(
-            userProvider: userProvider,
-          )..getProjectAccess(
-  projectId: project.id!,
-  isSilentRefresh: false,
-)
+        BlocProvider<ProjectAccessCubit>(
+          create: (context) => ProjectAccessCubit(userProvider: userProvider)
+            ..getProjectAccess(projectId: project.id!, isSilentRefresh: false),
         ),
-
         BlocProvider<DashCubit>(
           create: (context) => DashCubit(userProvider: userProvider),
         ),
@@ -68,7 +64,9 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
           create: (context) =>
               PostgresTableEditorCubit(userProvider: userProvider),
         ),
-
+        BlocProvider<IndexCubit>(
+          create: (context) => IndexCubit(userProvider: userProvider),
+        ),
         BlocProvider<QueryCubit>(
           create: (context) => QueryCubit(userProvider: userProvider),
         ),
@@ -77,10 +75,9 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
           create: (context) => SchemaCubit(userProvider: userProvider),
         ),
         BlocProvider<SchemaGenerationCubit>(
-  create: (context) => SchemaGenerationCubit(
-    userProvider: userProvider,
-  ),
-),
+          create: (context) =>
+              SchemaGenerationCubit(userProvider: userProvider),
+        ),
       ],
 
       child: Builder(
@@ -90,18 +87,18 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
 
             DataBaseTab(
               project: project,
-          onNavigate: (tableName, index) {
-  setState(() {
-    selectedIndex = index;
-    selectedTableName = tableName;
-  });
+              onNavigate: (tableName, index) {
+                setState(() {
+                  selectedIndex = index;
+                  selectedTableName = tableName;
+                });
 
-  context.read<PostgresTableEditorCubit>().getAllRows(
-    projectId: project.id!,
-    tableName: tableName,
-    showLoading: false
-  );
-}
+                context.read<PostgresTableEditorCubit>().getAllRows(
+                  projectId: project.id!,
+                  tableName: tableName,
+                  showLoading: false,
+                );
+              },
             ),
 
             TableEditor(
@@ -115,13 +112,18 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
             SchemaVisualizer(project: project),
 
             SchemeGenerator(project: project),
+            IndexTab(project: project),
 
             DeleteScreen(project: project),
           ];
 
           return Scaffold(
-            endDrawer:selectedIndex==1?  DrawerDB(projectId: project.id!,):null,
-
+       endDrawer: selectedIndex == 1
+    ? DrawerDB(projectId: project.id!)
+    : CreateIndexDrawer(
+            projectId: project.id!,
+        
+          ),
             body: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -135,45 +137,38 @@ class _MainScreenSQLState extends State<MainScreenSQL> {
 
                     if (index == 4) {
                       context.read<SchemaCubit>().visualizeSchema(
-                            projectId: project.id!,
-                          );
+                        projectId: project.id!,
+                      );
                     }
 
-                    if (index == 1 ) {
+                    if (index == 1) {
                       context.read<PostgresTablesCubit>().getAllTables(
-                            project.id!,
-                            isSilentRefresh: true,
-                          );
+                        project.id!,
+                        isSilentRefresh: true,
+                      );
                     }
 
                     if (index == 2 && selectedTableName.isNotEmpty) {
                       context.read<PostgresTableEditorCubit>().getAllRows(
-                            projectId: project.id!,
-                            tableName: selectedTableName,
-                            showLoading: false
-                          );
+                        projectId: project.id!,
+                        tableName: selectedTableName,
+                        showLoading: false,
+                      );
                     }
                   },
                 ),
 
                 Expanded(
-                  child: BlocBuilder<PostgresTablesCubit,
-                      PostgresTablesStates>(
+                  child: BlocBuilder<PostgresTablesCubit, PostgresTablesStates>(
                     builder: (context, state) {
-                      final cubit =
-                          context.read<PostgresTablesCubit>();
+                      final cubit = context.read<PostgresTablesCubit>();
 
                       if (state is GetAllTablesLoading &&
                           cubit.cachedTables == null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
 
-                      return IndexedStack(
-                        index: selectedIndex,
-                        children: tabs,
-                      );
+                      return IndexedStack(index: selectedIndex, children: tabs);
                     },
                   ),
                 ),

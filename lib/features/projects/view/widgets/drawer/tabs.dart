@@ -35,6 +35,11 @@ class Tabs {
       'selected': AppImages.schemaGeneratorIconSelected,
       'unselected': AppImages.schemaGeneratorIcon,
     },
+        {
+      'name': 'Index Tab',
+      'selected': AppImages.schemaGeneratorIconSelected,
+      'unselected': AppImages.schemaGeneratorIcon,
+    },
     {
       'name': 'Delete Project',
 

@@ -17,7 +17,6 @@ class PostgresColumnDetail {
 
   factory PostgresColumnDetail.fromJson(Map<String, dynamic> json) {
     return PostgresColumnDetail(
-      // هنا نضمن أننا نمرر قيمة حتى لو كانت نصاً فارغاً
       name: json['name'] ?? '',
       dataType: json['data_type'] ?? '', 
       udtName: json['udt_name'] ?? '', 

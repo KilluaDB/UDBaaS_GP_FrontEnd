@@ -84,9 +84,9 @@ class ProjectView extends StatelessWidget {
                               IconButton(
                                 tooltip: 'Import Project',
                              onPressed: onImport,
-                             icon: const Icon(
+                             icon:  Icon(
                                Icons.upload_rounded,
-                               color: AppTheme.black,
+          color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
                                size: 25,
                              ),
                            ),
@@ -94,9 +94,9 @@ class ProjectView extends StatelessWidget {
                               IconButton(
                              onPressed: onExport,
                               tooltip: 'Export Project',
-                             icon: const Icon(
+                             icon:  Icon(
                                Icons.download,
-                               color: AppTheme.black,
+          color: settingsProvider.isDark ? AppTheme.white : AppTheme.black,
                                size: 25,
                              ),
                            ),
