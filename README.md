@@ -1,8 +1,18 @@
 # DBaaS – Database as a Service
 
-A cloud-based **Database as a Service (DBaaS)** platform built using **Flutter Web**, designed to unify the management of **SQL and NoSQL databases** within a single, user-friendly interface.
+A cloud-based **Database as a Service (DBaaS)** platform built using **Flutter Web**, designed to unify the management of **SQL and NoSQL databases** within a single, user-friendly interface. <br>
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-Web-blue" alt="Flutter Web">
+  <img src="https://img.shields.io/badge/Backend-Go-00ADD8" alt="Go">
+  <img src="https://img.shields.io/badge/Infrastructure-Kubernetes-326CE5" alt="Kubernetes">
+  <img src="https://img.shields.io/badge/Database-PostgreSQL-4169E1" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Database-MongoDB-47A248" alt="MongoDB">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+</p>
 
-🌐 **[Try the Live Demo Here](https://canva.link/2bndapfkj12uwor)**
+<p align="center">
+  🌐 <a href="https://canva.link/2bndapfkj12uwor">Try the Live Demo Here</a>
+</p>
 
 ##  Project Overview
 **DBaaS** simplifies the database lifecycle by abstracting the complexity of infrastructure management. Whether you're working with relational (SQL) or document-oriented (NoSQL) databases, our platform provides a unified environment for provisioning, monitoring, and data manipulation.
@@ -34,12 +44,31 @@ The platform follows a clean architectural pattern that separates the user prese
 </div>
 
 
-## Frontend Architecture
-Built for scalability and maintainability:
-* **Framework:** Flutter (Web)
-* **Pattern:** MVVM (Separation of View, ViewModel, and Data layers).
-* **State Management:** `flutter_bloc` (Cubit) for business logic and `Provider` for app-wide settings.
-* **API Integration:** Secure communication with our Go-based backend.
+## 🛠️ Tech Stack
+
+### Frontend
+- Flutter Web
+- Dart
+- flutter_bloc (Cubit)
+- Provider
+- Dio
+- Mermaid.js
+
+### Backend
+- Go (Gin)
+- REST APIs
+- Redis
+- Docker
+
+### Infrastructure
+- Kubernetes (K3s)
+- PostgreSQL
+- MongoDB
+
+### AI Services
+- Multi-Agent System
+- RAG Pipeline
+- Text-to-SQL Engine
 
 ---
 
@@ -55,7 +84,19 @@ Built for scalability and maintainability:
 * **Data Backup & Recovery:** Reliable snapshots and restoration workflows to ensure data persistence and minimize downtime.
 * **Comprehensive NoSQL Operations:** Specialized tooling for document-based operations, including atomic updates, filtering, and complex aggregation queries.
 ---
+##  Database Lifecycle Management
 
+The platform automates the entire database lifecycle:
+
+1. Project Creation
+2. Database Provisioning
+3. Schema Design
+4. Data Manipulation
+5. Query Execution
+6. Monitoring & Metrics
+7. Backup & Recovery
+8. Resource Deletion
+---
 ##  Future Roadmap
 We are evolving the platform toward production-grade reliability with the following focus areas:
 
@@ -68,7 +109,14 @@ We are evolving the platform toward production-grade reliability with the follow
 * **Multi-Cloud & Multi-Region:** Abstracting infrastructure to support cross-cloud deployments (AWS, GCP, Azure).
 
 ---
+##  Why DBaaS?
 
+- Reduces infrastructure complexity.
+- Unifies SQL and NoSQL management.
+- Provides AI-assisted database interaction.
+- Enables cloud-native database provisioning.
+- Simplifies database administration for developers and startups.
+---
 ## 👥 Team
 * **Frontend:** Aya Mohamed Sayed
 * **Backend:** Abdallah Hany, Ali Mohamed, Hassan Hussein, Ahmed Bahy
