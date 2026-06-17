@@ -7,7 +7,6 @@ import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_cubit.d
 import 'package:dbaas_project/features/sql_projects/DB/view_model/tables_states.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view/screens/dash_board.dart';
 import 'package:dbaas_project/features/sql_projects/dash_board/view_model/dash_cubit.dart';
-import 'package:dbaas_project/features/sql_projects/index_tab/data/api_service/index_api_service.dart';
 import 'package:dbaas_project/features/sql_projects/index_tab/view/screens/Index_tab.dart';
 import 'package:dbaas_project/features/sql_projects/index_tab/view/widgets/index_drawer.dart';
 import 'package:dbaas_project/features/sql_projects/index_tab/view_model/index_cubit.dart';

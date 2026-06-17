@@ -38,7 +38,7 @@ Future<LoginResponse> login(String email, String password) async {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
-print("Raw Response Body: ${response.body}");
+
     final json = jsonDecode(response.body);
 
     if (response.statusCode == 200) {

@@ -38,9 +38,9 @@ class _InputSectionState extends State<InputSection> {
     if (text.isEmpty) return;
 
     context.read<SchemaGenerationCubit>().generateSchema(
-          projectId: widget.project.id!,
-          requirementText: text,
-        );
+      projectId: widget.project.id!,
+      requirementText: text,
+    );
   }
 
   @override
@@ -48,152 +48,171 @@ class _InputSectionState extends State<InputSection> {
     final textTheme = Theme.of(context).textTheme;
     final settings = Provider.of<SettingsProvider>(context);
 
-    return BlocBuilder<SchemaGenerationCubit, SchemaGenerationStates>(
-      builder: (context, state) {
-        final isLoading = state is GenerateSchemaLoading;
+   return BlocListener<SchemaGenerationCubit, SchemaGenerationStates>(
+      listenWhen: (prev, curr) => curr is SchemaPromptUpdated,
+  listener: (context, state) {
+  if (state is SchemaPromptUpdated) {
+    _promptController.text = state.prompt;
+  }
 
-        return Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: settings.isDark ? AppTheme.black : AppTheme.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: AppTheme.boldGray.withValues(alpha: 0.15),
+  if (state is SchemaGenerationInit) {
+    _promptController.clear();
+  }
+},
+
+      child: BlocBuilder<SchemaGenerationCubit, SchemaGenerationStates>(
+        builder: (context, state) {
+          final isLoading = state is GenerateSchemaLoading;
+         
+         final cubit = context.read<SchemaGenerationCubit>();
+final isEditMode = cubit.currentPrompt.isNotEmpty;
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: settings.isDark ? AppTheme.black : AppTheme.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: AppTheme.boldGray.withValues(alpha: 0.15),
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-          
-              Row(
-                children: [
-                  Icon(Icons.psychology_alt_outlined,
-                      color: AppTheme.primary, size: 20),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      "Schema Requirements",
-                      style: textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: settings.isDark
-                            ? AppTheme.white
-                            : AppTheme.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 8.h),
-
-              Text(
-                "Describe your system and AI will generate a full database schema (ERD + SQL + Indexes).",
-                style: textTheme.titleSmall!.copyWith(
-                  color:
-                      settings.isDark ? Colors.white70 : Colors.black54,
-                ),
-              ),
-
-              SizedBox(height: 16.h),
-
-              Container(
-                height: 200.h,
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
-                decoration: BoxDecoration(
-                  color: settings.isDark
-                      ? Colors.grey[900]
-                      : Colors.grey[50],
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppTheme.boldGray.withValues(alpha: 0.15),
-                  ),
-                ),
-                child: TextField(
-                  controller: _promptController,
-                  maxLines: null,
-                  expands: true,
-                  keyboardType: TextInputType.multiline,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    color: settings.isDark
-                        ? AppTheme.white
-                        : AppTheme.black,
-                  ),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText:
-                        "Example:\nUniversity system with Students, Courses, Enrollments...\nMany-to-many + inheritance + constraints...",
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 14.h),
-
-            
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppTheme.primary.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Icon(Icons.info_outline,
-                        size: 16, color: AppTheme.primary),
+                    Icon(
+                      Icons.psychology_alt_outlined,
+                      color: AppTheme.primary,
+                      size: 20,
+                    ),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
-                        "AI generates ERD diagram, SQL DDL, indexes & optimization report.",
-                        style: textTheme.bodySmall!.copyWith(
+                        "Schema Requirements",
+                        style: textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
                           color: settings.isDark
-                              ? Colors.white70
-                              : Colors.black87,
+                              ? AppTheme.white
+                              : AppTheme.black,
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
 
-              SizedBox(height: 16.h),
+                SizedBox(height: 8.h),
 
-            
-              SizedBox(
-                width: double.infinity,
-                child: CustomElevatedButton(
-                  onTap: isLoading ? null : _generateSchema,
-                  child: isLoading
-                      ? const SizedBox(
-                          height: 18,
-                          width: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.auto_fix_high,
-                                size: 16, color: Colors.white),
-                            SizedBox(width: 6.w),
-                            Text(
-                              "Generate Schema",
-                              style: textTheme.titleSmall!.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                Text(
+                  "Describe your system and AI will generate a full database schema (ERD + SQL + Indexes).",
+                  style: textTheme.titleSmall!.copyWith(
+                    color: settings.isDark ? Colors.white70 : Colors.black54,
+                  ),
                 ),
-              ),
-            ],
+
+                SizedBox(height: 16.h),
+
+                Container(
+                  height: 200.h,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  decoration: BoxDecoration(
+                    color: settings.isDark ? Colors.grey[900] : Colors.grey[50],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppTheme.boldGray.withValues(alpha: 0.15),
+                    ),
+                  ),
+                  child: TextField(
+                    controller: _promptController,
+                    maxLines: null,
+                    expands: true,
+                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: settings.isDark ? AppTheme.white : AppTheme.black,
+                    ),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText:
+                          "Example:\nUniversity system with Students, Courses, Enrollments...\nMany-to-many + inheritance + constraints...",
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 14.h),
+
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 16,
+                        color: AppTheme.primary,
+                      ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Text(
+                          "AI generates ERD diagram, SQL DDL, indexes & optimization report.",
+                          style: textTheme.bodySmall!.copyWith(
+                            color: settings.isDark
+                                ? Colors.white70
+                                : Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 16.h),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomElevatedButton(
+  onTap: isLoading
+      ? null
+      : _generateSchema,
+  child: isLoading
+      ? const SizedBox(
+          height: 18,
+          width: 18,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: Colors.white,
           ),
-        );
-      },
+        )
+      : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.auto_fix_high,
+              size: 16,
+              color: Colors.white,
+            ),
+            SizedBox(width: 6.w),
+            Text(
+              isEditMode ? "Edit Schema" : "Generate Schema",
+              style: textTheme.titleSmall!.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+),
+               
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

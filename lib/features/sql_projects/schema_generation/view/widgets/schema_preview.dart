@@ -41,7 +41,18 @@ class _SchemaPreviewState extends State<SchemaPreview> {
       _registered = true;
     }
   }
+void _editSchema(BuildContext context) {
+  final cubit = context.read<SchemaGenerationCubit>();
 
+  final state = cubit.state;
+
+  if (state is GenerateSchemaSuccess) {
+    cubit.setPromptForEdit(cubit.currentPrompt);
+  }
+}
+void _declineSchema(BuildContext context) {
+  context.read<SchemaGenerationCubit>().clearGeneratedSchema();
+}
   void _renderMermaid(String code) {
     js.context.callMethod("renderMermaid", [viewId, code]);
   }
@@ -52,8 +63,9 @@ class _SchemaPreviewState extends State<SchemaPreview> {
 
   void _approve(BuildContext context) {
     context.read<SchemaGenerationCubit>().approveSchema(
-          projectId: widget.project.id!,
-        );
+      projectId: widget.project.id!,
+    );
+    context.read<SchemaGenerationCubit>().clearGeneratedSchema();
   }
 
   @override
@@ -70,30 +82,26 @@ class _SchemaPreviewState extends State<SchemaPreview> {
             Future.delayed(const Duration(milliseconds: 300), () {
               _renderMermaid(mermaid);
             });
-  
           }
         }
 
-if (state is ApproveSchemaSuccess) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text("Schema approved successfully"),
-      backgroundColor: Colors.green,
-    ),
-  );
+        if (state is ApproveSchemaSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Schema approved successfully"),
+              backgroundColor: Colors.green,
+            ),
+          );
 
-  await context.read<PostgresTablesCubit>().getAllTables(
-    widget.project.id!,
-    isSilentRefresh: true,
-  );
-}
+          await context.read<PostgresTablesCubit>().getAllTables(
+            widget.project.id!,
+            isSilentRefresh: true,
+          );
+        }
 
         if (state is ApproveSchemaError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       },
@@ -103,7 +111,7 @@ if (state is ApproveSchemaSuccess) {
 
           Widget content;
 
-          if (state is GenerateSchemaLoading|| state is ApproveSchemaLoading)  {
+          if (state is GenerateSchemaLoading || state is ApproveSchemaLoading) {
             content = const Center(child: CircularProgressIndicator());
           } else if (state is GenerateSchemaSuccess) {
             content = Column(
@@ -130,8 +138,7 @@ if (state is ApproveSchemaSuccess) {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
-                        onPressed:
-                            isApproving ? null : () => _approve(context),
+                        onPressed: isApproving ? null : () => _approve(context),
                         icon: isApproving
                             ? const SizedBox(
                                 width: 14,
@@ -142,9 +149,28 @@ if (state is ApproveSchemaSuccess) {
                                 ),
                               )
                             : const Icon(Icons.check),
-                        label: Text(
-                          isApproving ? "Approving..." : "Approve",
+                        label: Text(isApproving ? "Approving..." : "Approve"),
+                      ),
+                      const SizedBox(width: 8),
+
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primary,
                         ),
+onPressed: isApproving ? null : () => _editSchema(context),
+icon: const Icon(Icons.edit),
+label: const Text("Edit"),
+                      ),
+                      const SizedBox(width: 8),
+
+                      ElevatedButton.icon(
+                     
+                       onPressed: isApproving ? null : () => _declineSchema(context),
+icon: const Icon(Icons.close),
+label: const Text("Decline"),
+style: ElevatedButton.styleFrom(
+  backgroundColor: Colors.red,
+),
                       ),
 
                       const SizedBox(width: 8),
@@ -174,7 +200,9 @@ if (state is ApproveSchemaSuccess) {
               ],
             );
           } else if (state is GenerateSchemaError) {
-            content = Center(child: Text(state.message,style: TextStyle(color: AppTheme.red),));
+            content = Center(
+              child: Text(state.message, style: TextStyle(color: AppTheme.red)),
+            );
           } else {
             content = _emptyState(textTheme, settings);
           }
@@ -186,24 +214,20 @@ if (state is ApproveSchemaSuccess) {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.withOpacity(0.2)),
                 borderRadius: BorderRadius.circular(14),
-                color:
-                    settings.isDark ? AppTheme.black : AppTheme.white,
+                color: settings.isDark ? AppTheme.black : AppTheme.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.schema_outlined,
-                          color: AppTheme.primary),
+                      Icon(Icons.schema_outlined, color: AppTheme.primary),
                       const SizedBox(width: 8),
                       Text(
                         "Schema Preview",
                         style: textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: settings.isDark
-                              ? Colors.white
-                              : Colors.black,
+                          color: settings.isDark ? Colors.white : Colors.black,
                         ),
                       ),
                     ],
@@ -221,19 +245,14 @@ if (state is ApproveSchemaSuccess) {
     );
   }
 
-  Widget _emptyState(
-      TextTheme textTheme, SettingsProvider settings) {
+  Widget _emptyState(TextTheme textTheme, SettingsProvider settings) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.auto_awesome_outlined,
-              size: 60, color: Colors.grey),
+          const Icon(Icons.auto_awesome_outlined, size: 60, color: Colors.grey),
           const SizedBox(height: 12),
-          Text(
-            "No schema generated yet",
-            style: textTheme.titleMedium,
-          ),
+          Text("No schema generated yet", style: textTheme.titleMedium),
           const SizedBox(height: 6),
           Text(
             "Generate schema to visualize ER diagram",

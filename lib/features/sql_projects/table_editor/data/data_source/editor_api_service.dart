@@ -165,7 +165,7 @@ class EditorApiService {
     final uri = Uri.parse(_columnsPath(projectId, tableName)).replace(
       queryParameters: {'schema': schema},
     );
- print(jsonEncode(request.toJson()));
+
     final response = await http.post(
       uri,
       headers: _headers(accessToken),

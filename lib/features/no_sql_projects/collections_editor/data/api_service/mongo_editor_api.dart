@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
 import 'package:dbaas_project/core/constants/api_constants.dart';
@@ -8,24 +7,16 @@ import 'package:dbaas_project/features/no_sql_projects/collections_editor/data/m
 
 class MongoEditorApiService {
   Map<String, String> _headers(String accessToken) => {
-        'Authorization': 'Bearer $accessToken',
-        'Content-Type': 'application/json',
-      };
+    'Authorization': 'Bearer $accessToken',
+    'Content-Type': 'application/json',
+  };
 
-  String _basePath(String projectId, String collection) {
-    final encodedCollection = Uri.encodeComponent(collection);
+  String _documentsPath(String projectId, String collectionName) {
+    final encodedCollection = Uri.encodeComponent(collectionName);
 
     return '${ApiConstants.baseURL}'
         '${ApiConstants.projectEndPoint}'
-        '$projectId/mongodb/collections/$encodedCollection';
-  }
-
-  String _documentsPath(String projectId, String collection) {
-    return '${_basePath(projectId, collection)}/documents';
-  }
-
-  String _fieldsPath(String projectId, String collection) {
-    return '${_basePath(projectId, collection)}/fields';
+        '$projectId/mongodb/collections/$encodedCollection/documents';
   }
 
   dynamic _decodeBody(http.Response response) {
@@ -33,51 +24,39 @@ class MongoEditorApiService {
     return jsonDecode(response.body);
   }
 
-  Future getDocuments(
+  Future<MongoGetDocumentsResponse> getDocuments(
     String accessToken,
     String projectId,
-    String collection, {
+    String collectionName, {
     int limit = 20,
     int page = 1,
   }) async {
     final uri = Uri.parse(
-      _documentsPath(projectId, collection),
-    ).replace(
-      queryParameters: {
-        'limit': '$limit',
-        'page': '$page',
-      },
-    );
+      _documentsPath(projectId, collectionName),
+    ).replace(queryParameters: {'limit': '$limit', 'page': '$page'});
 
-    final response = await http.get(
-      uri,
-      headers: _headers(accessToken),
-    );
+    final response = await http.get(uri, headers: _headers(accessToken));
 
     final json = _decodeBody(response);
 
     if (response.statusCode == 200) {
-      return MongoGetDocumentsResult.fromJson(json['data']);
+      return MongoGetDocumentsResponse.fromJson(json['data']);
     }
 
     throw ApiException(
-      json?['message'] ?? 'Failed to fetch documents',
+      json?['message'] ?? 'Failed to get documents',
       statusCode: response.statusCode,
     );
   }
 
-  Future insertDocuments(
+  Future<MongoInsertDocumentsResponse> insertDocuments(
     String accessToken,
     String projectId,
-    String collection,
+    String collectionName,
     MongoInsertDocumentsRequest request,
   ) async {
-    final uri = Uri.parse(
-      _documentsPath(projectId, collection),
-    );
-
     final response = await http.post(
-      uri,
+      Uri.parse(_documentsPath(projectId, collectionName)),
       headers: _headers(accessToken),
       body: jsonEncode(request.toJson()),
     );
@@ -85,7 +64,7 @@ class MongoEditorApiService {
     final json = _decodeBody(response);
 
     if (response.statusCode == 201) {
-      return MongoInsertDocumentsResult.fromJson(json['data']);
+      return MongoInsertDocumentsResponse.fromJson(json['data']);
     }
 
     throw ApiException(
@@ -94,46 +73,44 @@ class MongoEditorApiService {
     );
   }
 
-  Future updateDocuments(
+  Future<MongoUpdateDocumentsResponse> updateDocuments(
     String accessToken,
     String projectId,
-    String collection,
+    String collectionName,
     MongoUpdateDocumentsRequest request,
   ) async {
-    final uri = Uri.parse(
-      _documentsPath(projectId, collection),
-    );
+    final body = {
+      "filter": request.filter,
+      "update": request.update,
+      if (request.upsert != null) "upsert": request.upsert,
+    };
 
     final response = await http.patch(
-      uri,
+      Uri.parse(_documentsPath(projectId, collectionName)),
       headers: _headers(accessToken),
-      body: jsonEncode(request.toJson()),
+      body: jsonEncode(body),
     );
 
     final json = _decodeBody(response);
 
     if (response.statusCode == 200) {
-      return MongoUpdateDocumentsResult.fromJson(json['data']);
+      return MongoUpdateDocumentsResponse.fromJson(json['data']);
     }
 
     throw ApiException(
-      json?['message'] ?? 'Update failed',
+      json?['error'] ?? 'Update failed',
       statusCode: response.statusCode,
     );
   }
 
-  Future deleteDocuments(
+  Future<MongoDeleteDocumentsResponse> deleteDocuments(
     String accessToken,
     String projectId,
-    String collection,
+    String collectionName,
     MongoDeleteDocumentsRequest request,
   ) async {
-    final uri = Uri.parse(
-      _documentsPath(projectId, collection),
-    );
-
     final response = await http.delete(
-      uri,
+      Uri.parse(_documentsPath(projectId, collectionName)),
       headers: _headers(accessToken),
       body: jsonEncode(request.toJson()),
     );
@@ -141,7 +118,7 @@ class MongoEditorApiService {
     final json = _decodeBody(response);
 
     if (response.statusCode == 200) {
-      return MongoDeleteDocumentsResult.fromJson(json['data']);
+      return MongoDeleteDocumentsResponse.fromJson(json['data']);
     }
 
     throw ApiException(
@@ -150,45 +127,14 @@ class MongoEditorApiService {
     );
   }
 
-  Future getDocumentById(
+  Future<MongoCountDocumentsResponse> countDocuments(
     String accessToken,
     String projectId,
-    String collection,
-    String docId,
-  ) async {
-    final uri = Uri.parse(
-      '${_documentsPath(projectId, collection)}/$docId',
-    );
-
-    final response = await http.get(
-      uri,
-      headers: _headers(accessToken),
-    );
-
-    final json = _decodeBody(response);
-
-    if (response.statusCode == 200) {
-      return json['data'] as Map<String, dynamic>;
-    }
-
-    throw ApiException(
-      json?['message'] ?? 'Failed to get document',
-      statusCode: response.statusCode,
-    );
-  }
-
-  Future countDocuments(
-    String accessToken,
-    String projectId,
-    String collection,
+    String collectionName,
     MongoCountDocumentsRequest request,
   ) async {
-    final uri = Uri.parse(
-      '${_documentsPath(projectId, collection)}/count',
-    );
-
     final response = await http.post(
-      uri,
+      Uri.parse('${_documentsPath(projectId, collectionName)}/count'),
       headers: _headers(accessToken),
       body: jsonEncode(request.toJson()),
     );
@@ -196,7 +142,7 @@ class MongoEditorApiService {
     final json = _decodeBody(response);
 
     if (response.statusCode == 200) {
-      return MongoCountDocumentsResult.fromJson(json['data']);
+      return MongoCountDocumentsResponse.fromJson(json['data']);
     }
 
     throw ApiException(
@@ -205,139 +151,135 @@ class MongoEditorApiService {
     );
   }
 
-  Future deleteDocumentById(
+  Future<MongoDocumentResponse> getDocument(
     String accessToken,
     String projectId,
-    String collection,
+    String collectionName,
     String docId,
   ) async {
-    final uri = Uri.parse(
-      '${_documentsPath(projectId, collection)}/$docId',
-    );
-
-    final response = await http.delete(
-      uri,
+    final response = await http.get(
+      Uri.parse('${_documentsPath(projectId, collectionName)}/$docId'),
       headers: _headers(accessToken),
     );
 
-    if (response.statusCode != 200) {
-      final json = _decodeBody(response);
+    final json = _decodeBody(response);
 
-      throw ApiException(
-        json?['message'] ?? 'Delete document failed',
-        statusCode: response.statusCode,
-      );
+    if (response.statusCode == 200) {
+      return MongoDocumentResponse.fromJson(json['data']);
     }
+
+    throw ApiException(
+      json?['message'] ?? 'Failed to get document',
+      statusCode: response.statusCode,
+    );
   }
 
-  Future addField(
+  Future<String> deleteDocument(
     String accessToken,
     String projectId,
-    String collection,
-    MongoAddFieldRequest request,
+    String collectionName,
+    String docId,
   ) async {
-    final uri = Uri.parse(
-      _fieldsPath(projectId, collection),
+    final response = await http.delete(
+      Uri.parse('${_documentsPath(projectId, collectionName)}/$docId'),
+      headers: _headers(accessToken),
     );
 
+    final json = _decodeBody(response);
+
+    if (response.statusCode == 200) {
+      return json?['message'] ?? 'Document deleted successfully';
+    }
+
+    throw ApiException(
+      json?['message'] ?? 'Delete document failed',
+      statusCode: response.statusCode,
+    );
+  }
+
+  Future<String> addField(
+    String accessToken,
+    String projectId,
+    String collectionName,
+    String docId,
+    MongoAddDocumentFieldRequest request,
+  ) async {
     final response = await http.post(
-      uri,
+      Uri.parse('${_documentsPath(projectId, collectionName)}/$docId/fields'),
       headers: _headers(accessToken),
       body: jsonEncode(request.toJson()),
     );
 
     final json = _decodeBody(response);
 
-    if (response.statusCode != 200) {
-      throw ApiException(
-        json?['message'] ?? 'Add field failed',
-        statusCode: response.statusCode,
-      );
+    if (response.statusCode == 200) {
+      return json?['message'] ?? 'Field added successfully';
     }
+
+    throw ApiException(
+      json?['message'] ?? 'Add field failed',
+      statusCode: response.statusCode,
+    );
   }
 
-  Future removeField(
+  Future<String> updateField(
     String accessToken,
     String projectId,
-    String collection,
-    String field,
-  ) async {
-    final encodedField = Uri.encodeComponent(field);
-
-    final uri = Uri.parse(
-      '${_fieldsPath(projectId, collection)}/$encodedField',
-    );
-
-    final response = await http.delete(
-      uri,
-      headers: _headers(accessToken),
-    );
-
-    if (response.statusCode != 200) {
-      final json = _decodeBody(response);
-
-      throw ApiException(
-        json?['message'] ?? 'Remove field failed',
-        statusCode: response.statusCode,
-      );
-    }
-  }
-
-  Future updateDocumentField(
-    String accessToken,
-    String projectId,
-    String collection,
+    String collectionName,
     String docId,
     String field,
     MongoUpdateFieldRequest request,
   ) async {
     final encodedField = Uri.encodeComponent(field);
+final body = jsonEncode(request.toJson());
 
-    final uri = Uri.parse(
-      '${_documentsPath(projectId, collection)}/$docId/fields/$encodedField',
-    );
+
 
     final response = await http.patch(
-      uri,
+      Uri.parse(
+        '${_documentsPath(projectId, collectionName)}/$docId/fields/$encodedField',
+      ),
       headers: _headers(accessToken),
       body: jsonEncode(request.toJson()),
     );
 
-    if (response.statusCode != 200) {
-      final json = _decodeBody(response);
-
-      throw ApiException(
-        json?['message'] ?? 'Update field failed',
-        statusCode: response.statusCode,
-      );
+    final json = _decodeBody(response);
+  
+    if (response.statusCode == 200) {
+      return json?['message'] ?? 'Field updated successfully';
     }
+
+    throw ApiException(
+      json?['message'] ?? 'Update field failed',
+      statusCode: response.statusCode,
+    );
   }
 
-  Future deleteDocumentField(
+  Future<String> deleteField(
     String accessToken,
     String projectId,
-    String collection,
+    String collectionName,
     String docId,
     String field,
   ) async {
     final encodedField = Uri.encodeComponent(field);
 
-    final uri = Uri.parse(
-      '${_documentsPath(projectId, collection)}/$docId/fields/$encodedField',
-    );
-
     final response = await http.delete(
-      uri,
+      Uri.parse(
+        '${_documentsPath(projectId, collectionName)}/$docId/fields/$encodedField',
+      ),
       headers: _headers(accessToken),
     );
 
-    if (response.statusCode != 200) {
-      final json = _decodeBody(response);
+    final json = _decodeBody(response);
 
-      throw ApiException(
-        json?['message'] ?? 'Delete field failed',
-        statusCode: response.statusCode,
-      );
+    if (response.statusCode == 200) {
+      return json?['message'] ?? 'Field deleted successfully';
     }
+
+    throw ApiException(
+      json?['message'] ?? 'Delete field failed',
+      statusCode: response.statusCode,
+    );
   }
 }

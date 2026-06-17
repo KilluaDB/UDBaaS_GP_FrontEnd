@@ -1,151 +1,137 @@
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/data/models/mongo_editor_models.dart';
 
-abstract class MongoEditorState {}
-
-class MongoEditorInit extends MongoEditorState {}
-
-
-class MongoDocumentsLoading extends MongoEditorState {}
-
-class MongoDocumentsSuccess extends MongoEditorState {
-  final MongoGetDocumentsResult data;
-
-  MongoDocumentsSuccess(this.data);
+abstract class MongoEditorStates {
+  get message => null;
 }
 
-class MongoDocumentsError extends MongoEditorState {
+class MongoEditorInit extends MongoEditorStates {}
+class EditModeChanged extends MongoEditorStates {}
+class GetDocumentsLoading extends MongoEditorStates {}
+
+class GetDocumentsSuccess extends MongoEditorStates {
+  final MongoGetDocumentsResponse response;
+
+  GetDocumentsSuccess(this.response);
+}
+
+class GetDocumentsError extends MongoEditorStates {
   final String message;
 
-  MongoDocumentsError(this.message);
+  GetDocumentsError(this.message);
+}
+class InsertDocumentsLoading extends MongoEditorStates {}
+
+class InsertDocumentsSuccess extends MongoEditorStates {
+  final MongoInsertDocumentsResponse response;
+
+  InsertDocumentsSuccess(this.response);
 }
 
-
-class MongoInsertDocumentsLoading extends MongoEditorState {}
-
-class MongoInsertDocumentsSuccess extends MongoEditorState {
-  final MongoInsertDocumentsResult data;
-
-  MongoInsertDocumentsSuccess(this.data);
-}
-
-class MongoInsertDocumentsError extends MongoEditorState {
+class InsertDocumentsError extends MongoEditorStates {
   final String message;
 
-  MongoInsertDocumentsError(this.message);
+  InsertDocumentsError(this.message);
+}
+class UpdateDocumentsLoading extends MongoEditorStates {}
+
+class UpdateDocumentsSuccess extends MongoEditorStates {
+  final MongoUpdateDocumentsResponse response;
+
+  UpdateDocumentsSuccess(this.response);
 }
 
-
-class MongoUpdateDocumentsLoading extends MongoEditorState {}
-
-class MongoUpdateDocumentsSuccess extends MongoEditorState {
-  final MongoUpdateDocumentsResult data;
-
-  MongoUpdateDocumentsSuccess(this.data);
-}
-
-class MongoUpdateDocumentsError extends MongoEditorState {
+class UpdateDocumentsError extends MongoEditorStates {
   final String message;
 
-  MongoUpdateDocumentsError(this.message);
+  UpdateDocumentsError(this.message);
+}
+class DeleteDocumentsLoading extends MongoEditorStates {}
+
+class DeleteDocumentsSuccess extends MongoEditorStates {
+  final MongoDeleteDocumentsResponse response;
+
+  DeleteDocumentsSuccess(this.response);
 }
 
-
-class MongoDeleteDocumentsLoading extends MongoEditorState {}
-
-class MongoDeleteDocumentsSuccess extends MongoEditorState {
-  final MongoDeleteDocumentsResult data;
-
-  MongoDeleteDocumentsSuccess(this.data);
-}
-
-class MongoDeleteDocumentsError extends MongoEditorState {
+class DeleteDocumentsError extends MongoEditorStates {
   final String message;
 
-  MongoDeleteDocumentsError(this.message);
+  DeleteDocumentsError(this.message);
+}
+class CountDocumentsLoading extends MongoEditorStates {}
+
+class CountDocumentsSuccess extends MongoEditorStates {
+  final MongoCountDocumentsResponse response;
+
+  CountDocumentsSuccess(this.response);
 }
 
-
-
-class MongoCountDocumentsLoading extends MongoEditorState {}
-
-class MongoCountDocumentsSuccess extends MongoEditorState {
-  final MongoCountDocumentsResult data;
-
-  MongoCountDocumentsSuccess(this.data);
-}
-
-class MongoCountDocumentsError extends MongoEditorState {
+class CountDocumentsError extends MongoEditorStates {
   final String message;
 
-  MongoCountDocumentsError(this.message);
+  CountDocumentsError(this.message);
 }
 
-
-class MongoGetDocumentLoading extends MongoEditorState {}
-
-class MongoGetDocumentSuccess extends MongoEditorState {
-  final Map<String, dynamic> document;
-
-  MongoGetDocumentSuccess(this.document);
-}
-
-class MongoGetDocumentError extends MongoEditorState {
+class AddFieldLoading extends MongoEditorStates {}
+class AddFieldSuccess extends MongoEditorStates {
   final String message;
 
-  MongoGetDocumentError(this.message);
+  AddFieldSuccess(this.message);
+}
+class AddFieldError extends MongoEditorStates {
+  final String message;
+
+  AddFieldError(this.message);
+}
+class UpdateFieldLoading extends MongoEditorStates {}
+class UpdateFieldSuccess extends MongoEditorStates {
+  final String message;
+
+  UpdateFieldSuccess(this.message);
+}
+class UpdateFieldError extends MongoEditorStates {
+  final String message;
+
+  UpdateFieldError(this.message);
+}
+class DeleteFieldLoading extends MongoEditorStates {}
+
+class DeleteFieldSuccess extends MongoEditorStates {
+  final String message;
+
+  DeleteFieldSuccess(this.message);
+}
+class DeleteFieldError extends MongoEditorStates {
+  final String message;
+
+  DeleteFieldError(this.message);
 }
 
 
-class MongoDeleteDocumentLoading extends MongoEditorState {}
 
-class MongoDeleteDocumentSuccess extends MongoEditorState {}
 
-class MongoDeleteDocumentError extends MongoEditorState {
-  final String message;
+class GetDocumentLoading extends MongoEditorStates {}
 
-  MongoDeleteDocumentError(this.message);
+class GetDocumentSuccess extends MongoEditorStates {
+  final MongoDocumentResponse response;
+
+  GetDocumentSuccess(this.response);
 }
 
-
-class MongoAddFieldLoading extends MongoEditorState {}
-
-class MongoAddFieldSuccess extends MongoEditorState {}
-
-class MongoAddFieldError extends MongoEditorState {
+class GetDocumentError extends MongoEditorStates {
   final String message;
 
-  MongoAddFieldError(this.message);
+  GetDocumentError(this.message);
 }
+class DeleteDocumentLoading extends MongoEditorStates {}
 
-
-class MongoRemoveFieldLoading extends MongoEditorState {}
-
-class MongoRemoveFieldSuccess extends MongoEditorState {}
-
-class MongoRemoveFieldError extends MongoEditorState {
+class DeleteDocumentSuccess extends MongoEditorStates {
   final String message;
 
-  MongoRemoveFieldError(this.message);
+  DeleteDocumentSuccess(this.message);
 }
-
-
-class MongoUpdateDocumentFieldLoading extends MongoEditorState {}
-
-class MongoUpdateDocumentFieldSuccess extends MongoEditorState {}
-
-class MongoUpdateDocumentFieldError extends MongoEditorState {
+class DeleteDocumentError extends MongoEditorStates {
   final String message;
 
-  MongoUpdateDocumentFieldError(this.message);
-}
-
-
-class MongoDeleteDocumentFieldLoading extends MongoEditorState {}
-
-class MongoDeleteDocumentFieldSuccess extends MongoEditorState {}
-
-class MongoDeleteDocumentFieldError extends MongoEditorState {
-  final String message;
-
-  MongoDeleteDocumentFieldError(this.message);
+  DeleteDocumentError(this.message);
 }

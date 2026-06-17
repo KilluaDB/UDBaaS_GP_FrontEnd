@@ -55,12 +55,6 @@ class IndexTab extends StatelessWidget {
                   }
                 }
 
-                if (state is CreateTableSuccess) {
-                  UiUtils.showSuccessMessage(
-                    context,
-                    "Table created successfully",
-                  );
-                }
               },
               builder: (context, state) {
                 final cubit = context.read<PostgresTablesCubit>();

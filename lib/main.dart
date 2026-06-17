@@ -8,7 +8,6 @@ import 'package:dbaas_project/features/home/presentation/screens/home_screen.dar
 import 'package:dbaas_project/features/no_sql_projects/main_screen_noSql.dart';
 import 'package:dbaas_project/features/projects/view/screens/create_project_screen.dart';
 import 'package:dbaas_project/features/sql_projects/main_screen_sql.dart';
-import 'package:dbaas_project/features/sql_projects/table_editor/view/screens/table_editor.dart';
 import 'package:dbaas_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +66,7 @@ class DBaasApp extends StatelessWidget {
             MainScreenNOSQL.routeName: (_) => MainScreenNOSQL(),
             MainScreenSQL.routeName: (_) => MainScreenSQL(),
           },
-          // initialRoute: MainScreenSQL.routeName,
+      
           initialRoute: userProvider.currentUser==null?RegisterScreen.routeName:HomeScreen.routeName,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

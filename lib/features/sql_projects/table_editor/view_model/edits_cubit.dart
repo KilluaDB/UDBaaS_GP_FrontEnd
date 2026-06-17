@@ -72,12 +72,12 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
         InsertRowRequest(values: values),
         schema: schema,
       );
-      print(response.rowId);
+   
       emit(InsertRowSuccess(response));
 
       await _refreshRows(projectId, tableName, schema);
     } catch (e) {
-       print(e.toString());
+     
       emit(InsertRowError(e.toString()));
     }
   }
@@ -109,7 +109,7 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
 
       await _refreshRows(projectId, tableName, schema);
     } catch (e) {
-       print(e.toString());
+     
       emit(UpdateRowsError(e.toString()));
     }
   }
@@ -140,7 +140,7 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
 
       await _refreshRows(projectId, tableName, schema);
     } catch (e) {
-       print(e.toString());
+    
       emit(DeleteRowsError(e.toString()));
     }
   }
@@ -187,7 +187,7 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
 
       await _refreshRows(projectId, tableName, schema);
     } catch (e) {
-      print(e.toString());
+  
       emit(InsertColumnError(e.toString()));
     }
   }
@@ -218,7 +218,7 @@ class PostgresTableEditorCubit extends Cubit<PostgresTableEditorStates> {
 
       await _refreshRows(projectId, tableName, schema);
     } catch (e) {
-       print(e.toString());
+    
       emit(DeleteColumnError(e.toString()));
     }
   }

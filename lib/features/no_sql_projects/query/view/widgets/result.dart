@@ -43,40 +43,72 @@ class ResultPart extends StatelessWidget {
           /// SUCCESS
           if (state is MongoQuerySuccess) {
 
-            // final result = state.result;
-                      final result = MongoQueryDocumentsResult(
+            final result = state.result;
+//                       final result = MongoQueryDocumentsResult(
 
 
-documents: [
-{
-"_id": "64a1",
-"name": "Ahmed Ali",
-"email": "ahmed@demo.com",
-"age": 25,
-"status": "active",
-"city": "Cairo"
-},
-{
-"_id": "64a2",
-"name": "Sara Mohamed",
-"email": "sara@demo.com",
-"age": 30,
-"status": "inactive",
-"city": "Alex"
-},
-{
-"_id": "64a3",
-"name": "Omar Khaled",
-"email": "omar@demo.com",
-"age": 22,
-"status": "active",
-"city": "Giza"
-}
-],
-total: 3,
-page: 1,
-limit: 10,
-);
+// documents: [
+// {
+// "_id": "64a1",
+// "name": "Ahmed Ali",
+// "email": "ahmed@demo.com",
+// "age": 25,
+// "status": "active",
+// "city": "Cairo"
+// },
+// {
+// "_id": "64a1",
+// "name": "Ahmed Ali",
+// "email": "ahmed@demo.com",
+// "age": 25,
+// "status": "active",
+// "city": "Cairo"
+// },
+// {
+// "_id": "64a1",
+// "name": "Ahmed Ali",
+// "email": "ahmed@demo.com",
+// "age": 25,
+// "status": "active",
+// "city": "Cairo"
+// },
+// {
+// "_id": "64a1",
+// "name": "Ahmed Ali",
+// "email": "ahmed@demo.com",
+// "age": 25,
+// "status": "active",
+// "city": "Cairo"
+// },
+// {
+// "_id": "64a1",
+// "name": "Ahmed Ali",
+// "email": "ahmed@demo.com",
+// "age": 25,
+// "status": "active",
+// "city": "Cairo"
+// },
+// {
+// "_id": "64a2",
+// "name": "Sara Mohamed",
+// "email": "sara@demo.com",
+// "age": 30,
+// "status": "inactive",
+// "city": "Alex"
+// },
+// {
+// "_id": "64a3",
+// "name": "Omar Khaled",
+// "email": "omar@demo.com",
+// "age": 22,
+// "status": "active",
+// "city": "Giza"
+// }
+// ],
+// total: 3,
+// page: 1,
+// limit: 10,
+// );
 
             if (result.documents.isEmpty) {
               return const EmptyResult();

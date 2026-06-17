@@ -1,5 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/widgets/custome_elevated_button.dart';
+import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
 import 'package:dbaas_project/features/settings/viewModel/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -128,7 +129,7 @@ class _CreateIndexDrawerState extends State<CreateIndexDrawer> {
               Text(
                 "Create Index",
                 style: textTheme.titleMedium!.copyWith(
-                  color: provider.isDark ? AppTheme.white : AppTheme.black,
+                           color: AppTheme.black
                 ),
               ),
 
@@ -138,6 +139,7 @@ class _CreateIndexDrawerState extends State<CreateIndexDrawer> {
                 "Table",
                 style: textTheme.bodySmall!.copyWith(
                   fontWeight: FontWeight.bold,
+                  color:AppTheme.black
                 ),
               ),
 
@@ -146,10 +148,11 @@ class _CreateIndexDrawerState extends State<CreateIndexDrawer> {
                   final tables = tablesCubit.cachedTables?.data ?? [];
 
                   return DropdownButtonFormField<String>(
+                    dropdownColor: provider.isDark?AppTheme.black:AppTheme.white,
                     value: selectedTable,
-                    hint: Text("Select Table"),
+                    hint: Text("Select Table",style: TextStyle(color: provider.isDark?AppTheme.white:AppTheme.black,),),
                     items: tables
-                        .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                        .map((t) => DropdownMenuItem(value: t, child: Text(t,style: TextStyle(color: provider.isDark?AppTheme.white:AppTheme.black),)))
                         .toList(),
                     onChanged: (value) {
                       if (value != null) {
@@ -166,16 +169,18 @@ class _CreateIndexDrawerState extends State<CreateIndexDrawer> {
                 "Column",
                 style: textTheme.bodySmall!.copyWith(
                   fontWeight: FontWeight.bold,
+                            color: AppTheme.black
                 ),
               ),
 
               const SizedBox(height: 8),
 
               DropdownButtonFormField<String>(
+                   dropdownColor: provider.isDark?AppTheme.black:AppTheme.white,
                 value: selectedColumn,
-                hint: const Text("Select Column"),
+                hint:  Text("Select Column",style: TextStyle(color: provider.isDark?AppTheme.white:AppTheme.black,),),
                 items: columns
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c,style: TextStyle(color: provider.isDark?AppTheme.white:AppTheme.black),)))
                     .toList(),
                 onChanged: (value) {
                   setState(() => selectedColumn = value);
@@ -188,18 +193,13 @@ class _CreateIndexDrawerState extends State<CreateIndexDrawer> {
                 "Index Name",
                 style: textTheme.bodySmall!.copyWith(
                   fontWeight: FontWeight.bold,
+                            color: AppTheme.black
                 ),
               ),
 
               const SizedBox(height: 8),
-
-              TextFormField(
-                controller: indexNameController,
-                decoration: const InputDecoration(
-                  hintText: "idx_users_email",
-                  border: OutlineInputBorder(),
-                ),
-              ),
+CustomTextFormField( hintText: "idx_users_email",    controller: indexNameController,),
+            
 
               const Spacer(),
 
@@ -207,6 +207,7 @@ class _CreateIndexDrawerState extends State<CreateIndexDrawer> {
                 children: [
                   Expanded(
                     child: CustomElevatedButton(
+                      backgroundColor: AppTheme.black,
                       child: const Text("Cancel"),
                       onTap: () => Navigator.pop(context),
                     ),

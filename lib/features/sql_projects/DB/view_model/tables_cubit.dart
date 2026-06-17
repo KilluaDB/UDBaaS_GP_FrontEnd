@@ -52,7 +52,7 @@ class PostgresTablesCubit extends Cubit<PostgresTablesStates> {
            final tableDetails = await _dataSource.getPostgresTable(token, projectId, tableName, schema);
            cachedTablesMap[tableName] = tableDetails;
          } catch (e) {
-           debugPrint("Skipping $tableName: $e");
+       
            continue; 
          }
       }

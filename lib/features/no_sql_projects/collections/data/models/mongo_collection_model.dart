@@ -30,6 +30,8 @@ class MongoCollectionModel {
     return {'name': name};
   }
 }
+
+
 class CreateMongoCollectionRequest {
   final String name;
 

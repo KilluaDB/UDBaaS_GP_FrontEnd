@@ -19,7 +19,10 @@ class GenerateSchemaError extends SchemaGenerationStates {
 
   GenerateSchemaError(this.message);
 }
-
+class SchemaPromptUpdated extends SchemaGenerationStates {
+  final String prompt;
+  SchemaPromptUpdated(this.prompt);
+}
 
 class ApproveSchemaLoading extends SchemaGenerationStates {}
 

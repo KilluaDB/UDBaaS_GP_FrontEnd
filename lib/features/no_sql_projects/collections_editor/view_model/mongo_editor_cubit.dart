@@ -1,401 +1,385 @@
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/data/api_service/mongo_editor_api.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/view_model/mongo_edior_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/data/models/mongo_editor_models.dart';
 
-class MongoEditorCubit extends Cubit<MongoEditorState> {
+class MongoCollectionEditorCubit extends Cubit<MongoEditorStates> {
   final MongoEditorApiService _dataSource;
   final UserProvider userProvider;
 
-  MongoGetDocumentsResult? cachedDocuments;
+  MongoGetDocumentsResponse? cachedDocuments;
+  int? cachedCount;
 
-  MongoEditorCubit({
+  MongoCollectionEditorCubit({
     required this.userProvider,
     MongoEditorApiService? dataSource,
-  })  : _dataSource = dataSource ?? MongoEditorApiService(),
-        super(MongoEditorInit());
+  }) : _dataSource = dataSource ?? MongoEditorApiService(),
+       super(MongoEditorInit());
 
   String? get _token => userProvider.currentUser?.data?.accessToken;
-int get documentsCount =>
-    cachedDocuments?.documents.length ?? 0;
-  Future getDocuments({
+String? editingDocId;
+
+void startEditing(String docId) {
+  editingDocId = docId;
+  emit(EditModeChanged());
+}
+
+void cancelEditing() {
+  editingDocId = null;
+  emit(EditModeChanged());
+}
+  Future<void> getDocuments({
     required String projectId,
-    required String collection,
+    required String collectionName,
     int limit = 20,
     int page = 1,
     bool showLoading = true,
   }) async {
     try {
-      if (showLoading) emit(MongoDocumentsLoading());
+      if (showLoading) emit(GetDocumentsLoading());
 
       if (_token == null) {
-        emit(MongoDocumentsError("User not logged in"));
+        emit(GetDocumentsError("User not logged in"));
         return;
       }
 
       final response = await _dataSource.getDocuments(
         _token!,
         projectId,
-        collection,
+        collectionName,
         limit: limit,
         page: page,
       );
 
       cachedDocuments = response;
 
-      emit(MongoDocumentsSuccess(response));
+      emit(GetDocumentsSuccess(response));
     } catch (e) {
-      emit(MongoDocumentsError(e.toString()));
+      emit(GetDocumentsError(e.toString()));
     }
   }
 
-  Future insertDocuments({
+  Future<void> countDocuments({
     required String projectId,
-    required String collection,
-    required List<Map<String, dynamic>> documents,
-  }) async {
-    try {
-      emit(MongoInsertDocumentsLoading());
-
-      if (_token == null) {
-        emit(MongoInsertDocumentsError("User not logged in"));
-        return;
-      }
-
-      final response = await _dataSource.insertDocuments(
-        _token!,
-        projectId,
-        collection,
-        MongoInsertDocumentsRequest(
-          documents: documents,
-        ),
-      );
-
-      emit(MongoInsertDocumentsSuccess(response));
-
-      await _refreshDocuments(
-        projectId,
-        collection,
-      );
-    } catch (e) {
-      emit(MongoInsertDocumentsError(e.toString()));
-    }
-  }
-
-  Future updateDocuments({
-    required String projectId,
-    required String collection,
-    required Map<String, dynamic> filter,
-    required Map<String, dynamic> update,
-    bool? upsert,
-    bool? updateOne,
-  }) async {
-    try {
-      emit(MongoUpdateDocumentsLoading());
-
-      if (_token == null) {
-        emit(MongoUpdateDocumentsError("User not logged in"));
-        return;
-      }
-
-      final response = await _dataSource.updateDocuments(
-        _token!,
-        projectId,
-        collection,
-        MongoUpdateDocumentsRequest(
-          filter: filter,
-          update: update,
-          upsert: upsert,
-          updateOne: updateOne,
-        ),
-      );
-
-      emit(MongoUpdateDocumentsSuccess(response));
-
-      await _refreshDocuments(
-        projectId,
-        collection,
-      );
-    } catch (e) {
-      emit(MongoUpdateDocumentsError(e.toString()));
-    }
-  }
-
-  Future deleteDocuments({
-    required String projectId,
-    required String collection,
-    required Map<String, dynamic> filter,
-    bool? deleteOne,
-  }) async {
-    try {
-      emit(MongoDeleteDocumentsLoading());
-
-      if (_token == null) {
-        emit(MongoDeleteDocumentsError("User not logged in"));
-        return;
-      }
-
-      final response = await _dataSource.deleteDocuments(
-        _token!,
-        projectId,
-        collection,
-        MongoDeleteDocumentsRequest(
-          filter: filter,
-          deleteOne: deleteOne,
-        ),
-      );
-
-      emit(MongoDeleteDocumentsSuccess(response));
-
-      await _refreshDocuments(
-        projectId,
-        collection,
-      );
-    } catch (e) {
-      emit(MongoDeleteDocumentsError(e.toString()));
-    }
-  }
-
-  Future countDocuments({
-    required String projectId,
-    required String collection,
+    required String collectionName,
     Map<String, dynamic>? filter,
   }) async {
     try {
-      emit(MongoCountDocumentsLoading());
+      emit(CountDocumentsLoading());
 
       if (_token == null) {
-        emit(MongoCountDocumentsError("User not logged in"));
+        emit(CountDocumentsError("User not logged in"));
         return;
       }
 
       final response = await _dataSource.countDocuments(
         _token!,
         projectId,
-        collection,
+        collectionName,
         MongoCountDocumentsRequest(
           filter: filter,
         ),
       );
 
-      emit(MongoCountDocumentsSuccess(response));
+      cachedCount = response.count;
+
+      emit(CountDocumentsSuccess(response));
     } catch (e) {
-      emit(MongoCountDocumentsError(e.toString()));
+      emit(CountDocumentsError(e.toString()));
     }
   }
 
-  Future getDocumentById({
+  Future<void> insertDocuments({
     required String projectId,
-    required String collection,
-    required String docId,
+    required String collectionName,
+    required List<Map<String, dynamic>> documents,
   }) async {
     try {
-      emit(MongoGetDocumentLoading());
+      emit(InsertDocumentsLoading());
 
       if (_token == null) {
-        emit(MongoGetDocumentError("User not logged in"));
+        emit(InsertDocumentsError("User not logged in"));
         return;
       }
 
-      final response = await _dataSource.getDocumentById(
+      final response = await _dataSource.insertDocuments(
         _token!,
         projectId,
-        collection,
-        docId,
-      );
-
-      emit(MongoGetDocumentSuccess(response));
-    } catch (e) {
-      emit(MongoGetDocumentError(e.toString()));
-    }
-  }
-
-  Future deleteDocumentById({
-    required String projectId,
-    required String collection,
-    required String docId,
-  }) async {
-    try {
-      emit(MongoDeleteDocumentLoading());
-
-      if (_token == null) {
-        emit(MongoDeleteDocumentError("User not logged in"));
-        return;
-      }
-
-      await _dataSource.deleteDocumentById(
-        _token!,
-        projectId,
-        collection,
-        docId,
-      );
-
-      emit(MongoDeleteDocumentSuccess());
-
-      await _refreshDocuments(
-        projectId,
-        collection,
-      );
-    } catch (e) {
-      emit(MongoDeleteDocumentError(e.toString()));
-    }
-  }
-
-  Future addField({
-    required String projectId,
-    required String collection,
-    required String field,
-    dynamic defaultValue,
-    bool? updateExisting,
-  }) async {
-    try {
-      emit(MongoAddFieldLoading());
-
-      if (_token == null) {
-        emit(MongoAddFieldError("User not logged in"));
-        return;
-      }
-
-      await _dataSource.addField(
-        _token!,
-        projectId,
-        collection,
-        MongoAddFieldRequest(
-          field: field,
-          defaultValue: defaultValue,
-          updateExisting: updateExisting,
+        collectionName,
+        MongoInsertDocumentsRequest(
+          documents: documents,
         ),
       );
 
-      emit(MongoAddFieldSuccess());
+      emit(InsertDocumentsSuccess(response));
 
-      await _refreshDocuments(
-        projectId,
-        collection,
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
       );
+          await countDocuments(
+      projectId: projectId,
+      collectionName: collectionName,
+    );
     } catch (e) {
-      emit(MongoAddFieldError(e.toString()));
+      emit(InsertDocumentsError(e.toString()));
     }
   }
 
-  Future removeField({
+  Future<void> updateDocuments({
     required String projectId,
-    required String collection,
-    required String field,
+    required String collectionName,
+    Map<String, dynamic>? filter,
+    required Map<String, dynamic> update,
+    bool? upsert,
   }) async {
     try {
-      emit(MongoRemoveFieldLoading());
+      emit(UpdateDocumentsLoading());
 
       if (_token == null) {
-        emit(MongoRemoveFieldError("User not logged in"));
+        emit(UpdateDocumentsError("User not logged in"));
         return;
       }
 
-      await _dataSource.removeField(
+      final response = await _dataSource.updateDocuments(
         _token!,
         projectId,
-        collection,
-        field,
+        collectionName,
+        MongoUpdateDocumentsRequest(
+          filter: filter,
+          update: update,
+          upsert: upsert,
+        ),
       );
 
-      emit(MongoRemoveFieldSuccess());
+      emit(UpdateDocumentsSuccess(response));
 
-      await _refreshDocuments(
-        projectId,
-        collection,
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
       );
     } catch (e) {
-      emit(MongoRemoveFieldError(e.toString()));
+      emit(UpdateDocumentsError(e.toString()));
     }
   }
 
-  Future updateDocumentField({
+  Future<void> deleteDocuments({
     required String projectId,
-    required String collection,
+    required String collectionName,
+    Map<String, dynamic>? filter,
+    bool? deleteOne,
+  }) async {
+    try {
+      emit(DeleteDocumentsLoading());
+
+      if (_token == null) {
+        emit(DeleteDocumentsError("User not logged in"));
+        return;
+      }
+
+      final response = await _dataSource.deleteDocuments(
+        _token!,
+        projectId,
+        collectionName,
+        MongoDeleteDocumentsRequest(
+          filter: filter,
+          deleteOne: deleteOne,
+        ),
+      );
+
+      emit(DeleteDocumentsSuccess(response));
+
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
+      );
+                await countDocuments(
+      projectId: projectId,
+      collectionName: collectionName,
+    );
+    } catch (e) {
+      emit(DeleteDocumentsError(e.toString()));
+    }
+  }
+
+  Future<void> getDocument({
+    required String projectId,
+    required String collectionName,
+    required String docId,
+  }) async {
+    try {
+      emit(GetDocumentLoading());
+
+      if (_token == null) {
+        emit(GetDocumentError("User not logged in"));
+        return;
+      }
+
+      final response = await _dataSource.getDocument(
+        _token!,
+        projectId,
+        collectionName,
+        docId,
+      );
+
+      emit(GetDocumentSuccess(response));
+    } catch (e) {
+      emit(GetDocumentError(e.toString()));
+    }
+  }
+
+  Future<void> addField({
+    required String projectId,
+    required String collectionName,
+    required String docId,
+    required String field,
+    required String type,
+    dynamic value,
+  }) async {
+    try {
+      emit(AddFieldLoading());
+
+      if (_token == null) {
+        emit(AddFieldError("User not logged in"));
+        return;
+      }
+
+      final message = await _dataSource.addField(
+        _token!,
+        projectId,
+        collectionName,
+        docId,
+        MongoAddDocumentFieldRequest(
+          field: field,
+          value: value,
+          type: type,
+        ),
+      );
+
+      emit(AddFieldSuccess(message));
+
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
+      );
+    } catch (e) {
+      emit(AddFieldError(e.toString()));
+    }
+  }
+
+  Future<void> updateField({
+    required String projectId,
+    required String collectionName,
     required String docId,
     required String field,
     required dynamic value,
+    String? type,
   }) async {
     try {
-      emit(MongoUpdateDocumentFieldLoading());
+      emit(UpdateFieldLoading());
 
       if (_token == null) {
-        emit(MongoUpdateDocumentFieldError("User not logged in"));
+        emit(UpdateFieldError("User not logged in"));
         return;
       }
 
-      await _dataSource.updateDocumentField(
+      final message = await _dataSource.updateField(
         _token!,
         projectId,
-        collection,
+        collectionName,
         docId,
         field,
         MongoUpdateFieldRequest(
           value: value,
+          type: type,
         ),
       );
 
-      emit(MongoUpdateDocumentFieldSuccess());
+      emit(UpdateFieldSuccess(message));
 
-      await _refreshDocuments(
-        projectId,
-        collection,
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
       );
     } catch (e) {
-      emit(MongoUpdateDocumentFieldError(e.toString()));
+      emit(UpdateFieldError(e.toString()));
     }
   }
 
-  Future deleteDocumentField({
+  Future<void> deleteField({
     required String projectId,
-    required String collection,
+    required String collectionName,
     required String docId,
     required String field,
   }) async {
     try {
-      emit(MongoDeleteDocumentFieldLoading());
+      emit(DeleteFieldLoading());
 
       if (_token == null) {
-        emit(MongoDeleteDocumentFieldError("User not logged in"));
+        emit(DeleteFieldError("User not logged in"));
         return;
       }
 
-      await _dataSource.deleteDocumentField(
+      final message = await _dataSource.deleteField(
         _token!,
         projectId,
-        collection,
+        collectionName,
         docId,
         field,
       );
 
-      emit(MongoDeleteDocumentFieldSuccess());
+      emit(DeleteFieldSuccess(message));
 
-      await _refreshDocuments(
-        projectId,
-        collection,
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
       );
     } catch (e) {
-      emit(MongoDeleteDocumentFieldError(e.toString()));
+      emit(DeleteFieldError(e.toString()));
     }
   }
 
-  Future _refreshDocuments(
-    String projectId,
-    String collection,
-  ) async {
+  Future<void> deleteDocument({
+    required String projectId,
+    required String collectionName,
+    required String docId,
+  }) async {
     try {
-      final response = await _dataSource.getDocuments(
+      emit(DeleteDocumentLoading());
+
+      if (_token == null) {
+        emit(DeleteDocumentError("User not logged in"));
+        return;
+      }
+
+      final message = await _dataSource.deleteDocument(
         _token!,
         projectId,
-        collection,
+        collectionName,
+        docId,
       );
 
-      cachedDocuments = response;
+      emit(DeleteDocumentSuccess(message));
 
-      emit(MongoDocumentsSuccess(response));
+      await getDocuments(
+        projectId: projectId,
+        collectionName: collectionName,
+        showLoading: false,
+      );
+                await countDocuments(
+      projectId: projectId,
+      collectionName: collectionName,
+    );
     } catch (e) {
-      emit(MongoDocumentsError(e.toString()));
+      emit(DeleteDocumentError(e.toString()));
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart'; // لـ debugPrint
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dbaas_project/core/models/user/data.dart';
 import 'package:dbaas_project/core/models/user/user.dart';
@@ -56,9 +56,7 @@ class AuthViewModel extends Cubit<AuthState> {
       } else {
         emit(LoginError("Login failed: Unexpected server response"));
       }
-    } catch (e) {
-      debugPrint("Login failed error: $e");
-      
+    } catch (e) {      
       String errorMessage = e.toString().replaceFirst(RegExp(r'^Exception: '), '');
       emit(LoginError(errorMessage));
     }

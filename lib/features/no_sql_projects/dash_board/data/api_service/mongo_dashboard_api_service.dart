@@ -21,8 +21,7 @@ class MongoDashboardApiService {
         },
       );
 
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
+
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);

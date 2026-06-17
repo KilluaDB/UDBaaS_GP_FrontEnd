@@ -68,7 +68,7 @@ class ProjectDrawer extends StatelessWidget {
               children: [
                 Container(
                   width: 56,
-                  height: 30,
+                  height: 38,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppTheme.backgroundColor.withValues(alpha: 0.1),
@@ -77,9 +77,10 @@ class ProjectDrawer extends StatelessWidget {
                   child: Text(
                     project.dbType!,
                     style: textTheme.titleMedium!.copyWith(
-                      fontSize: 12,
+                      fontSize: 15,
                       color: AppTheme.backgroundColor,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(width: 20.w),
