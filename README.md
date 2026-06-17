@@ -4,6 +4,14 @@ A cloud-based **Database as a Service (DBaaS)** platform built using **Flutter W
 
 🌐 **[Try the Live Demo Here](https://canva.link/2bndapfkj12uwor)**
 
+##  Project Overview
+**DBaaS** simplifies the database lifecycle by abstracting the complexity of infrastructure management. Whether you're working with relational (SQL) or document-oriented (NoSQL) databases, our platform provides a unified environment for provisioning, monitoring, and data manipulation.
+
+##  The Problem & Solution
+* **Problem:** Fragmented tools for different database technologies, a steep learning curve for traditional systems, and a lack of intelligent assistance.
+* **Solution:** A centralized, automated platform that handles Kubernetes orchestration, database lifecycle management, and provides an intuitive, responsive UI for developers.
+
+
 ---
 ##  System Architecture
 The platform follows a clean architectural pattern that separates the user presentation from the heavy-lifting infrastructure orchestration.
@@ -25,14 +33,6 @@ The platform follows a clean architectural pattern that separates the user prese
   </table>
 </div>
 
-##  Project Overview
-**DBaaS** simplifies the database lifecycle by abstracting the complexity of infrastructure management. Whether you're working with relational (SQL) or document-oriented (NoSQL) databases, our platform provides a unified environment for provisioning, monitoring, and data manipulation.
-
-##  The Problem & Solution
-* **Problem:** Fragmented tools for different database technologies, a steep learning curve for traditional systems, and a lack of intelligent assistance.
-* **Solution:** A centralized, automated platform that handles Kubernetes orchestration, database lifecycle management, and provides an intuitive, responsive UI for developers.
-
----
 
 ## Frontend Architecture
 Built for scalability and maintainability:
