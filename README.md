@@ -2,152 +2,74 @@
 
 A cloud-based **Database as a Service (DBaaS)** platform built using **Flutter Web**, designed to unify the management of **SQL and NoSQL databases** within a single, user-friendly interface.
 
-This project is developed as a **Graduation Project**, focusing on clean architecture, scalable state management, and future AI integration.
+🌐 **[Try the Live Demo Here](https://canva.link/2bndapfkj12uwor)**
 
 ---
 
-## Project Overview
+##  System Architecture
+The platform follows a clean architectural pattern that separates the user presentation from the heavy-lifting infrastructure orchestration.
 
-Managing databases today often requires switching between multiple tools depending on the database type (SQL / NoSQL). This fragmentation increases complexity, slows development, and creates a steep learning curve.
+![System Architecture](<img width="1003" height="447" alt="systme arch" src="https://github.com/user-attachments/assets/8fcf3fbb-3ae8-4b3d-9887-8c18b5a8b525" />
+)
 
-**DBaaS** aims to solve this problem by providing:
-- A unified dashboard for database projects.
-- Support for both SQL and NoSQL databases.
-- Cloud-based project management.
-- A foundation for AI-powered database interaction (RAG).
+![Frontend Architecture](<img width="1024" height="1024" alt="FE_arch" src="https://github.com/user-attachments/assets/e97b11c7-f8fb-4bc0-b529-6c61fa1c719d" />
+)
 
----
-
-## Problem Statement
-
-- Fragmented tools for different database technologies.
-- High learning curve for traditional database systems.
-- Lack of intelligent assistance in schema and query handling.
-- Poor user experience for beginners and non-technical users.
+*High-level overview of the DBaaS platform, illustrating the flow from the Flutter UI through the Go-based control plane to the Kubernetes cluster.*
 
 ---
 
-## Proposed Solution
+##  Project Overview
+**DBaaS** simplifies the database lifecycle by abstracting the complexity of infrastructure management. Whether you're working with relational (SQL) or document-oriented (NoSQL) databases, our platform provides a unified environment for provisioning, monitoring, and data manipulation.
 
-An integrated, cloud-based platform that:
-- Manages SQL and NoSQL databases in one place.
-- Simplifies project creation and management.
-- Provides a clean and intuitive UI.
-- Is extensible with AI (Retrieval-Augmented Generation) for natural language interaction.
+##  The Problem & Solution
+* **Problem:** Fragmented tools for different database technologies, a steep learning curve for traditional systems, and a lack of intelligent assistance.
+* **Solution:** A centralized, automated platform that handles Kubernetes orchestration, database lifecycle management, and provides an intuitive, responsive UI for developers.
 
 ---
 
 ## Frontend Architecture
-
-- **Framework:** Flutter (Web)
-- **Architecture Pattern:** MVVM (View / ViewModel / Logic separation)
-- **State Management:**
-  - `Cubit (flutter_bloc)` for business logic.
-  - `Provider` for app-wide UI and settings state.
-- **Key Layers:**
-  - Presentation (Screens & Widgets).
-  - ViewModel (Cubits & States).
-  - Data (Models & API Integration).
+Built for scalability and maintainability:
+* **Framework:** Flutter (Web)
+* **Pattern:** MVVM (Separation of View, ViewModel, and Data layers).
+* **State Management:** `flutter_bloc` (Cubit) for business logic and `Provider` for app-wide settings.
+* **API Integration:** Secure communication with our Go-based backend.
 
 ---
 
-## Implemented Features & Interface
-### 1. Security & Authentication
-The platform implements a secure authentication layer to protect user configurations and database credentials. This includes:
-- **JWT Token Management:** Secure storage and injection of tokens into API headers.
-- **Form Validation:** Client-side validation for emails and password strength.
-- **Session Persistence:** Keeping users logged in across browser refreshes.
+###  Key Features
 
-| Login Screen | Registration |
-|---|---|
-| ![Login](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/signIn.png) | ![Register](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/signUP.png) |
-| *Secure login for authorized users.* | *Onboarding flow for new developers.* |
-### 2. Project Management
-The platform allows users to create and organize multiple database projects. It features a responsive grid layout that handles various project states including loading, success, and deletion.
+* **Secure Authentication:** JWT-based session management with role-based access control.
+* **Unified Dashboard:** Manage SQL and NoSQL projects in one place.
+* **Declarative Provisioning:** Automated database deployment on Kubernetes.
+* **Table/Collection Editor:** Intuitive spreadsheet-like interface for CRUD operations.
+* **Schema Visualization:** Dynamic ER-diagram generation powered by **Mermaid.js**.
+* **Advanced Query Execution:** Built-in SQL and NoSQL query runners for real-time data interaction and result analysis.
+* **Intelligent Text-to-SQL:** AI-powered assistance to convert natural language prompts into executable SQL queries, simplifying complex data retrieval.
+* **Data Backup & Recovery:** Reliable snapshots and restoration workflows to ensure data persistence and minimize downtime.
+* **Comprehensive NoSQL Operations:** Specialized tooling for document-based operations, including atomic updates, filtering, and complex aggregation queries.
+---
 
-| Project Dashboard (Empty State) | Project Selection |
-|---|---|
-| ![Home](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/home.png) | ![Display Project](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/display%20project.png) |
-| *Initial view when no projects are created.* | *Grid view showing active SQL and NoSQL projects.* |
+##  Future Roadmap
+We are evolving the platform toward production-grade reliability with the following focus areas:
 
-### 3. Project Creation Flow
-Users can easily spin up new database instances by defining the project name, database engine (SQL/NoSQL), and preferred cloud provider (AWS, GCP, etc.).
-
-![Create Project](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/createProject.png)
-
-
-
-*The simplified workflow for initializing a new database project.*
-
-### 4. Schema & Table Management
-For SQL databases, the interface provides a powerful tool to define table structures, primary keys, and column types without writing complex DDL scripts.
-
-| Table Definition | Table Overview |
-|---|---|
-| ![Create Table](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/create%20table.png) | ![Display Tables](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/display%20tables.png) |
-| *Form for defining columns, data types, and constraints.* | *List view of all created tables within a project.* |
-
-### 5. Data Manipulation (CRUD Operations)
-The platform provides a spreadsheet-like interface for managing records. Users can insert, view, and update data directly through the UI.
-
-**Adding New Records:**
-![Add Rows](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/add%20rows.png)
-*Modal interface for inserting new data into specific table columns.*
-
-**Data Visualization & Editing:**
-| Viewing Rows | Inline Editing | Updated State |
-|---|---|---|
-| ![Display Rows](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/display%20rows.png) | ![Edit Rows](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/edit%20rows.png) | ![Updated Row](https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/updated%20row.png) |
-| *Tabular view of data.* | *Direct interaction for modifying values.* | *UI feedback after successful data update.* |
+* **Unified Workflow Automation:** Orchestrating the full lifecycle from design to deployment.
+* **Better Observability:** Expanding distributed tracing and metrics across all services.
+* **Robust Testing:** Expanding end-to-end validation for schema migrations and cluster communication.
+* **Smarter AI Assistance:** Advancing the RAG engine for intelligent query and schema handling.
+* **Durable Provisioning Queues:** Transitioning from goroutines to Redis-backed queues (Asynq) for fault tolerance.
+* **Production Hardening:** Enforcing strict compute isolation using Kubernetes Taints and Tolerations.
+* **Multi-Cloud & Multi-Region:** Abstracting infrastructure to support cross-cloud deployments (AWS, GCP, Azure).
 
 ---
 
-## State Management Strategy
-
-| Responsibility | Solution |
-|---------------|----------|
-| Business Logic | Cubit |
-| UI State | BlocBuilder / BlocConsumer |
-| App Settings | Provider |
-| User Data | Provider |
-
-This approach ensures:
-- Clean separation of concerns.
-- Reusable logic.
-- Maintainable and scalable codebase.
-
----
-
-## Tools & Technologies
-
-- **Frontend:** Flutter (Web)
-- **State Management:** flutter_bloc (Cubit), Provider
-- **Databases:** PostgreSQL, MongoDB
-- **Backend (Planned):** Golang, Spring Boot
-- **Cloud & DevOps:** Docker, Kubernetes, AWS / GCP
-- **AI (Upcoming):** RAG, LangChain, NLP
-
----
-
-## Team Members
-
-- **Frontend:** Aya Mohamed Sayed
-- **Backend:** Abdallah Hany, Ali Mohamed, Hassan Hussein, Ahmed Bahy
-- **Cloud:** Ahmed Bahy
-- **AI:** Ali Mohamed, Abdallah Hany, Hassan Hussein
+## 👥 Team
+* **Frontend:** Aya Mohamed Sayed
+* **Backend:** Abdallah Hany, Ali Mohamed, Hassan Hussein, Ahmed Bahy
+* **Cloud:** Ahmed Bahy
+* **AI:** Ali Mohamed, Abdallah Hany, Hassan Hussein
 
 **Supervisor:** Dr. Rania Ramadan
 
 ---
-
-## Future Work
-- Visual schema designer.
-- SQL & NoSQL query editor.
-- CSV / JSON import.
-- AI-powered query assistant (RAG).
-- Versioning and recovery.
-- Admin dashboard.
-
----
-
 > This repository represents the **frontend implementation** of the DBaaS graduation project, focusing on clean architecture, state management, and scalability.
