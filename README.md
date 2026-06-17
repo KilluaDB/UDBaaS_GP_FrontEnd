@@ -72,7 +72,6 @@ We are evolving the platform toward production-grade reliability with the follow
 ## 👥 Team
 * **Frontend:** Aya Mohamed Sayed
 * **Backend:** Abdallah Hany, Ali Mohamed, Hassan Hussein, Ahmed Bahy
-* **Cloud:** Ahmed Bahy
 * **AI:** Ali Mohamed, Abdallah Hany, Hassan Hussein
 
 **Supervisor:** Dr. Rania Ramadan
