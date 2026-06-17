@@ -1,8 +1,6 @@
 import 'package:dbaas_project/core/app_theme.dart';
 import 'package:dbaas_project/core/util/validator.dart';
 import 'package:dbaas_project/core/widgets/custome_text_form_field.dart';
-import 'package:dbaas_project/features/sql_projects/DB/data/models/foreign_key_ref_request.dart';
-import 'package:dbaas_project/features/sql_projects/DB/data/models/postgres_foreign_key_request.dart';
 import 'package:dbaas_project/features/sql_projects/query/view/screens/full_query_tab.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/data/models/table_editor_models.dart';
 import 'package:dbaas_project/features/sql_projects/table_editor/view_model/edits_cubit.dart';
@@ -80,10 +78,7 @@ class _InsertColumnDrawerState extends State<InsertColumnDrawer> {
       nullable: _nullable,
       foreignKeys: fks.isNotEmpty ? fks : null,
     );
-    print("COLUMN NAME => ${_name.text.trim()}");
-print("FKS => $foreignKeysList");
-print("REF TABLE => ${foreignKeysList.first['refTable']}");
-print("REF COLUMN => ${foreignKeysList.first['refColumn']}");
+
   }
 
   @override
@@ -96,12 +91,20 @@ print("REF COLUMN => ${foreignKeysList.first['refColumn']}");
       listener: (context, state) {
         setState(() => _loading = state is InsertColumnLoading);
         
-        if (state is InsertColumnSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Column added successfully"), backgroundColor: Colors.green));
-          context.read<PostgresTablesCubit>().getAllTables(widget.projectId, isSilentRefresh: true);
-          context.read<PostgresTableEditorCubit>().getAllRows(projectId: widget.projectId, tableName: widget.tableName, showLoading: false);
-          Navigator.pop(context);
-        } else if (state is InsertColumnError) {
+if (state is InsertColumnSuccess) {
+  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Column added successfully"), backgroundColor: Colors.green));
+  
+
+  final tablesCubit = context.read<PostgresTablesCubit>();
+  final editorCubit = context.read<PostgresTableEditorCubit>();
+  
+   tablesCubit.getAllTables(widget.projectId, isSilentRefresh: true);
+   editorCubit.getAllRows(projectId: widget.projectId, tableName: widget.tableName, showLoading: false);
+
+  if (mounted) {
+    Navigator.pop(context);
+  }
+}else if (state is InsertColumnError) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message), backgroundColor: Colors.red));
         }
       },

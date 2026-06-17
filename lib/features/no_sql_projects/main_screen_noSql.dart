@@ -1,7 +1,7 @@
-import 'package:dbaas_project/features/no_sql_projects/collections/view/widgets/create_colletion_sheet.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_cubit.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections/view_model/mongo_collections_states.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/view/screens/collection_editor.dart';
+import 'package:dbaas_project/features/no_sql_projects/collections_editor/view/widgets/insert_document.dart';
 import 'package:dbaas_project/features/no_sql_projects/collections_editor/view_model/mongo_editor_cubit.dart';
 import 'package:dbaas_project/features/no_sql_projects/dash_board/view/screens/dash_board.dart';
 import 'package:dbaas_project/features/no_sql_projects/dash_board/view_model/mongo_dashboard_cubit.dart';
@@ -15,6 +15,7 @@ import 'package:dbaas_project/features/settings/viewModel/user_provider.dart';
 import 'package:dbaas_project/features/projects/view/widgets/drawer/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class MainScreenNOSQL extends StatefulWidget {
@@ -29,6 +30,12 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
   int selectedIndex = 0;
   String selectedCollectionName = '';
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openCustomDrawer() {
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     ProjectModel project =
@@ -37,65 +44,71 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
 
     return MultiBlocProvider(
       providers: [
-                              BlocProvider<ProjectAccessCubit>(
-          create: (context) => ProjectAccessCubit(
-            userProvider: userProvider,
-          )..getProjectAccess(
-  projectId: project.id!,
-  isSilentRefresh: false,
-)
+        BlocProvider<ProjectAccessCubit>(
+          create: (context) => ProjectAccessCubit(userProvider: userProvider)
+            ..getProjectAccess(projectId: project.id!, isSilentRefresh: false),
         ),
         BlocProvider<MongoCollectionsCubit>(
           create: (context) =>
               MongoCollectionsCubit(userProvider: userProvider)
                 ..getCollections(project.id!, isSilentRefresh: false),
         ),
-
         BlocProvider<MongoDashboardCubit>(
           create: (context) => MongoDashboardCubit(userProvider: userProvider),
         ),
-
-        BlocProvider<MongoEditorCubit>(
-          create: (context) => MongoEditorCubit(userProvider: userProvider),
+        BlocProvider<MongoCollectionEditorCubit>(
+          create: (context) =>
+              MongoCollectionEditorCubit(userProvider: userProvider),
         ),
-
         BlocProvider<MongoQueryCubit>(
           create: (context) => MongoQueryCubit(userProvider: userProvider),
         ),
       ],
-
       child: Builder(
         builder: (context) {
           final List<Widget> tabs = [
             DashBoardMongo(project: project),
-
             Collections(
               project: project,
               onNavigate: (collectionName, index) {
                 setState(() {
-                  selectedIndex = index;
                   selectedCollectionName = collectionName;
+                  selectedIndex = index;
                 });
 
-                context.read<MongoEditorCubit>().getDocuments(
+                final cubit = context.read<MongoCollectionEditorCubit>();
+
+                cubit.getDocuments(
                   projectId: project.id!,
-                  collection: collectionName,
-                  showLoading: false,
+                  collectionName: collectionName,
+                );
+
+                cubit.countDocuments(
+                  projectId: project.id!,
+                  collectionName: collectionName,
                 );
               },
             ),
-  
-
             CollectionEditor(
-              // key: ValueKey(selectedCollectionName),
-              // tableName: selectedCollectionName,
-              // project: project,
+              key: ValueKey(selectedCollectionName),
+              collectionName: selectedCollectionName,
+              project: project,
+
+              onOpenDrawer: () => _openCustomDrawer(),
             ),
             QueryMongoEditor(project: project),
             DeleteScreen(project: project),
           ];
 
           return Scaffold(
+            key: _scaffoldKey,
+            endDrawer: Drawer(
+              width: 450.w,
+              child: InsertDocumentDrawer(
+                collectionName: selectedCollectionName,
+                projectId: project.id!,
+              ),
+            ),
             body: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -103,27 +116,28 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
                   project: project,
                   selectedIndex: selectedIndex,
                   onItemSelected: (index) {
-                    setState(() {
-                      selectedIndex = index;
-                    });
-
+                    setState(() => selectedIndex = index);
                     if (index == 1) {
                       context.read<MongoCollectionsCubit>().getCollections(
                         project.id!,
                         isSilentRefresh: true,
                       );
                     }
-
+                    if (index == 0) {
+                      context.read<MongoDashboardCubit>().getDashboardMetrics(
+                        project.id,
+                      );
+                    }
                     if (index == 2 && selectedCollectionName.isNotEmpty) {
-                      context.read<MongoEditorCubit>().getDocuments(
+                      context.read<MongoCollectionEditorCubit>().getDocuments(
                         projectId: project.id!,
-                        collection: selectedCollectionName,
+                        collectionName: selectedCollectionName,
                         showLoading: false,
                       );
+                 
                     }
                   },
                 ),
-
                 Expanded(
                   child:
                       BlocBuilder<
@@ -132,14 +146,12 @@ class _MainScreenNOSQLState extends State<MainScreenNOSQL> {
                       >(
                         builder: (context, state) {
                           final cubit = context.read<MongoCollectionsCubit>();
-
                           if (state is GetMongoCollectionsLoading &&
                               cubit.cachedCollections.isEmpty) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
                           }
-
                           return IndexedStack(
                             index: selectedIndex,
                             children: tabs,

@@ -21,8 +21,7 @@ class SchemaGenerationApiService {
       body: jsonEncode(request.toJson()),
     );
 
-    print("STATUS: ${response.statusCode}");
-    print("BODY: ${response.body}");
+   
 
     final json = jsonDecode(response.body);
 
@@ -50,8 +49,7 @@ class SchemaGenerationApiService {
       },
     );
 
-    print("STATUS: ${response.statusCode}");
-    print("BODY: ${response.body}");
+  
 
     final json = jsonDecode(response.body);
 

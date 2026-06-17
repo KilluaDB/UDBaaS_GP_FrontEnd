@@ -22,7 +22,7 @@ class IndexFullScreen extends StatefulWidget {
 class _IndexFullScreenState extends State<IndexFullScreen> {
   String? selectedTable;
   String searchQuery = '';
-
+  List<PostgresTableIndexInfo> cachedIndexes = [];
   @override
   void initState() {
     super.initState();
@@ -104,15 +104,14 @@ class _IndexFullScreenState extends State<IndexFullScreen> {
           }
         }
 
-        if (state is CreateIndexError) {
-          UiUtils.showErrorMessage(context, state.error);
-        }
-
         if (state is DeleteIndexError) {
-          UiUtils.showErrorMessage(context, state.error);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error), backgroundColor: Colors.red),
+          );
         }
       },
       builder: (context, state) {
+      
         if (selectedTable == null) {
           return Center(
             child: Text(
@@ -127,15 +126,21 @@ class _IndexFullScreenState extends State<IndexFullScreen> {
         if (state is GetIndexesLoading) {
           return const Center(child: CircularProgressIndicator());
         }
+if (state is CreateIndexError ||
+    state is DeleteIndexError ||
+    state is CreateIndexLoading ||
+    state is DeleteIndexLoading) {
 
-        if (state is GetIndexesError) {
-          return Center(child: Text(state.error));
-        }
+  final indexes =
+      context.read<IndexCubit>().cachedIndexes?.indexes ?? [];
+
+  return _buildIndexesTable(indexes);
+}
 
         if (state is GetIndexesSuccess) {
           final indexes = state.data.indexes;
-
-          final filtered = indexes.where((e) {
+ cachedIndexes = state.data.indexes;
+        final  filtered = indexes.where((e) {
             return e.name.toLowerCase().contains(searchQuery.toLowerCase());
           }).toList();
 
@@ -162,9 +167,18 @@ class _IndexFullScreenState extends State<IndexFullScreen> {
 
           return _buildIndexesTable(filtered);
         }
-
-        return const Center(child: Text('Select a table to view indexes'));
+        return Center(
+          child: Text(
+            'Select a table to view indexes',
+            style: textTheme.titleMedium!.copyWith(
+              color: provider.isDark ? AppTheme.white : AppTheme.black,
+            ),
+          ),
+        );
+        //   );
       },
+   
+   
     );
   }
 

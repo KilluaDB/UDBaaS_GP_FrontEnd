@@ -25,8 +25,7 @@ class DashboardApiService {
   
       );
 
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
+
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
@@ -67,8 +66,7 @@ class DashboardApiService {
   
       );
 
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
+    
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
@@ -105,8 +103,7 @@ final uri = Uri.parse(
       },
     );
 
-    print("Response Status: ${response.statusCode}");
-    print("Response Body: ${response.body}");
+  
 
     final json = jsonDecode(response.body);
 

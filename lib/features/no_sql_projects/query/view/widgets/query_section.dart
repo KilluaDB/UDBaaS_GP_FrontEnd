@@ -118,9 +118,12 @@ class _QueryPartState extends State<QueryPart> {
                   ),
                 ),
                 child: DropdownButtonHideUnderline(
+                  
                   child: DropdownButton<String>(
+                                       dropdownColor: provider.isDark?AppTheme.black:AppTheme.white,
+
                     value: selectedCollection,
-                    hint: const Text("Select Collection"),
+                    hint:  Text("Select Collection",style: TextStyle(color:  provider.isDark?AppTheme.white:AppTheme.black),),
                     isExpanded: true,
                     items: collections.map((collection) {
                       final name = collection.name ?? collection.toString();

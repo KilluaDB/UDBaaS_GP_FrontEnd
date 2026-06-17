@@ -32,8 +32,6 @@ class MongoQueryApiService {
         body: jsonEncode(request.toJson()),
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Body: ${response.body}');
 
       Map<String, dynamic> json;
 

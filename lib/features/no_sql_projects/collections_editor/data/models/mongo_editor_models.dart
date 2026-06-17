@@ -1,61 +1,27 @@
-class MongoDocumentModel {
-  final String id;
-  final Map<String, dynamic> data;
-
-  MongoDocumentModel({
-    required this.id,
-    required this.data,
-  });
-
-  factory MongoDocumentModel.fromJson(Map<String, dynamic> json) {
-    return MongoDocumentModel(
-      id: json['_id'].toString(),
-      data: json,
-    );
-  }
-}
-
-class MongoGetDocumentsRequest {
-  final int limit;
-  final int page;
-
-  MongoGetDocumentsRequest({
-    this.limit = 20,
-    this.page = 1,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'limit': limit,
-      'page': page,
-    };
-  }
-}
-class MongoGetDocumentsResult {
-  final List<MongoDocumentModel> documents;
+class MongoGetDocumentsResponse {
+  final List<Map<String, dynamic>> documents;
   final int total;
   final int page;
   final int limit;
 
-  MongoGetDocumentsResult({
+  MongoGetDocumentsResponse({
     required this.documents,
     required this.total,
     required this.page,
     required this.limit,
   });
 
-  factory MongoGetDocumentsResult.fromJson(Map<String, dynamic> json) {
-    return MongoGetDocumentsResult(
-      documents: (json['documents'] as List)
-          .map((e) => MongoDocumentModel.fromJson(e))
+  factory MongoGetDocumentsResponse.fromJson(Map<String, dynamic> json) {
+    return MongoGetDocumentsResponse(
+      documents: (json['documents'] as List<dynamic>? ?? [])
+          .map((e) => Map<String, dynamic>.from(e))
           .toList(),
-      total: json['total'],
-      page: json['page'],
-      limit: json['limit'],
+      total: json['total'] ?? 0,
+      page: json['page'] ?? 1,
+      limit: json['limit'] ?? 20,
     );
   }
 }
-
 class MongoInsertDocumentsRequest {
   final List<Map<String, dynamic>> documents;
 
@@ -69,61 +35,60 @@ class MongoInsertDocumentsRequest {
     };
   }
 }
-class MongoInsertDocumentsResult {
+
+class MongoInsertDocumentsResponse {
   final int insertedCount;
   final List<dynamic> insertedIds;
 
-  MongoInsertDocumentsResult({
+  MongoInsertDocumentsResponse({
     required this.insertedCount,
     required this.insertedIds,
   });
 
-  factory MongoInsertDocumentsResult.fromJson(Map<String, dynamic> json) {
-    return MongoInsertDocumentsResult(
-      insertedCount: json['inserted_count'],
-      insertedIds: json['inserted_ids'],
+  factory MongoInsertDocumentsResponse.fromJson(
+      Map<String, dynamic> json) {
+    return MongoInsertDocumentsResponse(
+      insertedCount: json['inserted_count'] ?? 0,
+      insertedIds: json['inserted_ids'] ?? [],
     );
   }
 }
-
-
 class MongoUpdateDocumentsRequest {
-  final Map<String, dynamic> filter;
+  final Map<String, dynamic>? filter;
   final Map<String, dynamic> update;
   final bool? upsert;
-  final bool? updateOne;
 
   MongoUpdateDocumentsRequest({
-    required this.filter,
+    this.filter,
     required this.update,
     this.upsert,
-    this.updateOne,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'filter': filter,
+      if (filter != null) 'filter': filter,
       'update': update,
-      'upsert': upsert,
-      'update_one': updateOne,
+      if (upsert != null) 'upsert': upsert,
     };
   }
 }
-class MongoUpdateDocumentsResult {
+
+class MongoUpdateDocumentsResponse {
   final int matched;
   final int modified;
-  final String? upsertedId;
+  final dynamic upsertedId;
 
-  MongoUpdateDocumentsResult({
+  MongoUpdateDocumentsResponse({
     required this.matched,
     required this.modified,
     this.upsertedId,
   });
 
-  factory MongoUpdateDocumentsResult.fromJson(Map<String, dynamic> json) {
-    return MongoUpdateDocumentsResult(
-      matched: json['matched'],
-      modified: json['modified'],
+  factory MongoUpdateDocumentsResponse.fromJson(
+      Map<String, dynamic> json) {
+    return MongoUpdateDocumentsResponse(
+      matched: json['matched'] ?? 0,
+      modified: json['modified'] ?? 0,
       upsertedId: json['upserted_id'],
     );
   }
@@ -131,105 +96,111 @@ class MongoUpdateDocumentsResult {
 
 
 class MongoDeleteDocumentsRequest {
-  final Map<String, dynamic> filter;
+  final Map<String, dynamic>? filter;
   final bool? deleteOne;
 
   MongoDeleteDocumentsRequest({
-    required this.filter,
+    this.filter,
     this.deleteOne,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'filter': filter,
-      'delete_one': deleteOne,
+      if (filter != null) 'filter': filter,
+      if (deleteOne != null) 'delete_one': deleteOne,
     };
   }
 }
-class MongoDeleteDocumentsResult {
+
+class MongoDeleteDocumentsResponse {
   final int deleted;
 
-  MongoDeleteDocumentsResult({
+  MongoDeleteDocumentsResponse({
     required this.deleted,
   });
 
-  factory MongoDeleteDocumentsResult.fromJson(Map<String, dynamic> json) {
-    return MongoDeleteDocumentsResult(
-      deleted: json['deleted'],
+  factory MongoDeleteDocumentsResponse.fromJson(
+      Map<String, dynamic> json) {
+    return MongoDeleteDocumentsResponse(
+      deleted: json['deleted'] ?? 0,
     );
   }
 }
-
-
 class MongoCountDocumentsRequest {
   final Map<String, dynamic>? filter;
 
-  MongoCountDocumentsRequest({this.filter});
+  MongoCountDocumentsRequest({
+    this.filter,
+  });
 
   Map<String, dynamic> toJson() {
     return {
-      'filter': filter,
+      if (filter != null) 'filter': filter,
     };
   }
 }
-class MongoCountDocumentsResult {
+
+class MongoCountDocumentsResponse {
   final int count;
 
-  MongoCountDocumentsResult({
+  MongoCountDocumentsResponse({
     required this.count,
   });
 
-  factory MongoCountDocumentsResult.fromJson(Map<String, dynamic> json) {
-    return MongoCountDocumentsResult(
-      count: json['count'],
+  factory MongoCountDocumentsResponse.fromJson(
+      Map<String, dynamic> json) {
+    return MongoCountDocumentsResponse(
+      count: json['count'] ?? 0,
     );
   }
 }
+class MongoDocumentResponse {
+  final Map<String, dynamic> document;
 
-class MongoAddFieldRequest {
+  MongoDocumentResponse({
+    required this.document,
+  });
+
+  factory MongoDocumentResponse.fromJson(
+      Map<String, dynamic> json) {
+    return MongoDocumentResponse(
+      document: Map<String, dynamic>.from(json),
+    );
+  }
+}
+class MongoAddDocumentFieldRequest {
   final String field;
-  final dynamic defaultValue;
-  final bool? updateExisting;
+  final dynamic value;
+  final String type;
 
-  MongoAddFieldRequest({
+  MongoAddDocumentFieldRequest({
     required this.field,
-    this.defaultValue,
-    this.updateExisting,
+    this.value,
+    required this.type,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'field': field,
-      'default': defaultValue,
-      'update_existing': updateExisting,
+      'value': value,
+      'type': type,
     };
   }
 }
 class MongoUpdateFieldRequest {
   final dynamic value;
+  final String? type;
 
-  MongoUpdateFieldRequest({required this.value});
-
-  Map<String, dynamic> toJson() {
-    return {
-      'value': value,
-    };
-  }
-}
-
-class APIResponseSuccessMessageOnly {
-  final String status;
-  final String message;
-
-  APIResponseSuccessMessageOnly({
-    required this.status,
-    required this.message,
+  MongoUpdateFieldRequest({
+    required this.value,
+    this.type,
   });
 
-  factory APIResponseSuccessMessageOnly.fromJson(Map<String, dynamic> json) {
-    return APIResponseSuccessMessageOnly(
-      status: json['status'],
-      message: json['message'],
-    );
+  Map<String, dynamic> toJson() {
+  
+    return {
+      'value': value,
+      if (type != null) 'type': type,
+    };
   }
 }

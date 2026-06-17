@@ -30,7 +30,7 @@ class ProjectApiService {
         
         }),
       );
-   print(response.body);
+
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
         return ProjectCreateResponse.fromJson(json);

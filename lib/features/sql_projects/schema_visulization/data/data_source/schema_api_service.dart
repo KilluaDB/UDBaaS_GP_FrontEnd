@@ -21,8 +21,7 @@ Future<PostgresSchemaVisualizeResponse> visualizePostgresSchema({
     },
   );
 
-  print("STATUS: ${response.statusCode}");
-  print("BODY: ${response.body}");
+
 
   final json = jsonDecode(response.body);
 

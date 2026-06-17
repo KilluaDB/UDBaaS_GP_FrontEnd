@@ -225,7 +225,7 @@ onPressed: () async {
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: AppTheme.white,
-      title: const Text('Delete Table'),
+      title:  Text('Delete Table',style: TextStyle(color:AppTheme.black),),
       content: Text(
         'Are you sure you want to delete "$tableName"? This action cannot be undone.',
         style: Theme.of(context).textTheme.bodyMedium,

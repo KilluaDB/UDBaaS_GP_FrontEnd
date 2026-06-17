@@ -23,8 +23,6 @@ class MongoCollectionsApiService {
         },
       );
 
-      print("GET Collections Status: ${response.statusCode}");
-      print("GET Collections Body: ${response.body}");
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
@@ -67,8 +65,7 @@ class MongoCollectionsApiService {
         body: jsonEncode(request.toJson()),
       );
 
-      print("CREATE Status: ${response.statusCode}");
-      print("CREATE Body: ${response.body}");
+   
 
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
@@ -106,8 +103,6 @@ class MongoCollectionsApiService {
         },
       );
 
-      print("DELETE Status: ${response.statusCode}");
-      print("DELETE Body: ${response.body}");
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);

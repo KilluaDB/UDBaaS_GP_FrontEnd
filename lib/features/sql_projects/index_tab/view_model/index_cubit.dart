@@ -78,7 +78,7 @@ class IndexCubit extends Cubit<IndexStates> {
         ),
         schema: schema,
       );
-      print(response);
+  
       emit(CreateIndexSuccess(response));
 
       await _refreshIndexes(projectId, tableName, schema);
@@ -108,7 +108,7 @@ class IndexCubit extends Cubit<IndexStates> {
         indexName,
         schema: schema,
       );
-      print('deleted');
+   
       emit(DeleteIndexSuccess());
 
       await _refreshIndexes(projectId, tableName, schema);

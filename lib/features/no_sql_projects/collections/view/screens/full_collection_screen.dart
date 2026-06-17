@@ -27,8 +27,6 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
-
-
   @override
   void dispose() {
     _searchController.dispose();
@@ -47,9 +45,9 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
             state is DeleteMongoCollectionSuccess ||
             state is GetMongoCollectionsError) {
           context.read<MongoCollectionsCubit>().getCollections(
-                widget.projectId,
-                isSilentRefresh: true,
-              );
+            widget.projectId,
+            isSilentRefresh: true,
+          );
         }
       },
       builder: (context, state) {
@@ -57,13 +55,13 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
         final collections = cubit.cachedCollections;
 
         final filtered = collections
-            .where((c) => c.name
-                .toLowerCase()
-                .contains(_searchQuery.toLowerCase()))
+            .where(
+              (c) => c.name.toLowerCase().contains(_searchQuery.toLowerCase()),
+            )
             .toList();
 
         return Padding(
-           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
           child: Container(
             decoration: BoxDecoration(
               color: isDark ? Colors.grey.shade900 : Colors.white,
@@ -71,22 +69,18 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
             ),
             child: Column(
               children: [
-                 Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: _buildHeader(isDark, filtered.length),
-                          ),
-                          const SizedBox(width: 16),
-                          _buildAddButton(context),
-                        ],
-                      ),
-                   
-
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: _buildHeader(isDark, filtered.length)),
+                    const SizedBox(width: 16),
+                    _buildAddButton(context),
+                  ],
+                ),
                 const SizedBox(height: 12),
-
                 Expanded(
-                  child: (state is GetMongoCollectionsLoading &&
+                  child:
+                      (state is GetMongoCollectionsLoading &&
                           collections.isEmpty)
                       ? const Center(child: CircularProgressIndicator())
                       : _buildGrid(filtered),
@@ -99,21 +93,16 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
     );
   }
 
-
-
   Widget _buildGrid(List collections) {
-
-
     return GridView.builder(
-                        padding: const EdgeInsets.all(8),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 2.2,  
-                        ),
-                        itemCount: collections.length,
+      padding: const EdgeInsets.all(8),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 2.2,
+      ),
+      itemCount: collections.length,
       itemBuilder: (context, index) {
         final collection = collections[index];
 
@@ -122,11 +111,12 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
           onTap: () {
             widget.onCollectionSelected(collection.name);
           },
+          projectId: widget.projectId,
           onDelete: () {
             context.read<MongoCollectionsCubit>().deleteCollection(
-                  projectId: widget.projectId,
-                  collectionName: collection.name,
-                );
+              projectId: widget.projectId,
+              collectionName: collection.name,
+            );
           },
         );
       },
@@ -153,7 +143,6 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
             ],
           ),
           const SizedBox(height: 12),
-
           TextField(
             controller: _searchController,
             onChanged: (val) {
@@ -171,17 +160,13 @@ class _FullCollectionScreenState extends State<FullCollectionScreen> {
 
   Widget _buildAddButton(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16 ),
+      padding: const EdgeInsets.all(16),
       child: SizedBox(
-        width: 180 ,
+        width: 180,
         child: ElevatedButton.icon(
           onPressed: () {
             final cubit = context.read<MongoCollectionsCubit>();
-            showCreateCollectionSheet(
-              context,
-              widget.projectId,
-              cubit,
-            );
+            showCreateCollectionSheet(context, widget.projectId, cubit);
           },
           icon: const Icon(Icons.add),
           label: const Text('Add Collection'),
@@ -195,11 +180,13 @@ class _CollectionCard extends StatelessWidget {
   final String name;
   final VoidCallback onTap;
   final VoidCallback onDelete;
+  final String projectId;
 
   const _CollectionCard({
     required this.name,
     required this.onTap,
     required this.onDelete,
+    required this.projectId,
   });
 
   @override
@@ -218,13 +205,10 @@ class _CollectionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          
             Row(
               children: [
-                const Icon(Icons.folder_outlined,
-                    color: Colors.blue, size: 26),
+                const Icon(Icons.folder_outlined, color: Colors.blue, size: 26),
                 const SizedBox(width: 8),
-
                 Expanded(
                   child: Text(
                     name,
@@ -235,92 +219,16 @@ class _CollectionCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-            IconButton(
-onPressed: () async {
-  final confirm = await showDialog<bool>(
-    
-    context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: AppTheme.white,
-      title: const Text('Delete Table'),
-      content: Text(
-        'Are you sure you want to delete  ? This action cannot be undone. ',
-        style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-     child: const Text('Cancel',style: TextStyle(color: AppTheme.black),),
-        ),
-        FilledButton(
-          style: FilledButton.styleFrom(
-            backgroundColor: AppTheme.red, 
-          ),
-          onPressed: () => Navigator.pop(context, true),
-          child: const Text('Delete'),
-        ),
-      ],
-    ),
-  );
-
-  if (confirm == true) {
-    onDelete();
-  }
-},
-
- icon:  Icon(Icons.delete_outline_rounded, color: AppTheme.red,))
-           
-        ,   
+                IconButton(
+                  onPressed: onDelete,
+                  icon: Icon(Icons.delete_outline_rounded, color: AppTheme.red),
+                ),
               ],
             ),
-
-            const SizedBox(height: 16),
-
-           
-            _row("Documents", "${context.watch<MongoEditorCubit>().documentsCount}"),
-
-            const SizedBox(height: 6),
-
-     
-         
-
-
-      
+   
           ],
         ),
       ),
-    );
-  }
-
-  Widget _row(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 17,
-            color: AppTheme.gray,
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 3,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            value,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
