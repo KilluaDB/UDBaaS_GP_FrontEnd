@@ -5,19 +5,25 @@ A cloud-based **Database as a Service (DBaaS)** platform built using **Flutter W
 🌐 **[Try the Live Demo Here](https://canva.link/2bndapfkj12uwor)**
 
 ---
-
 ##  System Architecture
 The platform follows a clean architectural pattern that separates the user presentation from the heavy-lifting infrastructure orchestration.
 
-![System Architecture](<img width="1003" height="447" alt="systme arch" src="https://github.com/user-attachments/assets/8fcf3fbb-3ae8-4b3d-9887-8c18b5a8b525" />
-)
-
-![Frontend Architecture](<img width="1024" height="1024" alt="FE_arch" src="https://github.com/user-attachments/assets/e97b11c7-f8fb-4bc0-b529-6c61fa1c719d" />
-)
-
-*High-level overview of the DBaaS platform, illustrating the flow from the Flutter UI through the Go-based control plane to the Kubernetes cluster.*
-
----
+<div align="center">
+  <table>
+    <tr>
+      <td valign="top" width="50%">
+        <img src="https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/systme%20arch.png" width="100%">
+        <p><b>System Architecture</b></p>
+        <p>Illustrates the end-to-end flow of the platform, showing how the Flutter Frontend communicates with the Go-based Control Plane. It highlights the orchestration logic where the Go API Server manages Kubernetes (K3s) resources, enabling dynamic provisioning of isolated tenant databases while leveraging Redis for state management and an AI Multi-Agent system for intelligent schema handling.</p>
+      </td>
+      <td valign="top" width="50%">
+        <img src="https://github.com/KilluaDB/UDBaaS_GP_FrontEnd/blob/main/images/FE_arch.png" width="100%">
+        <p><b>Frontend Architecture</b></p>
+        <p>Details the client-side design, adhering to the MVVM (Model-View-ViewModel) pattern. It demonstrates how Cubit/Bloc manages the application state reactively, ensuring a clean separation between the UI Presentation Layer and the Data Layer, which facilitates seamless API interactions via Dio.</p>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ##  Project Overview
 **DBaaS** simplifies the database lifecycle by abstracting the complexity of infrastructure management. Whether you're working with relational (SQL) or document-oriented (NoSQL) databases, our platform provides a unified environment for provisioning, monitoring, and data manipulation.
